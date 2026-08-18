@@ -8,10 +8,11 @@ import {
 
 import { LoginStyle } from "./LoginStyle";
 
-export const Login = () => {
+export const Login = ({ onLogin }) => {
 
     const handleLogin = () => {
         console.log("Clicou em acessar");
+        onLogin();
     };
 
     return (
