@@ -1,3 +1,4 @@
+import React from "react";
 import {
     Text,
     TextInput,
@@ -8,13 +9,7 @@ import {
 
 import { LoginStyle } from "./LoginStyle";
 
-export const Login = ({ onLogin }) => {
-
-    const handleLogin = () => {
-        console.log("Clicou em acessar");
-        onLogin();
-    };
-
+export const Login = () => {
     return (
         <View style={LoginStyle.container}>
 
@@ -54,10 +49,7 @@ export const Login = ({ onLogin }) => {
                     secureTextEntry
                 />
 
-                <TouchableOpacity
-                    style={LoginStyle.button}
-                    onPress={handleLogin}
-                >
+                <TouchableOpacity style={LoginStyle.button}>
                     <Text style={LoginStyle.buttonText}>
                         Acessar o sistema
                     </Text>

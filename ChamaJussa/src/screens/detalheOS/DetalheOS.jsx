@@ -10,24 +10,21 @@ import {
 import { DetalheStyle } from "./DetalheOSStyle";
 import { Footer } from '../../components/footer/Footer';
 
-export const DetalheOS = ({ onVoltar }) => {
-  const handleTabPress = (index) => {
-    if (index === 0) {
-      onVoltar();
-    }
-  };
-
+export const DetalheOS = () => {
   return (
     <View style={DetalheStyle.container}>
+      
+      
+      <Text style={DetalheStyle.pageTitle}>
+        Detalhes da OS-001
+      </Text>
+
+     
       <ScrollView
+        style={DetalheStyle.scroll}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={DetalheStyle.scroll}>
-
-        <Text style={DetalheStyle.pageTitle}>
-          Detalhes da OS-001
-        </Text>
-
-        {/* INÍCIO DO CARD (Quadrado Branco) */}
+        contentContainerStyle={DetalheStyle.scrollContent}
+      >
         <View style={DetalheStyle.card}>
           <Text style={DetalheStyle.osTitle}>
             Vazamento hidráulico
@@ -37,7 +34,7 @@ export const DetalheOS = ({ onVoltar }) => {
             Criada em 17/06/2026, 11:29:58
           </Text>
 
-          {/* Item 1: Máquina / Equipamento */}
+          {/* Item 1 */}
           <View style={DetalheStyle.infoRow}>
             <Image
               source={require('../../../assets/Vector (6).png')}
@@ -54,7 +51,7 @@ export const DetalheOS = ({ onVoltar }) => {
             </View>
           </View>
 
-          {/* Item 2: Local / Setor */}
+          {/* Item 2*/}
           <View style={DetalheStyle.infoRow}>
             <Image
               source={require('../../../assets/Vector (7).png')}
@@ -72,7 +69,7 @@ export const DetalheOS = ({ onVoltar }) => {
             </View>
           </View>
 
-          {/* Item 3: Solicitante */}
+          {/* Item 3 */}
           <View style={DetalheStyle.infoRow}>
             <Image
               source={require('../../../assets/Vector (8).png')}
@@ -118,11 +115,10 @@ export const DetalheOS = ({ onVoltar }) => {
           </TouchableOpacity>
 
         </View>
-        {/* FIM DO CARD */}
-
       </ScrollView>
 
-      <Footer onSelectTab={handleTabPress} />
+      {/* Footer */}
+      <Footer />
     </View>
   );
 };

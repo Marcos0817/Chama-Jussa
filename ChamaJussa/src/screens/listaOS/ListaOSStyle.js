@@ -1,36 +1,37 @@
 import { StyleSheet } from "react-native";
 
 export const Style = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
 
-     content: {
+  content: {
     flex: 1,
     backgroundColor: '#F3F4F6',
     paddingHorizontal: 22,
     paddingTop: 32,
   },
 
-    header: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
 
-    hello: {
+  hello: {
     fontSize: 16,
     color: '#222',
     marginBottom: 2,
   },
 
-    title: {
+  title: {
     fontSize: 21,
     fontWeight: '700',
     color: '#111',
   },
-    newButton: {
+
+  newButton: {
     backgroundColor: '#087FF5',
     paddingHorizontal: 13,
     paddingVertical: 8,
@@ -43,41 +44,51 @@ export const Style = StyleSheet.create({
     fontWeight: '600',
   },
 
+  filters: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: "wrap",
+    gap: 8,
+    marginTop: 20,
+    marginBottom: 10,
+  },
 
-filters: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  flexWrap: "wrap",
-  gap: 8,
-  marginTop: 20
-},
+  filter: {
+    borderWidth: 1,
+    borderColor: '#C9C9C9',
+    borderRadius: 8,
+    paddingHorizontal: 13,
+    paddingVertical: 2,
+    backgroundColor: '#FFFFFF',
+    marginBottom: 4,
+  },
 
-filter: {
-  borderWidth: 1,
-  borderColor: '#C9C9C9',
-  borderRadius: 8,
-  paddingHorizontal: 13,
-  paddingVertical: 2,
-  backgroundColor: '#FFFFFF',
-  marginBottom: 4,
-},
+  activeFilter: {
+    backgroundColor: '#087FF5',
+    borderColor: '#087FF5',
+  },
 
-activeFilter: {
-  backgroundColor: '#087FF5',
-  borderColor: '#087FF5',
-},
+  filterText: {
+    color: '#B4B4B4',
+    fontSize: 13,
+  },
 
-filterText: {
-  color: '#B4B4B4',
-  fontSize: 13,
-},
+  activeFilterText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+  },
 
-activeFilterText: {
-  color: '#FFFFFF',
-  fontSize: 13,
-},
+  
+  scroll: {
+    flex: 1,
+  },
 
-card: {
+  scrollContent: {
+    paddingBottom: 20,
+  },
+
+  /* Card */
+  card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 18,
@@ -127,4 +138,4 @@ card: {
     color: '#777777',
     lineHeight: 18,
   },
-})
+});

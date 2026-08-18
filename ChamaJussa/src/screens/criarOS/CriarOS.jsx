@@ -10,9 +10,9 @@ import {
 import { CriarStyle } from './CriarOSStyle';
 import { Footer } from '../../components/footer/Footer';
 
-export const CriarOS = ({ onSelectTab }) => {
+export const CriarOS = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={CriarStyle.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={CriarStyle.scroll}>
@@ -87,8 +87,8 @@ export const CriarOS = ({ onSelectTab }) => {
 
       </ScrollView>
 
-      
-      <Footer onSelectTab={onSelectTab} />
+      {/* Footer */}
+      <Footer />
     </View>
   );
 };
