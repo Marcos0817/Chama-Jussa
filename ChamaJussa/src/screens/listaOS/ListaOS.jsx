@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { Style } from "./ListaOSStyle";
 import { Footer } from "../../components/footer/Footer";
@@ -15,8 +16,27 @@ import { api } from "../../services/api";
 
 export const ListaOS = ({ navigation }) => {
 
+  const [filtro, setFiltro] = useState("Todos");
   const [listaOS, setListaOS] = useState([]);
   const [carregando, setCarregando] = useState(true);
+
+  // ==============================
+  // FILTRAR ORDENS DE SERVIÇO
+  // ==============================
+
+  const listaFiltrada = listaOS.filter((os) => {
+
+    if (filtro === "Todos") {
+      return true;
+    }
+
+    return os.status === filtro;
+  });
+
+
+  // ==============================
+  // BUSCAR MINHAS OS
+  // ==============================
 
   const getMinhasOS = async () => {
 
@@ -63,7 +83,10 @@ export const ListaOS = ({ navigation }) => {
         "========== ERRO AO BUSCAR OS =========="
       );
 
-      console.log("Erro:", erro);
+      console.log(
+        "Erro:",
+        erro
+      );
 
       if (erro.response) {
 
@@ -97,18 +120,16 @@ export const ListaOS = ({ navigation }) => {
             "Erro",
             "Não foi possível carregar suas Ordens de Serviço."
           );
+
         }
 
       } else {
-
-        console.log(
-          "Não houve resposta da API."
-        );
 
         Alert.alert(
           "Erro",
           "Não foi possível conectar com a API."
         );
+
       }
 
     } finally {
@@ -118,9 +139,19 @@ export const ListaOS = ({ navigation }) => {
     }
   };
 
-  useEffect(() => {
-    getMinhasOS();
-  }, []);
+
+  // ==============================
+  // ATUALIZAR AUTOMATICAMENTE
+  // ==============================
+
+  useFocusEffect(
+    useCallback(() => {
+
+      getMinhasOS();
+
+    }, [])
+  );
+
 
   return (
 
@@ -128,7 +159,9 @@ export const ListaOS = ({ navigation }) => {
 
       <View style={Style.content}>
 
-        {/* HEADER */}
+        {/* =========================
+            CABEÇALHO
+        ========================== */}
 
         <View style={Style.header}>
 
@@ -143,6 +176,7 @@ export const ListaOS = ({ navigation }) => {
             </Text>
 
           </View>
+
 
           {/* BOTÃO NOVA OS */}
 
@@ -161,51 +195,98 @@ export const ListaOS = ({ navigation }) => {
         </View>
 
 
-        {/* FILTROS */}
+        {/* =========================
+            FILTROS
+        ========================== */}
 
         <View style={Style.filters}>
+
+          {/* TODOS */}
 
           <TouchableOpacity
             style={[
               Style.filter,
-              Style.activeFilter
+              filtro === "Todos" && Style.activeFilter
             ]}
+            onPress={() => setFiltro("Todos")}
           >
 
-            <Text style={Style.activeFilterText}>
+            <Text
+              style={
+                filtro === "Todos"
+                  ? Style.activeFilterText
+                  : Style.filterText
+              }
+            >
               Todos
             </Text>
 
           </TouchableOpacity>
 
 
+          {/* ABERTAS */}
+
           <TouchableOpacity
-            style={Style.filter}
+            style={[
+              Style.filter,
+              filtro === "Aberta" && Style.activeFilter
+            ]}
+            onPress={() => setFiltro("Aberta")}
           >
 
-            <Text style={Style.filterText}>
+            <Text
+              style={
+                filtro === "Aberta"
+                  ? Style.activeFilterText
+                  : Style.filterText
+              }
+            >
               Abertas
             </Text>
 
           </TouchableOpacity>
 
 
+          {/* EM ANDAMENTO */}
+
           <TouchableOpacity
-            style={Style.filter}
+            style={[
+              Style.filter,
+              filtro === "Em Andamento" && Style.activeFilter
+            ]}
+            onPress={() => setFiltro("Em Andamento")}
           >
 
-            <Text style={Style.filterText}>
+            <Text
+              style={
+                filtro === "Em Andamento"
+                  ? Style.activeFilterText
+                  : Style.filterText
+              }
+            >
               Em Andamento
             </Text>
 
           </TouchableOpacity>
 
 
+          {/* CONCLUÍDAS */}
+
           <TouchableOpacity
-            style={Style.filter}
+            style={[
+              Style.filter,
+              filtro === "Concluída" && Style.activeFilter
+            ]}
+            onPress={() => setFiltro("Concluída")}
           >
 
-            <Text style={Style.filterText}>
+            <Text
+              style={
+                filtro === "Concluída"
+                  ? Style.activeFilterText
+                  : Style.filterText
+              }
+            >
               Concluídas
             </Text>
 
@@ -214,7 +295,9 @@ export const ListaOS = ({ navigation }) => {
         </View>
 
 
-        {/* LISTA DE OS */}
+        {/* =========================
+            LISTA
+        ========================== */}
 
         <ScrollView
           style={Style.scroll}
@@ -228,27 +311,38 @@ export const ListaOS = ({ navigation }) => {
               Carregando Ordens de Serviço...
             </Text>
 
-          ) : listaOS.length === 0 ? (
+          ) : listaFiltrada.length === 0 ? (
 
             <Text>
-              Você ainda não possui Ordens de Serviço.
+              Nenhuma Ordem de Serviço encontrada.
             </Text>
 
           ) : (
 
-            listaOS.map((os) => (
+            listaFiltrada.map((os) => (
 
               <TouchableOpacity
                 key={os.idOS}
                 style={Style.card}
                 activeOpacity={0.8}
+                onPress={() =>
+                  navigation.navigate(
+                    "DetalheOS",
+                    {
+                      os: os
+                    }
+                  )
+                }
               >
+
+                {/* CABEÇALHO DO CARD */}
 
                 <View style={Style.cardHeader}>
 
                   <Text style={Style.cardTitle}>
                     OS - {os.numeroOS}
                   </Text>
+
 
                   <View style={Style.badge}>
 
@@ -261,10 +355,14 @@ export const ListaOS = ({ navigation }) => {
                 </View>
 
 
+                {/* TÍTULO */}
+
                 <Text style={Style.cardSubtitle}>
                   {os.tituloProblema}
                 </Text>
 
+
+                {/* DESCRIÇÃO */}
 
                 <Text style={Style.cardDescription}>
                   {os.descricaoProblema}
@@ -281,7 +379,11 @@ export const ListaOS = ({ navigation }) => {
       </View>
 
 
-      <Footer />
+      {/* =========================
+          FOOTER
+      ========================== */}
+
+     <Footer navigation={navigation} />
 
     </View>
   );

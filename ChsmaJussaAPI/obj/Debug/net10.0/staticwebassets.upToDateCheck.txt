@@ -4,3 +4,5 @@ wwwroot\imagens\Ordens\e87c5750-b969-415b-abe9-3b4432012aff.png
 wwwroot\imagens\Usuarios\b67afe0c-ff86-482a-93ff-abf927f52bb0.png
 wwwroot\imagens\Ordens\27664fa4-9582-4408-aae9-03fabf5c7236.png
 wwwroot\imagens\Ordens\d682c481-644c-415b-ba2d-c4129034a3fc.png
+wwwroot\imagens\Ordens\2957740b-ceff-4d83-96d1-4b8bce67ecff.jpeg
+wwwroot\imagens\Ordens\2d9b0a3d-2efc-4936-804d-841231c802e2.jpeg

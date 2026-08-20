@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export const DetalheStyle = StyleSheet.create({
+
+  noImage: {
+  fontSize: 11,
+  color: "#777777",
+  marginBottom: 10,
+},
          container: {
     flex: 1,
     backgroundColor: '#F3F4F6',
