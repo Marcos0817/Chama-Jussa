@@ -99,7 +99,7 @@ removeImage: {
     button: {
         height: 52,
         borderRadius: 8,
-        backgroundColor: "#1F6FEB",
+        backgroundColor: "#10B981",
         alignItems: "center",
         justifyContent: "center",
         marginTop: 30

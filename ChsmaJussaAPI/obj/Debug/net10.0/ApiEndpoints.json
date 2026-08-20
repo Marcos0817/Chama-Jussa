@@ -408,5 +408,25 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "ChamaJussa.Controllers.UsuarioController",
+    "Method": "GetMeuPerfil",
+    "RelativePath": "api/Usuario/me",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "ChamaJussa.DTOs.UsuarioResponseDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

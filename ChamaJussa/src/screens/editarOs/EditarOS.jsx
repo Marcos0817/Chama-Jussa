@@ -20,6 +20,7 @@ export const EditarOS = ({ route, navigation }) => {
 
     const { os } = route.params;
 
+
     const [numeroOS, setNumeroOS] = useState(
         os.numeroOS || ""
     );
@@ -56,12 +57,14 @@ export const EditarOS = ({ route, navigation }) => {
     /*
      * URL da API
      */
+
     const URL_API = "http://172.16.36.51:5175/";
 
 
     /*
-     * Selecionar uma nova foto
+     * SELECIONAR FOTO
      */
+
     const selecionarFoto = async () => {
 
         try {
@@ -106,9 +109,6 @@ export const EditarOS = ({ route, navigation }) => {
 
                 setFoto(imagem);
 
-                /*
-                 * Mostra a nova foto na tela
-                 */
                 setFotoAtual(imagem.uri);
             }
 
@@ -128,13 +128,15 @@ export const EditarOS = ({ route, navigation }) => {
 
 
     /*
-     * Salvar alterações
+     * SALVAR ALTERAÇÕES
      */
+
     const editarOS = async () => {
 
         /*
          * Validação
          */
+
         if (
             !numeroOS.trim() ||
             !tituloProblema.trim() ||
@@ -158,11 +160,7 @@ export const EditarOS = ({ route, navigation }) => {
 
 
             /*
-             * FormData porque a API aceita:
-             *
-             * [FromForm]
-             *
-             * e também recebe imagem.
+             * FormData
              */
 
             const formData = new FormData();
@@ -200,8 +198,7 @@ export const EditarOS = ({ route, navigation }) => {
 
 
             /*
-             * Se o usuário escolheu uma nova foto,
-             * envia a foto para a API.
+             * FOTO
              */
 
             if (foto) {
@@ -261,13 +258,6 @@ export const EditarOS = ({ route, navigation }) => {
                         text: "OK",
                         onPress: () => {
 
-                            /*
-                             * Volta para os detalhes.
-                             *
-                             * A tela anterior será atualizada
-                             * quando fizermos o GET novamente.
-                             */
-
                             navigation.goBack();
 
                         }
@@ -323,6 +313,17 @@ export const EditarOS = ({ route, navigation }) => {
             setSalvando(false);
 
         }
+    };
+
+
+    /*
+     * CANCELAR EDIÇÃO
+     */
+
+    const cancelarEdicao = () => {
+
+        navigation.goBack();
+
     };
 
 
@@ -566,25 +567,49 @@ export const EditarOS = ({ route, navigation }) => {
                     </TouchableOpacity>
 
 
-                    {/* SALVAR */}
+                    {/* BOTÕES DE AÇÃO */}
 
-                    <TouchableOpacity
-                        style={Style.button}
-                        activeOpacity={0.8}
-                        onPress={editarOS}
-                        disabled={salvando}
-                    >
+                    <View style={Style.buttonsContainer}>
 
-                        <Text style={Style.buttonText}>
+                       
 
-                            {salvando
-                                ? "Salvando..."
-                                : "Salvar alterações"
-                            }
 
-                        </Text>
+                        {/* SALVAR */}
 
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={Style.button}
+                            activeOpacity={0.8}
+                            onPress={editarOS}
+                            disabled={salvando}
+                        >
+
+                            <Text style={Style.buttonText}>
+
+                                {salvando
+                                    ? "Salvando..."
+                                    : "Salvar alterações"
+                                }
+
+                            </Text>
+
+                        </TouchableOpacity>
+
+                         {/* CANCELAR */}
+
+                        <TouchableOpacity
+                            style={Style.cancelButton}
+                            activeOpacity={0.8}
+                            onPress={cancelarEdicao}
+                            disabled={salvando}
+                        >
+
+                            <Text style={Style.cancelButtonText}>
+                                Cancelar
+                            </Text>
+
+                        </TouchableOpacity>
+
+                    </View>
 
 
                 </View>

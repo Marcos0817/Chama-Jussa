@@ -43,6 +43,37 @@ namespace ChamaJussa.Controllers
             return Ok(usuarios);
         }
 
+        // GET: api/Usuario/me
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<ActionResult<UsuarioResponseDTO>> GetMeuPerfil()
+        {
+            var idUsuario = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (idUsuario == null)
+            {
+                return Unauthorized();
+            }
+
+            var usuario = await _context.Usuarios
+                .Where(u => u.IdUsuario == idUsuario)
+                .Select(u => new UsuarioResponseDTO
+                {
+                    IdUsuario = u.IdUsuario,
+                    Nome = u.Nome,
+                    Email = u.Email,
+                    FotoPerfil = u.FotoPerfil
+                })
+                .FirstOrDefaultAsync();
+
+            if (usuario == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
+
+            return Ok(usuario);
+        }
+
         // GET: api/Usuario/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<UsuarioResponseDTO>> GetUsuario(string id)

@@ -10,6 +10,8 @@ import {
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
+import { Footer } from "../../components/footer/Footer";
 
 import { Style } from "./NovaOSStyle";
 import { api } from "../../services/api";
@@ -435,7 +437,7 @@ export const NovaOS = ({ navigation }) => {
 
                             {enviando
                                 ? "Cadastrando..."
-                                : "Cadastrar OS"
+                                : "Abrir Ordem de Serviço"
                             }
 
                         </Text>
@@ -446,6 +448,7 @@ export const NovaOS = ({ navigation }) => {
                 </View>
 
             </ScrollView>
+            <Footer navigation={navigation} />
 
         </View>
     );

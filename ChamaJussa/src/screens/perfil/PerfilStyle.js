@@ -1,70 +1,149 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const PerfilStyle = StyleSheet.create({
+
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6',
-  },
-
-  scroll: {
-    paddingHorizontal: 26,
-    paddingTop: 34,
-    paddingBottom: 20,
+    backgroundColor: "#F3F4F6",
   },
 
   title: {
-    fontSize: 21,
-    fontWeight: '700',
-    color: '#111111',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
-
-  profileCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    paddingVertical: 30,
-    paddingHorizontal: 20,
-    alignItems: 'center',
-    marginBottom: 20, 
-
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 16,
-  },
-
-  name: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#111111',
-    marginBottom: 4,
+    fontWeight: "700",
+    color: "#111111",
+    textAlign: "center",
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
+  scroll: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    paddingHorizontal: 22,
+    paddingBottom: 30,
+  },
+
+  loading: {
+    textAlign: "center",
+    marginTop: 30,
+    color: "#666666",
+  },
+
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 8,
+    padding: 25,
+    alignItems: "center",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOpacity: 0.12,
+    shadowRadius: 3,
+    marginBottom: 20,
+  },
+
+  avatar: {
+    width: 75,
+    height: 75,
+    borderRadius: 40,
+    backgroundColor: "#087FF5",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
+    avatar: {
+  width: 75,
+  height: 75,
+  borderRadius: 40,
+  backgroundColor: "#087FF5",
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: 12,
+  overflow: "hidden",
+},
+
+avatarImage: {
+  width: "100%",
+  height: "100%",
+},
+
+avatarText: {
+  color: "#FFFFFF",
+  fontSize: 30,
+  fontWeight: "700",
+},
+
+    // importante
+    overflow: "hidden",
+  },
+
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 40,
+  },
+
+  avatarText: {
+    color: "#FFFFFF",
+    fontSize: 30,
+    fontWeight: "700",
+  },
+
+  nome: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#111111",
+    marginBottom: 5,
   },
 
   email: {
+    fontSize: 12,
+    color: "#777777",
+  },
+
+  section: {
+    marginBottom: 20,
+  },
+
+  sectionTitle: {
     fontSize: 14,
-    color: '#777777',
+    fontWeight: "700",
+    color: "#111111",
+    marginBottom: 10,
+  },
+
+  infoBox: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 7,
+    padding: 15,
+    marginBottom: 10,
+  },
+
+  label: {
+    fontSize: 11,
+    color: "#888888",
+    marginBottom: 5,
+  },
+
+  value: {
+    fontSize: 13,
+    color: "#111111",
   },
 
   logoutButton: {
-    backgroundColor: '#FF4D4D',
-    borderRadius: 8,
-    height: 48,
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: 42,
+    borderWidth: 1,
+    borderColor: "#E53935",
+    borderRadius: 6,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
   },
 
-  logoutButtonText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '700',
+  logoutText: {
+    color: "#E53935",
+    fontSize: 13,
+    fontWeight: "600",
   },
+
 });

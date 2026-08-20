@@ -1,47 +1,67 @@
 import { StyleSheet } from "react-native";
 
 export const NotificStyle = StyleSheet.create({
+
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6',
-  },
-
-  scroll: {
-    paddingHorizontal: 26,
-    paddingTop: 34,
-    paddingBottom: 20,
+    backgroundColor: "#F3F4F6",
   },
 
   title: {
-    fontSize: 21,
-    fontWeight: '700',
-    color: '#111111',
-    textAlign: 'center',
-    marginBottom: 40,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#111111",
+    textAlign: "center",
+    marginTop: 20,  
+    marginBottom: 20,
+  },
+
+  scroll: {
+    flex: 1,
+  },
+
+  scrollContent: {
+    paddingHorizontal: 22,
+    paddingBottom: 30,
+  },
+
+  loading: {
+    textAlign: "center",
+    marginTop: 30,
+    color: "#666666",
+  },
+
+  empty: {
+    textAlign: "center",
+    marginTop: 30,
+    color: "#666666",
+    fontSize: 13,
   },
 
   notification: {
-    backgroundColor: '#FFFFFF',
-    minHeight: 122,
+    flexDirection: "row",
+    backgroundColor: "#FFFFFF",
     borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 17,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
+    padding: 15,
+    marginBottom: 12,
 
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    elevation: 2,
+
+    shadowColor: "#000",
+    shadowOpacity: 0.10,
+    shadowRadius: 2,
+  },
+
+  notificationSelected: {
+    borderLeftWidth: 4,
+    borderLeftColor: "#087FF5",
   },
 
   icon: {
-    fontSize: 28,
-    color: '#55D4F5',
-    width: 34,
-    textAlign: 'center',
-    marginRight: 11,
+    fontSize: 16,
+    color: "#087FF5",
+    marginRight: 12,
+    marginTop: 3,
   },
 
   notificationContent: {
@@ -49,32 +69,38 @@ export const NotificStyle = StyleSheet.create({
   },
 
   notificationTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: '#111111',
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#111111",
     marginBottom: 6,
   },
 
   description: {
-    fontSize: 13,
-    color: '#777777',
-    lineHeight: 17,
-    marginBottom: 5,
+    fontSize: 11,
+    color: "#555555",
+    lineHeight: 16,
   },
 
   dateContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
   },
 
   date: {
-    fontSize: 13,
-    color: '#777777',
+    fontSize: 10,
+    color: "#888888",
   },
 
   time: {
-    fontSize: 13,
-    color: '#777777',
+    fontSize: 10,
+    color: "#888888",
   },
+
+  unreadText: {
+    color: "#087FF5",
+    fontWeight: "700",
+  },
+
 });

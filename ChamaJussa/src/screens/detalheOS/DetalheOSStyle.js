@@ -2,31 +2,53 @@ import { StyleSheet } from "react-native";
 
 export const DetalheStyle = StyleSheet.create({
 
+  buttonsContainer: {
+  marginTop: 21,
+},
+
+cancelButton: {
+  height: 33,
+  borderWidth: 1,
+  borderColor: "#E53935",
+  borderRadius: 5,
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: 10,
+},
+
+cancelButtonText: {
+  color: "#E53935",
+  fontSize: 12,
+  fontWeight: "600",
+},
+
   noImage: {
   fontSize: 11,
   color: "#777777",
   marginBottom: 10,
 },
-         container: {
+    container: {
     flex: 1,
     backgroundColor: '#F3F4F6',
   },
 
   scroll: {
     paddingHorizontal: 22,
-    paddingTop: 25,
+    paddingTop: 10,
     paddingBottom: 18,
   },
 
-  pageTitle: {
-    fontSize: 17,
-    fontWeight: '700',
-    color: '#111111',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
+ pageTitle: {
+  fontSize: 19,
+  fontWeight: "700",
+  color: "#111111",
+  textAlign: "center",
+  marginTop: 36,
+  marginBottom: 50,
+},
 
   card: {
+    
     backgroundColor: '#FFFFFF',
     borderRadius: 7,
     padding: 20,
@@ -37,14 +59,14 @@ export const DetalheStyle = StyleSheet.create({
   },
 
   osTitle: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: '700',
     color: '#111111',
     marginBottom: 4,
   },
 
   date: {
-    fontSize: 11,
+    fontSize: 15,
     color: '#777777',
     marginBottom: 17,
   },
@@ -52,12 +74,12 @@ export const DetalheStyle = StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 12,
+    marginBottom: 20,
   },
 
   infoIcon: {
-    width: 16,
-    height: 16,
+    width: 18,
+    height: 18,
     resizeMode: 'contain',
     marginTop: 4,
     marginRight: 9,
@@ -68,13 +90,13 @@ export const DetalheStyle = StyleSheet.create({
   },
 
   label: {
-    fontSize: 11,
+    fontSize: 13,
     color: '#888888',
     marginBottom: 2,
   },
 
   value: {
-    fontSize: 12,
+    fontSize: 16,
     color: '#111111',
     lineHeight: 15,
   },
@@ -87,7 +109,7 @@ export const DetalheStyle = StyleSheet.create({
   },
 
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: '700',
     color: '#111111',
     marginBottom: 7,
@@ -95,7 +117,7 @@ export const DetalheStyle = StyleSheet.create({
   },
 
   description: {
-    fontSize: 11,
+    fontSize: 14,
     color: '#444444',
     lineHeight: 14,
     marginBottom: 19,
@@ -103,7 +125,7 @@ export const DetalheStyle = StyleSheet.create({
 
   problemImage: {
     width: '100%',
-    height: 91,
+    height: 250,
     borderRadius: 3,
     marginTop: 0,
   },

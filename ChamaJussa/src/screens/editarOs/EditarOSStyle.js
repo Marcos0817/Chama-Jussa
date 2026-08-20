@@ -155,4 +155,40 @@ export const Style = StyleSheet.create({
         fontWeight: "600",
     },
 
+   buttonsContainer: {
+    flexDirection: "column",
+    marginTop: 20,
+    marginBottom: 30,
+},
+
+button: {
+    height: 43,
+    backgroundColor: "#087FF5",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+},
+
+buttonText: {
+    color: "#FFFFFF",
+    fontSize: 13,
+    fontWeight: "600",
+},
+
+cancelButton: {
+    height: 43,
+    borderWidth: 1,
+    borderColor: "#E53935",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+},
+
+cancelButtonText: {
+    color: "#E53935",
+    fontSize: 13,
+    fontWeight: "600",
+},
+
 });

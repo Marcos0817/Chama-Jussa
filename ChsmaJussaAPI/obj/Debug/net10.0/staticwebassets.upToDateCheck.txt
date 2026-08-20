@@ -6,3 +6,6 @@ wwwroot\imagens\Ordens\27664fa4-9582-4408-aae9-03fabf5c7236.png
 wwwroot\imagens\Ordens\d682c481-644c-415b-ba2d-c4129034a3fc.png
 wwwroot\imagens\Ordens\2957740b-ceff-4d83-96d1-4b8bce67ecff.jpeg
 wwwroot\imagens\Ordens\2d9b0a3d-2efc-4936-804d-841231c802e2.jpeg
+wwwroot\imagens\Usuarios\ed7a49db-938c-4a3a-9b4b-896627fe0f11.png
+wwwroot\imagens\Usuarios\b230e926-bc1a-4998-8bc6-c4d8780b9f0e.jpg
+wwwroot\imagens\Ordens\9a363b69-3f81-4a1f-85bf-eebf72888b30.jpeg

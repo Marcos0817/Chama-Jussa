@@ -27,7 +27,6 @@ export const DetalheOS = ({ route, navigation }) => {
   const osRecebida = route.params?.os;
   const idOS = route.params?.idOS;
 
-
   const [os, setOs] = useState(osRecebida || null);
   const [carregando, setCarregando] = useState(!osRecebida);
 
@@ -41,9 +40,6 @@ export const DetalheOS = ({ route, navigation }) => {
 
   /*
    * BUSCAR OS PELO ID
-   *
-   * Usado quando a tela foi aberta
-   * através de uma notificação.
    */
 
   const getOS = async () => {
@@ -157,7 +153,7 @@ export const DetalheOS = ({ route, navigation }) => {
           Carregando OS...
         </Text>
 
-        <Footer />
+        <Footer navigation={navigation} />
 
       </View>
 
@@ -180,7 +176,7 @@ export const DetalheOS = ({ route, navigation }) => {
           OS não encontrada.
         </Text>
 
-        <Footer />
+        <Footer navigation={navigation} />
 
       </View>
 
@@ -344,26 +340,47 @@ export const DetalheOS = ({ route, navigation }) => {
           )}
 
 
-          {/* BOTÃO EDITAR */}
+          {/* BOTÕES */}
 
-          <TouchableOpacity
-            style={DetalheStyle.editButton}
-            activeOpacity={0.8}
-            onPress={() =>
-              navigation.navigate(
-                "EditarOS",
-                {
-                  os: os
-                }
-              )
-            }
-          >
+          <View style={DetalheStyle.buttonsContainer}>
 
-            <Text style={DetalheStyle.editButtonText}>
-              Editar Solicitação
-            </Text>
+            {/* CANCELAR */}
 
-          </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={DetalheStyle.cancelButton}
+              activeOpacity={0.8}
+              onPress={() => navigation.goBack()}
+            >
+
+              <Text style={DetalheStyle.cancelButtonText}>
+                Cancelar
+              </Text>
+
+            </TouchableOpacity> */}
+
+
+            {/* EDITAR */}
+
+            {/* BOTÃO EDITAR */}
+
+            <TouchableOpacity
+              style={DetalheStyle.editButton}
+              activeOpacity={0.8}
+              onPress={() =>
+                navigation.navigate(
+                  "EditarOS",
+                  {
+                    os: os
+                  }
+                )
+              }
+            >
+              <Text style={DetalheStyle.editButtonText}>
+                Editar Solicitação
+              </Text>
+            </TouchableOpacity>
+
+          </View>
 
 
         </View>
@@ -373,7 +390,7 @@ export const DetalheOS = ({ route, navigation }) => {
 
       {/* FOOTER */}
 
-     <Footer navigation={navigation} />
+      <Footer navigation={navigation} />
 
     </View>
 

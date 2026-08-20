@@ -9,53 +9,59 @@ import { NovaOS } from "./src/screens/novaOS/NovaOS";
 import { DetalheOS } from "./src/screens/detalheOS/DetalheOS";
 import { EditarOS } from "./src/screens/editarOs/EditarOS";
 import { Notificacao } from "./src/screens/notificacao/Notificacao";
+import { Perfil } from "./src/screens/perfil/Perfil";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  return (
-    <NavigationContainer>
+    return (
+        <NavigationContainer>
 
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerShown: false
-        }}
-      >
+            <Stack.Navigator
+                initialRouteName="Login"
+                screenOptions={{
+                    headerShown: false
+                }}
+            >
 
-        <Stack.Screen
-          name="Login"
-          component={Login}
-        />
+                <Stack.Screen
+                    name="Login"
+                    component={Login}
+                />
 
-        <Stack.Screen
-          name="ListaOS"
-          component={ListaOS}
-        />
+                <Stack.Screen
+                    name="Perfil"
+                    component={Perfil}
+                />
 
-        <Stack.Screen
-          name="NovaOS"
-          component={NovaOS}
-        />
+                <Stack.Screen
+                    name="ListaOS"
+                    component={ListaOS}
+                />
 
-        <Stack.Screen
-          name="DetalheOS"
-          component={DetalheOS}
-        />
+                <Stack.Screen
+                    name="NovaOS"
+                    component={NovaOS}
+                />
 
-        <Stack.Screen
-          name="EditarOS"
-          component={EditarOS}
-        />
+                <Stack.Screen
+                    name="DetalheOS"
+                    component={DetalheOS}
+                />
 
-        <Stack.Screen
-          name="Notificacao"
-          component={Notificacao}
-        />
+                <Stack.Screen
+                    name="EditarOS"
+                    component={EditarOS}
+                />
 
-      </Stack.Navigator>
+                <Stack.Screen
+                    name="Notificacao"
+                    component={Notificacao}
+                />
 
-    </NavigationContainer>
-  );
+            </Stack.Navigator>
+
+        </NavigationContainer>
+    );
 }

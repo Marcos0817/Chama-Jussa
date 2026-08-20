@@ -1,56 +1,295 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   ScrollView,
-  Image,
   TouchableOpacity,
-} from 'react-native';
+  Image,
+  Alert
+} from "react-native";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { PerfilStyle } from "./PerfilStyle";
-import { Footer } from '../../components/footer/Footer';
+import { Footer } from "../../components/footer/Footer";
+import { api } from "../../services/api";
 
-export const Perfil = () => {
+export const Perfil = ({ navigation }) => {
+
+  const [usuario, setUsuario] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+
+  // IP da sua API
+  const URL_API = "http://172.16.36.51:5175/";
+
+  const getPerfil = async () => {
+
+    try {
+
+      setCarregando(true);
+
+      const idUsuario = await AsyncStorage.getItem("idUsuario");
+
+      console.log("ID do usuário:", idUsuario);
+
+      if (!idUsuario) {
+
+        Alert.alert(
+          "Erro",
+          "Não foi possível identificar o usuário."
+        );
+
+        return;
+      }
+
+      const resposta = await api.get(
+        `/Usuario/${idUsuario}`
+      );
+
+      console.log("Dados do usuário:", resposta.data);
+
+      console.log(
+        "Foto do usuário:",
+        resposta.data.fotoPerfil
+      );
+
+      setUsuario(resposta.data);
+
+    } catch (erro) {
+
+      console.log(
+        "Erro ao buscar perfil:",
+        erro
+      );
+
+      if (erro.response) {
+
+        console.log(
+          "Status:",
+          erro.response.status
+        );
+
+        console.log(
+          "Dados:",
+          erro.response.data
+        );
+
+        Alert.alert(
+          "Erro",
+          "Não foi possível carregar seus dados."
+        );
+
+      } else {
+
+        Alert.alert(
+          "Erro",
+          "Não foi possível conectar com a API."
+        );
+
+      }
+
+    } finally {
+
+      setCarregando(false);
+
+    }
+  };
+
+
+  useEffect(() => {
+
+    getPerfil();
+
+  }, []);
+
+
+  const sair = async () => {
+
+    Alert.alert(
+      "Sair",
+      "Deseja realmente sair da sua conta?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        {
+          text: "Sair",
+          onPress: async () => {
+
+            await AsyncStorage.removeItem("token");
+            await AsyncStorage.removeItem("idUsuario");
+            await AsyncStorage.removeItem("nomeUsuario");
+            await AsyncStorage.removeItem("emailUsuario");
+
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: "Login"
+                }
+              ]
+            });
+
+          }
+        }
+      ]
+    );
+  };
+
+
+  /*
+   * Monta a URL completa da foto
+   */
+
+  const getUrlFoto = () => {
+
+    if (!usuario?.fotoPerfil) {
+      return null;
+    }
+
+    // Se a API já devolver uma URL completa
+    if (
+      usuario.fotoPerfil.startsWith("http://") ||
+      usuario.fotoPerfil.startsWith("https://")
+    ) {
+      return usuario.fotoPerfil;
+    }
+
+    return `${URL_API}${usuario.fotoPerfil}`;
+  };
+
+
+  const urlFoto = getUrlFoto();
+
+
   return (
+
     <View style={PerfilStyle.container}>
+
+      <Text style={PerfilStyle.title}>
+        Perfil
+      </Text>
+
+
       <ScrollView
-        style={{ flex: 1 }}
+        style={PerfilStyle.scroll}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={PerfilStyle.scroll}
+        contentContainerStyle={PerfilStyle.scrollContent}
       >
-        <Text style={PerfilStyle.title}>
-          Perfil
-        </Text>
 
-        {/* Card do Perfil */}
-        <View style={PerfilStyle.profileCard}>
-          <Image
-            source={require('../../../assets/Ellipse 1.png')}
-            style={PerfilStyle.profileImage}
-          />
+        {carregando ? (
 
-          <Text style={PerfilStyle.name}>
-            Késsia Milena
+          <Text style={PerfilStyle.loading}>
+            Carregando seus dados...
           </Text>
 
-          <Text style={PerfilStyle.email}>
-            kessia@email.com
-          </Text>
-        </View>
+        ) : (
 
-        {/* Botão Vermelho colado no Card */}
-        <TouchableOpacity 
-          style={PerfilStyle.logoutButton}
-          activeOpacity={0.8}
-        >
-          <Text style={PerfilStyle.logoutButtonText}>
-            Sair da Conta
-          </Text>
-        </TouchableOpacity>
+          <>
+
+            {/* CARD DO USUÁRIO */}
+
+            <View style={PerfilStyle.card}>
+
+              <View style={PerfilStyle.avatar}>
+
+                {urlFoto ? (
+
+                  <Image
+                    source={{
+                      uri: urlFoto
+                    }}
+                    style={PerfilStyle.avatarImage}
+                    resizeMode="cover"
+                  />
+
+                ) : (
+
+                  <Text style={PerfilStyle.avatarText}>
+                    {usuario?.nome
+                      ? usuario.nome.charAt(0).toUpperCase()
+                      : "U"
+                    }
+                  </Text>
+
+                )}
+
+              </View>
+
+
+              <Text style={PerfilStyle.nome}>
+                {usuario?.nome || "Usuário"}
+              </Text>
+
+
+              <Text style={PerfilStyle.email}>
+                {usuario?.email || ""}
+              </Text>
+
+            </View>
+
+
+            {/* INFORMAÇÕES */}
+
+            <View style={PerfilStyle.section}>
+
+              <Text style={PerfilStyle.sectionTitle}>
+                Informações pessoais
+              </Text>
+
+
+              <View style={PerfilStyle.infoBox}>
+
+                <Text style={PerfilStyle.label}>
+                  Nome
+                </Text>
+
+                <Text style={PerfilStyle.value}>
+                  {usuario?.nome || "Não informado"}
+                </Text>
+
+              </View>
+
+
+              <View style={PerfilStyle.infoBox}>
+
+                <Text style={PerfilStyle.label}>
+                  E-mail
+                </Text>
+
+                <Text style={PerfilStyle.value}>
+                  {usuario?.email || "Não informado"}
+                </Text>
+
+              </View>
+
+            </View>
+
+
+            {/* BOTÃO SAIR */}
+
+            <TouchableOpacity
+              style={PerfilStyle.logoutButton}
+              activeOpacity={0.8}
+              onPress={sair}
+            >
+
+              <Text style={PerfilStyle.logoutText}>
+                Sair da conta
+              </Text>
+
+            </TouchableOpacity>
+
+          </>
+
+        )}
+
       </ScrollView>
 
-      {/* Footer */}
-      <Footer activeIndex={3} />
+
+      <Footer navigation={navigation} />
+
     </View>
   );
 };

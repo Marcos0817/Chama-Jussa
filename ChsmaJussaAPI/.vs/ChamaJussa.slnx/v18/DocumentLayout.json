@@ -7,20 +7,24 @@
       "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:controllers\\notificacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\controllers\\ordemservicocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:controllers\\ordemservicocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\44788197855\\desktop\\chama-jussa\\chsmajussaapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,8 +34,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UsuarioController.cs",
+              "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\UsuarioController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsuarioController.cs",
+              "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\UsuarioController.cs",
+              "RelativeToolTip": "Controllers\\UsuarioController.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAAcwEoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-20T16:00:25.761Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -40,39 +57,40 @@
               "RelativeDocumentMoniker": "Controllers\\NotificacaoController.cs",
               "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\NotificacaoController.cs",
               "RelativeToolTip": "Controllers\\NotificacaoController.cs",
-              "ViewState": "AgIAAHEAAAAAAAAAAAAswHwAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHwAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-20T14:13:41.531Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "OrdemServico.cs",
               "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Models\\OrdemServico.cs",
               "RelativeDocumentMoniker": "Models\\OrdemServico.cs",
               "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Models\\OrdemServico.cs",
               "RelativeToolTip": "Models\\OrdemServico.cs",
-              "ViewState": "AgIAACgAAAAAAAAAAAAYwDkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACgAAAAAAAAAAAA1wDkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-20T14:12:14.071Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T12:08:11.666Z"
+              "WhenOpened": "2026-08-20T12:08:11.666Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "Properties\\launchSettings.json",
@@ -85,13 +103,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "OrdemServicoController.cs",
               "DocumentMoniker": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\OrdemServicoController.cs",
               "RelativeDocumentMoniker": "Controllers\\OrdemServicoController.cs",
               "ToolTip": "C:\\Users\\44788197855\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\OrdemServicoController.cs",
               "RelativeToolTip": "Controllers\\OrdemServicoController.cs",
-              "ViewState": "AgIAAHMAAAAAAAAAAAAkwH0AAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAH0AAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-18T19:12:20.096Z",
               "EditorCaption": ""
