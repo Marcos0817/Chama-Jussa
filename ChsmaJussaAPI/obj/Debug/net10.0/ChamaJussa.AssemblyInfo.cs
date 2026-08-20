@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ChamaJussa")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38f9068519ce5764059c33c4c8eb58e00b6488c4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24181185f53874558f12bf0fb2886eabf7ad422c")]
 [assembly: System.Reflection.AssemblyProductAttribute("ChamaJussa")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ChamaJussa")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

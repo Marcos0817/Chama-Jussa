@@ -182,64 +182,56 @@
         "tags": [
           "OrdemServico"
         ],
-        "parameters": [
-          {
-            "name": "NumeroOS",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "TituloProblema",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "MaquinaEquipamento",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "LocalSetor",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "DescricaoProblema",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Status",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
+                  "NumeroOS": {
+                    "type": "string"
+                  },
+                  "TituloProblema": {
+                    "type": "string"
+                  },
+                  "MaquinaEquipamento": {
+                    "type": "string"
+                  },
+                  "LocalSetor": {
+                    "type": "string"
+                  },
+                  "DescricaoProblema": {
+                    "type": "string"
+                  },
                   "FotoProblema": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "Status": {
+                    "type": "string"
                   }
                 }
               },
               "encoding": {
+                "NumeroOS": {
+                  "style": "form"
+                },
+                "TituloProblema": {
+                  "style": "form"
+                },
+                "MaquinaEquipamento": {
+                  "style": "form"
+                },
+                "LocalSetor": {
+                  "style": "form"
+                },
+                "DescricaoProblema": {
+                  "style": "form"
+                },
                 "FotoProblema": {
+                  "style": "form"
+                },
+                "Status": {
                   "style": "form"
                 }
               }

@@ -10,6 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 builder.Services.AddControllers();
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontEnd", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // Entity Framework + SQL Server
 builder.Services.AddDbContext<ChamaJussaContext>(options =>
     options.UseSqlServer(
@@ -59,6 +71,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -67,13 +80,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Permite acessar arquivos dentro de wwwroot
+// CORS
+app.UseCors("FrontEnd");
+
+// Arquivos estáticos
 app.UseStaticFiles();
 
+// Autenticação e autorização
 app.UseAuthentication();
 
 app.UseAuthorization();
 
+// Controllers
 app.MapControllers();
 
 app.Run();
