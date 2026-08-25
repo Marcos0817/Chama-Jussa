@@ -5,7 +5,10 @@ import {
     TouchableOpacity,
     View,
     Image,
-    Alert
+    Alert,
+    KeyboardAvoidingView,
+    ScrollView,
+    Platform
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,17 +23,17 @@ export const Login = ({ navigation }) => {
 
     const fazerLogin = async () => {
 
-    console.log("API:", api.defaults.baseURL);
+        console.log("API:", api.defaults.baseURL);
 
-    if (!email || !senha) {
-        Alert.alert(
-            "Atenção",
-            "Preencha o e-mail e a senha."
-        );
-        return;
-    }
+        if (!email || !senha) {
+            Alert.alert(
+                "Atenção",
+                "Preencha o e-mail e a senha."
+            );
+            return;
+        }
 
-    try {
+        try {
 
             // Faz login na API
             const resposta = await api.post("/Usuario/login", {
@@ -72,92 +75,98 @@ export const Login = ({ navigation }) => {
 
         } catch (erro) {
 
-    console.log("ERRO COMPLETO:", erro);
+            console.log("ERRO COMPLETO:", erro);
+            console.log("Mensagem:", erro.message);
+            console.log("Código:", erro.code);
+            console.log("Resposta:", erro.response);
 
-    console.log("Mensagem:", erro.message);
+            if (erro.response) {
 
-    console.log("Código:", erro.code);
+                Alert.alert(
+                    "Erro da API",
+                    `Status: ${erro.response.status}`
+                );
 
-    console.log("Resposta:", erro.response);
+            } else if (erro.request) {
 
-    if (erro.response) {
+                Alert.alert(
+                    "Erro de conexão",
+                    "O celular conseguiu iniciar a requisição, mas não recebeu resposta da API."
+                );
 
-        Alert.alert(
-            "Erro da API",
-            `Status: ${erro.response.status}`
-        );
+            } else {
 
-    } else if (erro.request) {
-
-        Alert.alert(
-            "Erro de conexão",
-            "O celular conseguiu iniciar a requisição, mas não recebeu resposta da API."
-        );
-
-    } else {
-
-        Alert.alert(
-            "Erro",
-            erro.message
-        );
-    }
-}
-    }
+                Alert.alert(
+                    "Erro",
+                    erro.message
+                );
+            }
+        }
+    };
 
     return (
-        <View style={LoginStyle.container}>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          
 
-            <Image
-                source={require("../../../assets/logo.svg")}
-                style={LoginStyle.logo}
-            />
+                <View style={LoginStyle.container}>
 
-            <View style={LoginStyle.loginBox}>
+                    <Image
+                        source={require("../../../assets/logo.png")}
+                        style={LoginStyle.logo}
+                    />
 
-                <Text style={LoginStyle.title}>
-                    Chama Jussa
-                </Text>
+                    <View style={LoginStyle.loginBox}>
 
-                <Text style={LoginStyle.subtitle}>
-                    Gerenciamento de Ordens de Serviço
-                </Text>
+                        <Text style={LoginStyle.title}>
+                            Chama Jussa
+                        </Text>
 
-                <Text style={LoginStyle.label}>
-                    E-mail
-                </Text>
+                        <Text style={LoginStyle.subtitle}>
+                            Gerenciamento de Ordens de Serviço
+                        </Text>
 
-                <TextInput
-                    style={LoginStyle.input}
-                    placeholder="email@email.com"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    value={email}
-                    onChangeText={setEmail}
-                />
+                        <Text style={LoginStyle.label}>
+                            E-mail
+                        </Text>
 
-                <Text style={LoginStyle.label}>
-                    Senha
-                </Text>
+                        <TextInput
+                            style={LoginStyle.input}
+                            placeholder="email@email.com"
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            value={email}
+                            onChangeText={setEmail}
+                        />
 
-                <TextInput
-                    style={LoginStyle.input}
-                    placeholder="Digite sua senha"
-                    secureTextEntry
-                    value={senha}
-                    onChangeText={setSenha}
-                />
+                        <Text style={LoginStyle.label}>
+                            Senha
+                        </Text>
 
-                <TouchableOpacity
-                    style={LoginStyle.button}
-                    onPress={fazerLogin}
-                >
-                    <Text style={LoginStyle.buttonText}>
-                        Acessar o sistema
-                    </Text>
-                </TouchableOpacity>
+                        <TextInput
+                            style={LoginStyle.input}
+                            placeholder="Digite sua senha"
+                            secureTextEntry
+                            value={senha}
+                            onChangeText={setSenha}
+                        />
 
-            </View>
+                        <TouchableOpacity
+                            style={LoginStyle.button}
+                            onPress={fazerLogin}
+                        >
+                            <Text style={LoginStyle.buttonText}>
+                                Acessar o sistema
+                            </Text>
+                        </TouchableOpacity>
 
-        </View>
+                    </View>
+
+                </View>
+
+
+        </KeyboardAvoidingView>
     );
 };

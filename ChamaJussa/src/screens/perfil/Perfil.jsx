@@ -10,6 +10,11 @@ import {
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import {
+  SafeAreaProvider,
+  SafeAreaView
+} from "react-native-safe-area-context";
+
 import { PerfilStyle } from "./PerfilStyle";
 import { Footer } from "../../components/footer/Footer";
 import { api } from "../../services/api";
@@ -20,7 +25,7 @@ export const Perfil = ({ navigation }) => {
   const [carregando, setCarregando] = useState(true);
 
   // IP da sua API
-  const URL_API = "http://172.16.36.51:5175/";
+  const URL_API = "http://10.151.208.52:5175/";
 
   const getPerfil = async () => {
 
@@ -165,131 +170,138 @@ export const Perfil = ({ navigation }) => {
 
   return (
 
-    <View style={PerfilStyle.container}>
+    <SafeAreaProvider>
 
-      <Text style={PerfilStyle.title}>
-        Perfil
-      </Text>
-
-
-      <ScrollView
-        style={PerfilStyle.scroll}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={PerfilStyle.scrollContent}
+      <SafeAreaView
+        style={PerfilStyle.container}
+        edges={["top", "bottom"]}
       >
 
-        {carregando ? (
+        <Text style={PerfilStyle.title}>
+          Perfil
+        </Text>
 
-          <Text style={PerfilStyle.loading}>
-            Carregando seus dados...
-          </Text>
 
-        ) : (
+        <ScrollView
+          style={PerfilStyle.scroll}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={PerfilStyle.scrollContent}
+        >
 
-          <>
+          {carregando ? (
 
-            {/* CARD DO USUÁRIO */}
+            <Text style={PerfilStyle.loading}>
+              Carregando seus dados...
+            </Text>
 
-            <View style={PerfilStyle.card}>
+          ) : (
 
-              <View style={PerfilStyle.avatar}>
+            <>
 
-                {urlFoto ? (
+              {/* CARD DO USUÁRIO */}
 
-                  <Image
-                    source={{
-                      uri: urlFoto
-                    }}
-                    style={PerfilStyle.avatarImage}
-                    resizeMode="cover"
-                  />
+              <View style={PerfilStyle.card}>
 
-                ) : (
+                <View style={PerfilStyle.avatar}>
 
-                  <Text style={PerfilStyle.avatarText}>
-                    {usuario?.nome
-                      ? usuario.nome.charAt(0).toUpperCase()
-                      : "U"
-                    }
+                  {urlFoto ? (
+
+                    <Image
+                      source={{
+                        uri: urlFoto
+                      }}
+                      style={PerfilStyle.avatarImage}
+                      resizeMode="cover"
+                    />
+
+                  ) : (
+
+                    <Text style={PerfilStyle.avatarText}>
+                      {usuario?.nome
+                        ? usuario.nome.charAt(0).toUpperCase()
+                        : "U"
+                      }
+                    </Text>
+
+                  )}
+
+                </View>
+
+
+                <Text style={PerfilStyle.nome}>
+                  {usuario?.nome || "Usuário"}
+                </Text>
+
+
+                <Text style={PerfilStyle.email}>
+                  {usuario?.email || ""}
+                </Text>
+
+              </View>
+
+
+              {/* INFORMAÇÕES */}
+
+              <View style={PerfilStyle.section}>
+
+                <Text style={PerfilStyle.sectionTitle}>
+                  Informações pessoais
+                </Text>
+
+
+                <View style={PerfilStyle.infoBox}>
+
+                  <Text style={PerfilStyle.label}>
+                    Nome
                   </Text>
 
-                )}
+                  <Text style={PerfilStyle.value}>
+                    {usuario?.nome || "Não informado"}
+                  </Text>
+
+                </View>
+
+
+                <View style={PerfilStyle.infoBox}>
+
+                  <Text style={PerfilStyle.label}>
+                    E-mail
+                  </Text>
+
+                  <Text style={PerfilStyle.value}>
+                    {usuario?.email || "Não informado"}
+                  </Text>
+
+                </View>
 
               </View>
 
 
-              <Text style={PerfilStyle.nome}>
-                {usuario?.nome || "Usuário"}
-              </Text>
+              {/* BOTÃO SAIR */}
 
+              <TouchableOpacity
+                style={PerfilStyle.logoutButton}
+                activeOpacity={0.8}
+                onPress={sair}
+              >
 
-              <Text style={PerfilStyle.email}>
-                {usuario?.email || ""}
-              </Text>
-
-            </View>
-
-
-            {/* INFORMAÇÕES */}
-
-            <View style={PerfilStyle.section}>
-
-              <Text style={PerfilStyle.sectionTitle}>
-                Informações pessoais
-              </Text>
-
-
-              <View style={PerfilStyle.infoBox}>
-
-                <Text style={PerfilStyle.label}>
-                  Nome
+                <Text style={PerfilStyle.logoutText}>
+                  Sair da conta
                 </Text>
 
-                <Text style={PerfilStyle.value}>
-                  {usuario?.nome || "Não informado"}
-                </Text>
+              </TouchableOpacity>
 
-              </View>
+            </>
 
+          )}
 
-              <View style={PerfilStyle.infoBox}>
-
-                <Text style={PerfilStyle.label}>
-                  E-mail
-                </Text>
-
-                <Text style={PerfilStyle.value}>
-                  {usuario?.email || "Não informado"}
-                </Text>
-
-              </View>
-
-            </View>
+        </ScrollView>
 
 
-            {/* BOTÃO SAIR */}
 
-            <TouchableOpacity
-              style={PerfilStyle.logoutButton}
-              activeOpacity={0.8}
-              onPress={sair}
-            >
+      </SafeAreaView>
+        <Footer navigation={navigation} />
 
-              <Text style={PerfilStyle.logoutText}>
-                Sair da conta
-              </Text>
-
-            </TouchableOpacity>
-
-          </>
-
-        )}
-
-      </ScrollView>
-
-
-      <Footer navigation={navigation} />
-
-    </View>
+    </SafeAreaProvider>
   );
 };

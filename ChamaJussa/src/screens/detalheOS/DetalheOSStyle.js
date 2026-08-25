@@ -6,6 +6,22 @@ export const DetalheStyle = StyleSheet.create({
   marginTop: 21,
 },
 
+deleteButton: {
+  height: 33,
+  borderWidth: 1,
+  borderColor: "#E53935",
+  borderRadius: 5,
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: 10,
+},
+
+deleteButtonText: {
+  color: "#E53935",
+  fontSize: 12,
+  fontWeight: "600",
+},
+
 cancelButton: {
   height: 33,
   borderWidth: 1,

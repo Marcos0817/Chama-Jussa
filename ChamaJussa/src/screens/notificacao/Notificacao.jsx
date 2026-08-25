@@ -15,6 +15,11 @@ import {
   useFocusEffect
 } from "@react-navigation/native";
 
+import {
+  SafeAreaProvider,
+  SafeAreaView
+} from "react-native-safe-area-context";
+
 import { NotificStyle } from "./NotificacaoStyle";
 import { Footer } from "../../components/footer/Footer";
 import { api } from "../../services/api";
@@ -162,118 +167,125 @@ export const Notificacao = ({ navigation }) => {
 
   return (
 
-    <View style={NotificStyle.container}>
+    <SafeAreaProvider>
 
-      {/* TÍTULO */}
-
-      <Text style={NotificStyle.title}>
-        Notificações
-      </Text>
-
-
-      {/* CONTEÚDO */}
-
-      <ScrollView
-        style={NotificStyle.scroll}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={NotificStyle.scrollContent}
+      <SafeAreaView
+        style={NotificStyle.container}
+        edges={["top", "bottom"]}
       >
 
-        {carregando ? (
+        {/* TÍTULO */}
 
-          <Text style={NotificStyle.loading}>
-            Carregando notificações...
-          </Text>
+        <Text style={NotificStyle.title}>
+          Notificações
+        </Text>
 
-        ) : notificacoes.length === 0 ? (
 
-          <Text style={NotificStyle.empty}>
-            Você não possui notificações.
-          </Text>
+        {/* CONTEÚDO */}
 
-        ) : (
+        <ScrollView
+          style={NotificStyle.scroll}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={NotificStyle.scrollContent}
+        >
 
-          notificacoes.map((notificacao) => (
+          {carregando ? (
 
-            <TouchableOpacity
-              key={notificacao.idNotificacao}
-              activeOpacity={0.8}
-              onPress={() =>
-                marcarComoLida(notificacao)
-              }
-            >
+            <Text style={NotificStyle.loading}>
+              Carregando notificações...
+            </Text>
 
-              <View
-                style={[
-                  NotificStyle.notification,
+          ) : notificacoes.length === 0 ? (
 
-                  !notificacao.lida &&
-                    NotificStyle.notificationSelected
-                ]}
+            <Text style={NotificStyle.empty}>
+              Você não possui notificações.
+            </Text>
+
+          ) : (
+
+            notificacoes.map((notificacao) => (
+
+              <TouchableOpacity
+                key={notificacao.idNotificacao}
+                activeOpacity={0.8}
+                onPress={() =>
+                  marcarComoLida(notificacao)
+                }
               >
 
-                {/* ÍCONE */}
+                <View
+                  style={[
+                    NotificStyle.notification,
 
-                <Text style={NotificStyle.icon}>
-                  ◀
-                </Text>
+                    !notificacao.lida &&
+                      NotificStyle.notificationSelected
+                  ]}
+                >
 
+                  {/* ÍCONE */}
 
-                {/* CONTEÚDO */}
-
-                <View style={NotificStyle.notificationContent}>
-
-                  <Text style={NotificStyle.notificationTitle}>
-                    {notificacao.titulo}
+                  <Text style={NotificStyle.icon}>
+                    ◀
                   </Text>
 
 
-                  <Text style={NotificStyle.description}>
-                    {notificacao.mensagem}
-                  </Text>
+                  {/* CONTEÚDO */}
 
+                  <View style={NotificStyle.notificationContent}>
 
-                  <View style={NotificStyle.dateContainer}>
-
-                    <Text style={NotificStyle.date}>
-                      {notificacao.numeroOS
-                        ? `OS-${notificacao.numeroOS}`
-                        : ""
-                      }
+                    <Text style={NotificStyle.notificationTitle}>
+                      {notificacao.titulo}
                     </Text>
 
-                    <Text
-                      style={[
-                        NotificStyle.time,
-                        !notificacao.lida &&
-                          NotificStyle.unreadText
-                      ]}
-                    >
-                      {notificacao.lida
-                        ? "Lida"
-                        : "Nova"
-                      }
+
+                    <Text style={NotificStyle.description}>
+                      {notificacao.mensagem}
                     </Text>
+
+
+                    <View style={NotificStyle.dateContainer}>
+
+                      <Text style={NotificStyle.date}>
+                        {notificacao.numeroOS
+                          ? `OS-${notificacao.numeroOS}`
+                          : ""
+                        }
+                      </Text>
+
+                      <Text
+                        style={[
+                          NotificStyle.time,
+                          !notificacao.lida &&
+                            NotificStyle.unreadText
+                        ]}
+                      >
+                        {notificacao.lida
+                          ? "Lida"
+                          : "Nova"
+                        }
+                      </Text>
+
+                    </View>
 
                   </View>
 
                 </View>
 
-              </View>
+              </TouchableOpacity>
 
-            </TouchableOpacity>
+            ))
 
-          ))
+          )}
 
-        )}
-
-      </ScrollView>
+        </ScrollView>
 
 
-      {/* FOOTER */}
+        {/* FOOTER */}
+
+
+      </SafeAreaView>
 
       <Footer navigation={navigation} />
-
-    </View>
+    </SafeAreaProvider>
   );
 };

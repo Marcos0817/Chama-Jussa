@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 export const Style = StyleSheet.create({
+
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -78,7 +79,11 @@ export const Style = StyleSheet.create({
     fontSize: 13,
   },
 
-  
+
+  // ==============================
+  // SCROLL
+  // ==============================
+
   scroll: {
     flex: 1,
   },
@@ -87,13 +92,20 @@ export const Style = StyleSheet.create({
     paddingBottom: 20,
   },
 
-  /* Card */
+
+  // ==============================
+  // CARD
+  // ==============================
+
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     padding: 18,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 3,
@@ -113,6 +125,11 @@ export const Style = StyleSheet.create({
     color: '#087FF5',
   },
 
+
+  // ==============================
+  // STATUS PADRÃO
+  // ==============================
+
   badge: {
     backgroundColor: '#DDF0FF',
     paddingHorizontal: 12,
@@ -126,6 +143,68 @@ export const Style = StyleSheet.create({
     fontWeight: '600',
   },
 
+
+  // ==============================
+  // STATUS: ABERTA
+  // AZUL
+  // ==============================
+
+  badgeAberta: {
+    backgroundColor: '#DDF0FF',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+
+  badgeTextAberta: {
+    color: '#087FF5',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+
+
+  // ==============================
+  // STATUS: EM ANDAMENTO
+  // AMARELO
+  // ==============================
+
+  badgeAndamento: {
+    backgroundColor: '#FFF3CD',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+
+  badgeTextAndamento: {
+    color: '#D99A00',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+
+
+  // ==============================
+  // STATUS: CONCLUÍDA
+  // VERDE
+  // ==============================
+
+  badgeConcluida: {
+    backgroundColor: '#DDF7E8',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+
+  badgeTextConcluida: {
+    color: '#1A9B50',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+
+
+  // ==============================
+  // TEXTOS DO CARD
+  // ==============================
+
   cardSubtitle: {
     fontSize: 15,
     fontWeight: '700',
@@ -138,4 +217,5 @@ export const Style = StyleSheet.create({
     color: '#777777',
     lineHeight: 18,
   },
+
 });

@@ -4,6 +4,7 @@ export const FooterStyle = StyleSheet.create({
 
   footer: {
     flexDirection: "row",
+
     backgroundColor: "#FFFFFF",
 
     minHeight: 65,
@@ -21,32 +22,68 @@ export const FooterStyle = StyleSheet.create({
     justifyContent: "space-around",
   },
 
+
   item: {
     flex: 1,
+
     alignItems: "center",
     justifyContent: "center",
+
     paddingTop: 7,
   },
+
 
   icone: {
     width: 21,
     height: 21,
+
     marginBottom: 4,
   },
 
+
+  // ==============================
+  // ÍCONE ATIVO
+  // ==============================
+
   iconeAtivo: {
+    tintColor: "#087FF5",
     opacity: 1,
   },
 
+
+  // ==============================
+  // ÍCONE INATIVO
+  // ==============================
+
+  iconeInativo: {
+    tintColor: "#777777",
+    opacity: 1,
+  },
+
+
+  // ==============================
+  // TEXTO
+  // ==============================
+
   texto: {
     fontSize: 9,
-    color: "#777777",
     textAlign: "center",
   },
+
+
+  // TEXTO ATIVO
 
   textoAtivo: {
     color: "#087FF5",
     fontWeight: "700",
+  },
+
+
+  // TEXTO INATIVO
+
+  textoInativo: {
+    color: "#777777",
+    fontWeight: "400",
   },
 
 });

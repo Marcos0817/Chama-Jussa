@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 
 import {
@@ -35,7 +36,7 @@ export const DetalheOS = ({ route, navigation }) => {
    * URL DA API
    */
 
-  const URL_API = "http://172.16.36.51:5175/";
+  const URL_API = "http://10.151.208.52:5175/";
 
 
   /*
@@ -103,6 +104,101 @@ export const DetalheOS = ({ route, navigation }) => {
       setCarregando(false);
 
     }
+  };
+
+
+  /*
+   * EXCLUIR OS
+   */
+
+  const excluirOS = () => {
+
+    Alert.alert(
+      "Excluir Ordem de Serviço",
+      "Tem certeza que deseja excluir esta Ordem de Serviço?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+
+        {
+          text: "Excluir",
+          style: "destructive",
+
+          onPress: async () => {
+
+            try {
+
+              console.log(
+                "Excluindo OS:",
+                os.idOS
+              );
+
+              await api.delete(
+                `/OrdemServico/${os.idOS}`
+              );
+
+              Alert.alert(
+                "Sucesso",
+                "Ordem de Serviço excluída com sucesso!",
+                [
+                  {
+                    text: "OK",
+
+                    onPress: () => {
+                      navigation.replace("ListaOS");
+                    }
+
+                  }
+                ]
+              );
+
+            } catch (erro) {
+
+              console.log(
+                "========== ERRO AO EXCLUIR OS =========="
+              );
+
+              console.log(
+                "Erro:",
+                erro
+              );
+
+              if (erro.response) {
+
+                console.log(
+                  "Status:",
+                  erro.response.status
+                );
+
+                console.log(
+                  "Dados:",
+                  erro.response.data
+                );
+
+                Alert.alert(
+                  "Erro",
+                  "Não foi possível excluir a Ordem de Serviço."
+                );
+
+              } else {
+
+                Alert.alert(
+                  "Erro",
+                  "Não foi possível conectar com a API."
+                );
+
+              }
+
+            }
+
+          }
+
+        }
+
+      ]
+    );
   };
 
 
@@ -344,24 +440,7 @@ export const DetalheOS = ({ route, navigation }) => {
 
           <View style={DetalheStyle.buttonsContainer}>
 
-            {/* CANCELAR */}
-
-            {/* <TouchableOpacity
-              style={DetalheStyle.cancelButton}
-              activeOpacity={0.8}
-              onPress={() => navigation.goBack()}
-            >
-
-              <Text style={DetalheStyle.cancelButtonText}>
-                Cancelar
-              </Text>
-
-            </TouchableOpacity> */}
-
-
             {/* EDITAR */}
-
-            {/* BOTÃO EDITAR */}
 
             <TouchableOpacity
               style={DetalheStyle.editButton}
@@ -375,9 +454,26 @@ export const DetalheOS = ({ route, navigation }) => {
                 )
               }
             >
+
               <Text style={DetalheStyle.editButtonText}>
                 Editar Solicitação
               </Text>
+
+            </TouchableOpacity>
+
+
+            {/* EXCLUIR */}
+
+            <TouchableOpacity
+              style={DetalheStyle.deleteButton}
+              activeOpacity={0.8}
+              onPress={excluirOS}
+            >
+
+              <Text style={DetalheStyle.deleteButtonText}>
+                Excluir Ordem de Serviço
+              </Text>
+
             </TouchableOpacity>
 
           </View>
@@ -397,3 +493,4 @@ export const DetalheOS = ({ route, navigation }) => {
   );
 
 };
+

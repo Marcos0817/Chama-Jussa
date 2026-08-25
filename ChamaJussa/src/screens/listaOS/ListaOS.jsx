@@ -20,6 +20,72 @@ export const ListaOS = ({ navigation }) => {
   const [listaOS, setListaOS] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
+  // Nome do usuário logado
+  const [nomeUsuario, setNomeUsuario] = useState("");
+
+
+  // ==============================
+  // BUSCAR NOME DO USUÁRIO
+  // ==============================
+
+  const getNomeUsuario = async () => {
+
+    try {
+
+      const nome = await AsyncStorage.getItem("nome");
+
+      console.log("Nome do usuário:", nome);
+
+      if (nome) {
+        setNomeUsuario(nome);
+      }
+
+    } catch (erro) {
+
+      console.log(
+        "Erro ao buscar nome do usuário:",
+        erro
+      );
+
+    }
+  };
+
+
+  // ==============================
+  // CORES DOS STATUS
+  // ==============================
+
+  const getStatusStyle = (status) => {
+
+    switch (status) {
+
+      case "Aberta":
+        return {
+          badge: Style.badgeAberta,
+          text: Style.badgeTextAberta
+        };
+
+      case "Em Andamento":
+        return {
+          badge: Style.badgeAndamento,
+          text: Style.badgeTextAndamento
+        };
+
+      case "Concluída":
+        return {
+          badge: Style.badgeConcluida,
+          text: Style.badgeTextConcluida
+        };
+
+      default:
+        return {
+          badge: Style.badge,
+          text: Style.badgeText
+        };
+    }
+  };
+
+
   // ==============================
   // FILTRAR ORDENS DE SERVIÇO
   // ==============================
@@ -147,6 +213,7 @@ export const ListaOS = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
 
+      getNomeUsuario();
       getMinhasOS();
 
     }, [])
@@ -168,7 +235,7 @@ export const ListaOS = ({ navigation }) => {
           <View>
 
             <Text style={Style.hello}>
-              Olá
+              Olá{nomeUsuario ? `, ${nomeUsuario}` : ""}
             </Text>
 
             <Text style={Style.title}>
@@ -319,58 +386,66 @@ export const ListaOS = ({ navigation }) => {
 
           ) : (
 
-            listaFiltrada.map((os) => (
+            listaFiltrada.map((os) => {
 
-              <TouchableOpacity
-                key={os.idOS}
-                style={Style.card}
-                activeOpacity={0.8}
-                onPress={() =>
-                  navigation.navigate(
-                    "DetalheOS",
-                    {
-                      os: os
-                    }
-                  )
-                }
-              >
+              const statusStyle = getStatusStyle(os.status);
 
-                {/* CABEÇALHO DO CARD */}
+              return (
 
-                <View style={Style.cardHeader}>
+                <TouchableOpacity
+                  key={os.idOS}
+                  style={Style.card}
+                  activeOpacity={0.8}
+                  onPress={() =>
+                    navigation.navigate(
+                      "DetalheOS",
+                      {
+                        os: os
+                      }
+                    )
+                  }
+                >
 
-                  <Text style={Style.cardTitle}>
-                    OS - {os.numeroOS}
-                  </Text>
+                  {/* CABEÇALHO DO CARD */}
 
+                  <View style={Style.cardHeader}>
 
-                  <View style={Style.badge}>
-
-                    <Text style={Style.badgeText}>
-                      {os.status}
+                    <Text style={Style.cardTitle}>
+                      OS - {os.numeroOS}
                     </Text>
+
+
+                    {/* STATUS */}
+
+                    <View style={statusStyle.badge}>
+
+                      <Text style={statusStyle.text}>
+                        {os.status}
+                      </Text>
+
+                    </View>
 
                   </View>
 
-                </View>
+
+                  {/* TÍTULO */}
+
+                  <Text style={Style.cardSubtitle}>
+                    {os.tituloProblema}
+                  </Text>
 
 
-                {/* TÍTULO */}
+                  {/* DESCRIÇÃO */}
 
-                <Text style={Style.cardSubtitle}>
-                  {os.tituloProblema}
-                </Text>
+                  <Text style={Style.cardDescription}>
+                    {os.descricaoProblema}
+                  </Text>
 
+                </TouchableOpacity>
 
-                {/* DESCRIÇÃO */}
+              );
 
-                <Text style={Style.cardDescription}>
-                  {os.descricaoProblema}
-                </Text>
-
-              </TouchableOpacity>
-
-            ))
+            })
 
           )}
 
@@ -383,7 +458,7 @@ export const ListaOS = ({ navigation }) => {
           FOOTER
       ========================== */}
 
-     <Footer navigation={navigation} />
+      <Footer navigation={navigation} />
 
     </View>
   );
