@@ -4,7 +4,6 @@ namespace ChamaJussa.DTOs
 {
     public class OrdemServicoDTO
     {
-        public string NumeroOS { get; set; }
 
         public string TituloProblema { get; set; }
 

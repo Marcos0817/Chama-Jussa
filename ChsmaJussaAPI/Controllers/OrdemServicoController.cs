@@ -22,6 +22,7 @@ namespace ChamaJussa.Controllers
             _environment = environment;
         }
 
+
         // =========================================================
         // GET: api/OrdemServico/minhas
         // =========================================================
@@ -57,6 +58,7 @@ namespace ChamaJussa.Controllers
             return Ok(ordens);
         }
 
+
         // =========================================================
         // GET: api/OrdemServico
         // =========================================================
@@ -83,6 +85,7 @@ namespace ChamaJussa.Controllers
 
             return Ok(ordens);
         }
+
 
         // =========================================================
         // GET: api/OrdemServico/{id}
@@ -117,6 +120,7 @@ namespace ChamaJussa.Controllers
             return Ok(ordemServico);
         }
 
+
         // =========================================================
         // POST: api/OrdemServico
         // =========================================================
@@ -125,7 +129,7 @@ namespace ChamaJussa.Controllers
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<OrdemServicoResponseDTO>> PostOrdemServico(
-      [FromForm] OrdemServicoDTO ordemServicoDTO)
+            [FromForm] OrdemServicoDTO ordemServicoDTO)
         {
             // -----------------------------------------------------
             // Usuário logado
@@ -137,6 +141,7 @@ namespace ChamaJussa.Controllers
             {
                 return Unauthorized();
             }
+
 
             // -----------------------------------------------------
             // Verifica se o usuário existe
@@ -150,14 +155,10 @@ namespace ChamaJussa.Controllers
                 return Unauthorized("Usuário não encontrado.");
             }
 
+
             // -----------------------------------------------------
             // Validação dos campos
             // -----------------------------------------------------
-
-            if (string.IsNullOrWhiteSpace(ordemServicoDTO.NumeroOS))
-            {
-                return BadRequest("Número da OS é obrigatório.");
-            }
 
             if (string.IsNullOrWhiteSpace(ordemServicoDTO.TituloProblema))
             {
@@ -179,214 +180,36 @@ namespace ChamaJussa.Controllers
                 return BadRequest("Descrição do problema é obrigatória.");
             }
 
+
+            // -----------------------------------------------------
+            // GERA AUTOMATICAMENTE O NÚMERO DA OS
+            // -----------------------------------------------------
+
+            var numerosExistentes = await _context.OrdemServicos
+                .Select(os => os.NumeroOs)
+                .ToListAsync();
+
+            int proximoNumero = 1;
+
+            foreach (var numero in numerosExistentes)
+            {
+                if (int.TryParse(numero, out int numeroConvertido))
+                {
+                    if (numeroConvertido >= proximoNumero)
+                    {
+                        proximoNumero = numeroConvertido + 1;
+                    }
+                }
+            }
+
+            var numeroOS = proximoNumero.ToString("D3");
+
+
             // -----------------------------------------------------
             // Foto
             // -----------------------------------------------------
 
             string? caminhoFoto = null;
-
-            if (ordemServicoDTO.FotoProblema != null)
-            {
-                var extensoesPermitidas = new[]
-                {
-                    ".jpg",
-                    ".jpeg",
-                    ".png",
-                    ".webp"
-                };
-
-                var extensao = Path
-                    .GetExtension(ordemServicoDTO.FotoProblema.FileName)
-                    .ToLowerInvariant();
-
-                if (!extensoesPermitidas.Contains(extensao))
-                {
-                    return BadRequest("Formato de imagem não permitido.");
-                }
-
-                if (ordemServicoDTO.FotoProblema.Length > 5 * 1024 * 1024)
-                {
-                    return BadRequest("A imagem deve ter no máximo 5 MB.");
-                }
-
-                var nomeArquivo = $"{Guid.NewGuid()}{extensao}";
-
-                var pasta = Path.Combine(
-                    _environment.WebRootPath ?? Path.Combine(
-                        _environment.ContentRootPath,
-                        "wwwroot"
-                    ),
-                    "imagens",
-                    "ordens"
-                );
-
-                if (!Directory.Exists(pasta))
-                {
-                    Directory.CreateDirectory(pasta);
-                }
-
-                var caminhoCompleto = Path.Combine(
-                    pasta,
-                    nomeArquivo
-                );
-
-                using var stream = new FileStream(
-                    caminhoCompleto,
-                    FileMode.Create
-                );
-
-                await ordemServicoDTO.FotoProblema.CopyToAsync(stream);
-
-                caminhoFoto = $"imagens/ordens/{nomeArquivo}";
-            }
-
-            // -----------------------------------------------------
-            // Cria a Ordem de Serviço
-            // -----------------------------------------------------
-
-            var ordemServico = new OrdemServico
-            {
-                IdOs = Guid.NewGuid().ToString(),
-
-                NumeroOs = ordemServicoDTO.NumeroOS,
-
-                TituloProblema = ordemServicoDTO.TituloProblema,
-
-                MaquinaEquipamento = ordemServicoDTO.MaquinaEquipamento,
-
-                LocalSetor = ordemServicoDTO.LocalSetor,
-
-                DescricaoProblema = ordemServicoDTO.DescricaoProblema,
-
-                FotoProblema = caminhoFoto,
-
-                Status = ordemServicoDTO.Status,
-
-                IdUsuario = idUsuario
-            };
-
-            _context.OrdemServicos.Add(ordemServico);
-
-            await _context.SaveChangesAsync();
-
-            // -----------------------------------------------------
-            // Cria notificação
-            // -----------------------------------------------------
-
-            var notificacao = new Notificacao
-            {
-                IdNotificacao = Guid.NewGuid().ToString(),
-
-                Titulo = "Nova Ordem de Serviço",
-
-                Mensagem =
-                    $"A ordem de serviço {ordemServico.NumeroOs} foi criada.",
-
-                Lida = false,
-
-                IdUsuario = idUsuario,
-
-                IdOs = ordemServico.IdOs
-            };
-
-            _context.Notificacaos.Add(notificacao);
-
-            await _context.SaveChangesAsync();
-
-            // -----------------------------------------------------
-            // Retorno
-            // -----------------------------------------------------
-
-            var resposta = new OrdemServicoResponseDTO
-            {
-                IdOS = ordemServico.IdOs,
-
-                NumeroOS = ordemServico.NumeroOs,
-
-                TituloProblema = ordemServico.TituloProblema,
-
-                MaquinaEquipamento = ordemServico.MaquinaEquipamento,
-
-                LocalSetor = ordemServico.LocalSetor,
-
-                DescricaoProblema = ordemServico.DescricaoProblema,
-
-                FotoProblema = ordemServico.FotoProblema,
-
-                Status = ordemServico.Status,
-
-                IdUsuario = ordemServico.IdUsuario,
-
-                NomeUsuario = usuario.Nome
-            };
-
-            return CreatedAtAction(
-                nameof(GetOrdemServico),
-                new { id = ordemServico.IdOs },
-                resposta
-            );
-        }
-
-        // =========================================================
-        // PUT: api/OrdemServico/{id}
-        // =========================================================
-
-        [Authorize]
-        [HttpPut("{id}")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> PutOrdemServico(
-            string id,
-            [FromForm] OrdemServicoDTO ordemServicoDTO)
-        {
-            var idUsuario = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (idUsuario == null)
-            {
-                return Unauthorized();
-            }
-
-            var ordemServico = await _context.OrdemServicos
-                .FirstOrDefaultAsync(os => os.IdOs == id);
-
-            if (ordemServico == null)
-            {
-                return NotFound("Ordem de serviço não encontrada.");
-            }
-
-            // -----------------------------------------------------
-            // Verifica proprietário
-            // -----------------------------------------------------
-
-            if (ordemServico.IdUsuario != idUsuario)
-            {
-                return Forbid();
-            }
-
-            // -----------------------------------------------------
-            // Atualiza os dados
-            // -----------------------------------------------------
-
-            ordemServico.NumeroOs =
-                ordemServicoDTO.NumeroOS;
-
-            ordemServico.TituloProblema =
-                ordemServicoDTO.TituloProblema;
-
-            ordemServico.MaquinaEquipamento =
-                ordemServicoDTO.MaquinaEquipamento;
-
-            ordemServico.LocalSetor =
-                ordemServicoDTO.LocalSetor;
-
-            ordemServico.DescricaoProblema =
-                ordemServicoDTO.DescricaoProblema;
-
-            ordemServico.Status =
-                ordemServicoDTO.Status;
-
-            // -----------------------------------------------------
-            // Nova foto
-            // -----------------------------------------------------
 
             if (ordemServicoDTO.FotoProblema != null)
             {
@@ -429,48 +252,173 @@ namespace ChamaJussa.Controllers
                     Directory.CreateDirectory(pasta);
                 }
 
-                var caminhoCompleto =
-                    Path.Combine(pasta, nomeArquivo);
+                var caminhoCompleto = Path.Combine(
+                    pasta,
+                    nomeArquivo
+                );
 
                 using var stream = new FileStream(
                     caminhoCompleto,
                     FileMode.Create
                 );
 
-                await ordemServicoDTO.FotoProblema
-                    .CopyToAsync(stream);
+                await ordemServicoDTO.FotoProblema.CopyToAsync(stream);
 
-                ordemServico.FotoProblema =
+                caminhoFoto =
                     $"imagens/ordens/{nomeArquivo}";
             }
 
+
+            // -----------------------------------------------------
+            // Cria a Ordem de Serviço
+            // -----------------------------------------------------
+
+            var ordemServico = new OrdemServico
+            {
+                IdOs = Guid.NewGuid().ToString(),
+
+                // Número gerado automaticamente
+                NumeroOs = numeroOS,
+
+                TituloProblema =
+                    ordemServicoDTO.TituloProblema,
+
+                MaquinaEquipamento =
+                    ordemServicoDTO.MaquinaEquipamento,
+
+                LocalSetor =
+                    ordemServicoDTO.LocalSetor,
+
+                DescricaoProblema =
+                    ordemServicoDTO.DescricaoProblema,
+
+                FotoProblema =
+                    caminhoFoto,
+
+                Status =
+                    ordemServicoDTO.Status,
+
+                IdUsuario =
+                    idUsuario
+            };
+
+
+            _context.OrdemServicos.Add(ordemServico);
+
             await _context.SaveChangesAsync();
 
-            return NoContent();
+
+            // -----------------------------------------------------
+            // Cria notificação
+            // -----------------------------------------------------
+
+            var notificacao = new Notificacao
+            {
+                IdNotificacao =
+                    Guid.NewGuid().ToString(),
+
+                Titulo =
+                    "Nova Ordem de Serviço",
+
+                Mensagem =
+                    $"A ordem de serviço {ordemServico.NumeroOs} foi criada.",
+
+                Lida = false,
+
+                IdUsuario =
+                    idUsuario,
+
+                IdOs =
+                    ordemServico.IdOs
+            };
+
+
+            _context.Notificacaos.Add(notificacao);
+
+            await _context.SaveChangesAsync();
+
+
+            // -----------------------------------------------------
+            // Retorno
+            // -----------------------------------------------------
+
+            var resposta = new OrdemServicoResponseDTO
+            {
+                IdOS =
+                    ordemServico.IdOs,
+
+                NumeroOS =
+                    ordemServico.NumeroOs,
+
+                TituloProblema =
+                    ordemServico.TituloProblema,
+
+                MaquinaEquipamento =
+                    ordemServico.MaquinaEquipamento,
+
+                LocalSetor =
+                    ordemServico.LocalSetor,
+
+                DescricaoProblema =
+                    ordemServico.DescricaoProblema,
+
+                FotoProblema =
+                    ordemServico.FotoProblema,
+
+                Status =
+                    ordemServico.Status,
+
+                IdUsuario =
+                    ordemServico.IdUsuario,
+
+                NomeUsuario =
+                    usuario.Nome
+            };
+
+
+            return CreatedAtAction(
+                nameof(GetOrdemServico),
+                new
+                {
+                    id = ordemServico.IdOs
+                },
+                resposta
+            );
         }
 
+
         // =========================================================
-        // DELETE: api/OrdemServico/{id}
+        // PUT: api/OrdemServico/{id}
         // =========================================================
 
         [Authorize]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrdemServico(string id)
+        [HttpPut("{id}")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> PutOrdemServico(
+            string id,
+            [FromForm] OrdemServicoDTO ordemServicoDTO)
         {
-            var idUsuario = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var idUsuario =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (idUsuario == null)
             {
                 return Unauthorized();
             }
 
-            var ordemServico = await _context.OrdemServicos
-                .FirstOrDefaultAsync(os => os.IdOs == id);
+
+            var ordemServico =
+                await _context.OrdemServicos
+                    .FirstOrDefaultAsync(os => os.IdOs == id);
+
 
             if (ordemServico == null)
             {
-                return NotFound("Ordem de serviço não encontrada.");
+                return NotFound(
+                    "Ordem de serviço não encontrada."
+                );
             }
+
 
             // -----------------------------------------------------
             // Verifica proprietário
@@ -481,6 +429,168 @@ namespace ChamaJussa.Controllers
                 return Forbid();
             }
 
+
+            // -----------------------------------------------------
+            // Atualiza os dados
+            // -----------------------------------------------------
+
+            // O número NÃO é alterado na edição.
+            // Ele continua sendo o número original gerado
+            // quando a OS foi criada.
+
+            ordemServico.TituloProblema =
+                ordemServicoDTO.TituloProblema;
+
+            ordemServico.MaquinaEquipamento =
+                ordemServicoDTO.MaquinaEquipamento;
+
+            ordemServico.LocalSetor =
+                ordemServicoDTO.LocalSetor;
+
+            ordemServico.DescricaoProblema =
+                ordemServicoDTO.DescricaoProblema;
+
+            ordemServico.Status =
+                ordemServicoDTO.Status;
+
+
+            // -----------------------------------------------------
+            // Nova foto
+            // -----------------------------------------------------
+
+            if (ordemServicoDTO.FotoProblema != null)
+            {
+                var extensoesPermitidas = new[]
+                {
+                    ".jpg",
+                    ".jpeg",
+                    ".png",
+                    ".webp"
+                };
+
+
+                var extensao = Path
+                    .GetExtension(
+                        ordemServicoDTO.FotoProblema.FileName
+                    )
+                    .ToLowerInvariant();
+
+
+                if (!extensoesPermitidas.Contains(extensao))
+                {
+                    return BadRequest(
+                        "Formato de imagem não permitido."
+                    );
+                }
+
+
+                if (
+                    ordemServicoDTO.FotoProblema.Length >
+                    5 * 1024 * 1024
+                )
+                {
+                    return BadRequest(
+                        "A imagem deve ter no máximo 5 MB."
+                    );
+                }
+
+
+                var nomeArquivo =
+                    $"{Guid.NewGuid()}{extensao}";
+
+
+                var pasta = Path.Combine(
+                    _environment.WebRootPath ??
+                    Path.Combine(
+                        _environment.ContentRootPath,
+                        "wwwroot"
+                    ),
+                    "imagens",
+                    "ordens"
+                );
+
+
+                if (!Directory.Exists(pasta))
+                {
+                    Directory.CreateDirectory(pasta);
+                }
+
+
+                var caminhoCompleto =
+                    Path.Combine(
+                        pasta,
+                        nomeArquivo
+                    );
+
+
+                using var stream =
+                    new FileStream(
+                        caminhoCompleto,
+                        FileMode.Create
+                    );
+
+
+                await ordemServicoDTO
+                    .FotoProblema
+                    .CopyToAsync(stream);
+
+
+                ordemServico.FotoProblema =
+                    $"imagens/ordens/{nomeArquivo}";
+            }
+
+
+            await _context.SaveChangesAsync();
+
+
+            return NoContent();
+        }
+
+
+        // =========================================================
+        // DELETE: api/OrdemServico/{id}
+        // =========================================================
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOrdemServico(
+            string id)
+        {
+            var idUsuario =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
+            if (idUsuario == null)
+            {
+                return Unauthorized();
+            }
+
+
+            var ordemServico =
+                await _context.OrdemServicos
+                    .FirstOrDefaultAsync(
+                        os => os.IdOs == id
+                    );
+
+
+            if (ordemServico == null)
+            {
+                return NotFound(
+                    "Ordem de serviço não encontrada."
+                );
+            }
+
+
+            // -----------------------------------------------------
+            // Verifica proprietário
+            // -----------------------------------------------------
+
+            if (ordemServico.IdUsuario != idUsuario)
+            {
+                return Forbid();
+            }
+
+
             // -----------------------------------------------------
             // Guarda caminho da foto
             // -----------------------------------------------------
@@ -488,19 +598,26 @@ namespace ChamaJussa.Controllers
             var caminhoFoto =
                 ordemServico.FotoProblema;
 
+
             // -----------------------------------------------------
             // Remove notificações
             // -----------------------------------------------------
 
-            var notificacoes = await _context.Notificacaos
-                .Where(n => n.IdOs == ordemServico.IdOs)
-                .ToListAsync();
+            var notificacoes =
+                await _context.Notificacaos
+                    .Where(
+                        n => n.IdOs ==
+                        ordemServico.IdOs
+                    )
+                    .ToListAsync();
+
 
             if (notificacoes.Any())
             {
                 _context.Notificacaos
                     .RemoveRange(notificacoes);
             }
+
 
             // -----------------------------------------------------
             // Remove OS
@@ -509,7 +626,9 @@ namespace ChamaJussa.Controllers
             _context.OrdemServicos
                 .Remove(ordemServico);
 
+
             await _context.SaveChangesAsync();
+
 
             // -----------------------------------------------------
             // Remove foto física
@@ -517,22 +636,29 @@ namespace ChamaJussa.Controllers
 
             if (!string.IsNullOrEmpty(caminhoFoto))
             {
-                var caminhoCompleto = Path.Combine(
-                    _environment.WebRootPath ?? Path.Combine(
-                        _environment.ContentRootPath,
-                        "wwwroot"
-                    ),
-                    caminhoFoto.Replace(
-                        "/",
-                        Path.DirectorySeparatorChar.ToString()
-                    )
-                );
+                var caminhoCompleto =
+                    Path.Combine(
+                        _environment.WebRootPath ??
+                        Path.Combine(
+                            _environment.ContentRootPath,
+                            "wwwroot"
+                        ),
+                        caminhoFoto.Replace(
+                            "/",
+                            Path.DirectorySeparatorChar
+                                .ToString()
+                        )
+                    );
+
 
                 if (System.IO.File.Exists(caminhoCompleto))
                 {
-                    System.IO.File.Delete(caminhoCompleto);
+                    System.IO.File.Delete(
+                        caminhoCompleto
+                    );
                 }
             }
+
 
             return NoContent();
         }

@@ -4,13 +4,14 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    KeyboardAvoidingView,
     ScrollView,
     Alert,
-    Image
+    Image,
+    Platform
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
 import { Footer } from "../../components/footer/Footer";
 
 import { Style } from "./NovaOSStyle";
@@ -18,7 +19,6 @@ import { api } from "../../services/api";
 
 export const NovaOS = ({ navigation }) => {
 
-    const [numeroOS, setNumeroOS] = useState("");
     const [tituloProblema, setTituloProblema] = useState("");
     const [maquinaEquipamento, setMaquinaEquipamento] = useState("");
     const [localSetor, setLocalSetor] = useState("");
@@ -27,47 +27,64 @@ export const NovaOS = ({ navigation }) => {
     const [imagem, setImagem] = useState(null);
     const [enviando, setEnviando] = useState(false);
 
+
     // ==============================
     // SELECIONAR IMAGEM
     // ==============================
 
     const selecionarImagem = async () => {
 
-        const permissao =
-            await ImagePicker.requestMediaLibraryPermissionsAsync();
+        try {
 
-        if (!permissao.granted) {
+            const permissao =
+                await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-            Alert.alert(
-                "Permissão necessária",
-                "Precisamos de acesso à galeria para selecionar uma imagem."
-            );
+            if (!permissao.granted) {
 
-            return;
-        }
+                Alert.alert(
+                    "Permissão necessária",
+                    "Precisamos de acesso à galeria para selecionar uma imagem."
+                );
 
-        const resultado =
-            await ImagePicker.launchImageLibraryAsync({
+                return;
+            }
 
-                mediaTypes: ["images"],
+            const resultado =
+                await ImagePicker.launchImageLibraryAsync({
 
-                allowsEditing: true,
+                    mediaTypes: ["images"],
 
-                quality: 0.8,
+                    allowsEditing: true,
 
-            });
+                    quality: 0.8,
 
-        if (!resultado.canceled) {
+                });
 
-            const imagemSelecionada =
-                resultado.assets[0];
+
+            if (!resultado.canceled) {
+
+                const imagemSelecionada =
+                    resultado.assets[0];
+
+                console.log(
+                    "Imagem selecionada:",
+                    imagemSelecionada
+                );
+
+                setImagem(imagemSelecionada);
+            }
+
+        } catch (erro) {
 
             console.log(
-                "Imagem selecionada:",
-                imagemSelecionada
+                "Erro ao selecionar imagem:",
+                erro
             );
 
-            setImagem(imagemSelecionada);
+            Alert.alert(
+                "Erro",
+                "Não foi possível selecionar a imagem."
+            );
         }
     };
 
@@ -78,8 +95,11 @@ export const NovaOS = ({ navigation }) => {
 
     const cadastrarOS = async () => {
 
+        // ==============================
+        // VALIDAÇÃO
+        // ==============================
+
         if (
-            !numeroOS.trim() ||
             !tituloProblema.trim() ||
             !maquinaEquipamento.trim() ||
             !localSetor.trim() ||
@@ -94,38 +114,46 @@ export const NovaOS = ({ navigation }) => {
             return;
         }
 
+
         try {
 
             setEnviando(true);
 
-            // FormData é necessário porque
-            // estamos enviando uma imagem
+
+            // ==============================
+            // FORMDATA
+            // ==============================
+
             const formData = new FormData();
 
-            formData.append(
-                "NumeroOS",
-                numeroOS
-            );
+
+            // IMPORTANTE:
+            // Não enviamos NumeroOS.
+            // O backend gera automaticamente.
 
             formData.append(
                 "TituloProblema",
                 tituloProblema
             );
 
+
             formData.append(
                 "MaquinaEquipamento",
                 maquinaEquipamento
             );
+
 
             formData.append(
                 "LocalSetor",
                 localSetor
             );
 
+
             formData.append(
                 "DescricaoProblema",
                 descricaoProblema
             );
+
 
             formData.append(
                 "Status",
@@ -141,11 +169,13 @@ export const NovaOS = ({ navigation }) => {
 
                 const nomeArquivo =
                     imagem.fileName ||
-                    "foto_os.jpg";
+                    `foto-${Date.now()}.jpg`;
+
 
                 const tipo =
                     imagem.mimeType ||
                     "image/jpeg";
+
 
                 formData.append(
                     "FotoProblema",
@@ -159,8 +189,33 @@ export const NovaOS = ({ navigation }) => {
 
 
             console.log(
+                "===================================="
+            );
+
+            console.log(
                 "Enviando Ordem de Serviço..."
             );
+
+            console.log(
+                "Dados:",
+                {
+                    tituloProblema,
+                    maquinaEquipamento,
+                    localSetor,
+                    descricaoProblema,
+                    status: "Aberta",
+                    possuiImagem: !!imagem
+                }
+            );
+
+            console.log(
+                "===================================="
+            );
+
+
+            // ==============================
+            // POST
+            // ==============================
 
             const resposta = await api.post(
                 "/OrdemServico",
@@ -174,22 +229,45 @@ export const NovaOS = ({ navigation }) => {
             );
 
 
+            // ==============================
+            // RESPOSTA DO BACKEND
+            // ==============================
+
             console.log(
-                "OS cadastrada:",
+                "===================================="
+            );
+
+            console.log(
+                "OS cadastrada com sucesso:"
+            );
+
+            console.log(
                 resposta.data
             );
 
+            console.log(
+                "Número gerado pelo backend:",
+                resposta.data?.numeroOS
+            );
+
+            console.log(
+                "===================================="
+            );
+
+
+            // ==============================
+            // SUCESSO
+            // ==============================
 
             Alert.alert(
                 "Sucesso",
-                "Ordem de Serviço cadastrada com sucesso!",
+                `Ordem de Serviço ${resposta.data?.numeroOS || ""} cadastrada com sucesso!`,
                 [
                     {
                         text: "OK",
 
                         onPress: () => {
 
-                            // Retorna para ListaOS
                             navigation.goBack();
 
                         }
@@ -197,16 +275,19 @@ export const NovaOS = ({ navigation }) => {
                 ]
             );
 
+
         } catch (erro) {
 
             console.log(
                 "========== ERRO AO CADASTRAR OS =========="
             );
 
+
             console.log(
                 "Erro:",
                 erro
             );
+
 
             if (erro.response) {
 
@@ -215,10 +296,12 @@ export const NovaOS = ({ navigation }) => {
                     erro.response.status
                 );
 
+
                 console.log(
                     "Dados:",
                     erro.response.data
                 );
+
 
                 Alert.alert(
                     "Erro",
@@ -227,6 +310,7 @@ export const NovaOS = ({ navigation }) => {
                         ? erro.response.data
                         : "Não foi possível cadastrar a Ordem de Serviço."
                 );
+
 
             } else {
 
@@ -244,212 +328,237 @@ export const NovaOS = ({ navigation }) => {
     };
 
 
+    // ==============================
+    // TELA
+    // ==============================
+
     return (
+        <>
 
-        <View style={Style.container}>
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={Style.scrollContent}
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={
+                    Platform.OS === "ios"
+                        ? "padding"
+                        : "height"
+                }
             >
 
-                {/* ==============================
-                    CABEÇALHO
-                ============================== */}
+                <View style={Style.container}>
 
-                <View style={Style.header}>
-
-                    <TouchableOpacity
-                        onPress={() => navigation.goBack()}
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={Style.scrollContent}
+                        keyboardShouldPersistTaps="handled"
                     >
 
-                        <Text style={Style.voltar}>
-                            ← Voltar
-                        </Text>
 
-                    </TouchableOpacity>
+                        {/* ==============================
+                            CABEÇALHO
+                        ============================== */}
 
-
-                    <Text style={Style.title}>
-                        Nova OS
-                    </Text>
-
-
-                    <Text style={Style.subtitle}>
-                        Cadastre uma nova Ordem de Serviço
-                    </Text>
-
-                </View>
-
-
-                <View style={Style.form}>
-
-
-                    {/* ==============================
-                        NÚMERO
-                    ============================== */}
-
-                    <Text style={Style.label}>
-                        Número da OS
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        placeholder="Ex: 001"
-                        value={numeroOS}
-                        onChangeText={setNumeroOS}
-                    />
-
-
-                    {/* ==============================
-                        TÍTULO
-                    ============================== */}
-
-                    <Text style={Style.label}>
-                        Título do problema
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        placeholder="Ex: Vazamento hidráulico"
-                        value={tituloProblema}
-                        onChangeText={setTituloProblema}
-                    />
-
-
-                    {/* ==============================
-                        EQUIPAMENTO
-                    ============================== */}
-
-                    <Text style={Style.label}>
-                        Máquina / Equipamento
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        placeholder="Digite a máquina ou equipamento"
-                        value={maquinaEquipamento}
-                        onChangeText={setMaquinaEquipamento}
-                    />
-
-
-                    {/* ==============================
-                        LOCAL
-                    ============================== */}
-
-                    <Text style={Style.label}>
-                        Local / Setor
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        placeholder="Ex: Bloco B - 2º andar"
-                        value={localSetor}
-                        onChangeText={setLocalSetor}
-                    />
-
-
-                    {/* ==============================
-                        DESCRIÇÃO
-                    ============================== */}
-
-                    <Text style={Style.label}>
-                        Descrição do problema
-                    </Text>
-
-                    <TextInput
-                        style={[
-                            Style.input,
-                            Style.textArea
-                        ]}
-                        placeholder="Descreva o problema..."
-                        multiline
-                        numberOfLines={5}
-                        value={descricaoProblema}
-                        onChangeText={setDescricaoProblema}
-                    />
-
-
-                    {/* ==============================
-                        IMAGEM
-                    ============================== */}
-
-                    <Text style={Style.label}>
-                        Foto do problema
-                    </Text>
-
-
-                    <TouchableOpacity
-                        style={Style.imageButton}
-                        activeOpacity={0.8}
-                        onPress={selecionarImagem}
-                    >
-
-                        <Text style={Style.imageButtonText}>
-                            📷 Selecionar imagem
-                        </Text>
-
-                    </TouchableOpacity>
-
-
-                    {/* ==============================
-                        PRÉVIA DA IMAGEM
-                    ============================== */}
-
-                    {imagem && (
-
-                        <View style={Style.imagePreviewContainer}>
-
-                            <Image
-                                source={{
-                                    uri: imagem.uri
-                                }}
-                                style={Style.imagePreview}
-                            />
+                        <View style={Style.header}>
 
                             <TouchableOpacity
-                                onPress={() => setImagem(null)}
+                                onPress={() =>
+                                    navigation.goBack()
+                                }
                             >
 
-                                <Text style={Style.removeImage}>
-                                    Remover imagem
+                                <Text style={Style.voltar}>
+                                    ← Voltar
                                 </Text>
 
                             </TouchableOpacity>
 
+
+                            <Text style={Style.title}>
+                                Nova OS
+                            </Text>
+
+
+                            <Text style={Style.subtitle}>
+                                Cadastre uma nova Ordem de Serviço
+                            </Text>
+
                         </View>
 
-                    )}
+
+                        {/* ==============================
+                            FORMULÁRIO
+                        ============================== */}
+
+                        <View style={Style.form}>
 
 
-                    {/* ==============================
-                        BOTÃO CADASTRAR
-                    ============================== */}
+                            {/* ==============================
+                                TÍTULO
+                            ============================== */}
 
-                    <TouchableOpacity
-                        style={Style.button}
-                        activeOpacity={0.8}
-                        onPress={cadastrarOS}
-                        disabled={enviando}
-                    >
+                            <Text style={Style.label}>
+                                Título do problema
+                            </Text>
 
-                        <Text style={Style.buttonText}>
+                            <TextInput
+                                style={Style.input}
+                                placeholder="Ex: Vazamento hidráulico"
+                                value={tituloProblema}
+                                onChangeText={setTituloProblema}
+                            />
 
-                            {enviando
-                                ? "Cadastrando..."
-                                : "Abrir Ordem de Serviço"
-                            }
 
-                        </Text>
+                            {/* ==============================
+                                EQUIPAMENTO
+                            ============================== */}
 
-                    </TouchableOpacity>
+                            <Text style={Style.label}>
+                                Máquina / Equipamento
+                            </Text>
 
+                            <TextInput
+                                style={Style.input}
+                                placeholder="Digite a máquina ou equipamento"
+                                value={maquinaEquipamento}
+                                onChangeText={setMaquinaEquipamento}
+                            />
+
+
+                            {/* ==============================
+                                LOCAL
+                            ============================== */}
+
+                            <Text style={Style.label}>
+                                Local / Setor
+                            </Text>
+
+                            <TextInput
+                                style={Style.input}
+                                placeholder="Ex: Bloco B - 2º andar"
+                                value={localSetor}
+                                onChangeText={setLocalSetor}
+                            />
+
+
+                            {/* ==============================
+                                DESCRIÇÃO
+                            ============================== */}
+
+                            <Text style={Style.label}>
+                                Descrição do problema
+                            </Text>
+
+                            <TextInput
+                                style={[
+                                    Style.input,
+                                    Style.textArea
+                                ]}
+                                placeholder="Descreva o problema..."
+                                multiline
+                                numberOfLines={5}
+                                value={descricaoProblema}
+                                onChangeText={setDescricaoProblema}
+                            />
+
+
+                            {/* ==============================
+                                IMAGEM
+                            ============================== */}
+
+                            <Text style={Style.label}>
+                                Foto do problema
+                            </Text>
+
+
+                            <TouchableOpacity
+                                style={Style.imageButton}
+                                activeOpacity={0.8}
+                                onPress={selecionarImagem}
+                            >
+
+                                <Text style={Style.imageButtonText}>
+                                    📷 Selecionar imagem
+                                </Text>
+
+                            </TouchableOpacity>
+
+
+                            {/* ==============================
+                                PRÉVIA DA IMAGEM
+                            ============================== */}
+
+                            {imagem && (
+
+                                <View
+                                    style={
+                                        Style.imagePreviewContainer
+                                    }
+                                >
+
+                                    <Image
+                                        source={{
+                                            uri: imagem.uri
+                                        }}
+                                        style={
+                                            Style.imagePreview
+                                        }
+                                    />
+
+
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setImagem(null)
+                                        }
+                                    >
+
+                                        <Text
+                                            style={
+                                                Style.removeImage
+                                            }
+                                        >
+                                            Remover imagem
+                                        </Text>
+
+                                    </TouchableOpacity>
+
+                                </View>
+
+                            )}
+
+
+                            {/* ==============================
+                                BOTÃO CADASTRAR
+                            ============================== */}
+
+                            <TouchableOpacity
+                                style={Style.button}
+                                activeOpacity={0.8}
+                                onPress={cadastrarOS}
+                                disabled={enviando}
+                            >
+
+                                <Text style={Style.buttonText}>
+
+                                    {enviando
+                                        ? "Cadastrando..."
+                                        : "Abrir Ordem de Serviço"
+                                    }
+
+                                </Text>
+
+                            </TouchableOpacity>
+
+
+                        </View>
+
+                    </ScrollView>
 
                 </View>
 
-            </ScrollView>
+            </KeyboardAvoidingView>
+
+
             <Footer navigation={navigation} />
 
-        </View>
+        </>
     );
 };

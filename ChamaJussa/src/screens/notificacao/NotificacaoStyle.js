@@ -12,7 +12,7 @@ export const NotificStyle = StyleSheet.create({
     fontWeight: "700",
     color: "#111111",
     textAlign: "center",
-    marginTop: 20,  
+    marginTop: 20,
     marginBottom: 20,
   },
 
@@ -58,10 +58,11 @@ export const NotificStyle = StyleSheet.create({
   },
 
   icon: {
-    fontSize: 16,
-    color: "#087FF5",
+    width: 40,
+    height: 40,
     marginRight: 12,
-    marginTop: 3,
+    marginTop: 6,
+    resizeMode: "contain",
   },
 
   notificationContent: {
@@ -100,7 +101,7 @@ export const NotificStyle = StyleSheet.create({
 
   unreadText: {
     color: "#087FF5",
-    fontWeight: "700",
+    fontWeight: "500",
   },
 
 });

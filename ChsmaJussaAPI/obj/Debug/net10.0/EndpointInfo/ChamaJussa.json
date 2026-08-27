@@ -188,9 +188,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "NumeroOS": {
-                    "type": "string"
-                  },
                   "TituloProblema": {
                     "type": "string"
                   },
@@ -213,9 +210,6 @@
                 }
               },
               "encoding": {
-                "NumeroOS": {
-                  "style": "form"
-                },
                 "TituloProblema": {
                   "style": "form"
                 },
@@ -320,9 +314,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "NumeroOS": {
-                    "type": "string"
-                  },
                   "TituloProblema": {
                     "type": "string"
                   },
@@ -345,9 +336,6 @@
                 }
               },
               "encoding": {
-                "NumeroOS": {
-                  "style": "form"
-                },
                 "TituloProblema": {
                   "style": "form"
                 },

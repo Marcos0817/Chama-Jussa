@@ -1,3 +1,4 @@
+
 import React, {
   useCallback,
   useState
@@ -8,7 +9,8 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  Alert
+  Alert,
+  Image
 } from "react-native";
 
 import {
@@ -94,6 +96,7 @@ export const Notificacao = ({ navigation }) => {
       setCarregando(false);
 
     }
+
   };
 
 
@@ -162,6 +165,7 @@ export const Notificacao = ({ navigation }) => {
       );
 
     }
+
   };
 
 
@@ -174,20 +178,30 @@ export const Notificacao = ({ navigation }) => {
         edges={["top", "bottom"]}
       >
 
-        {/* TÍTULO */}
+        {/* =================================================
+            TÍTULO
+        ================================================= */}
 
         <Text style={NotificStyle.title}>
           Notificações
         </Text>
 
 
-        {/* CONTEÚDO */}
+        {/* =================================================
+            CONTEÚDO
+        ================================================= */}
 
         <ScrollView
           style={NotificStyle.scroll}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={NotificStyle.scrollContent}
+          contentContainerStyle={
+            NotificStyle.scrollContent
+          }
         >
+
+          {/* =================================================
+              CARREGANDO
+          ================================================= */}
 
           {carregando ? (
 
@@ -206,11 +220,17 @@ export const Notificacao = ({ navigation }) => {
             notificacoes.map((notificacao) => (
 
               <TouchableOpacity
-                key={notificacao.idNotificacao}
+
+                key={
+                  notificacao.idNotificacao
+                }
+
                 activeOpacity={0.8}
+
                 onPress={() =>
                   marcarComoLida(notificacao)
                 }
+
               >
 
                 <View
@@ -222,47 +242,79 @@ export const Notificacao = ({ navigation }) => {
                   ]}
                 >
 
-                  {/* ÍCONE */}
+                  <Image
+                    source={require("../../../assets/bullhorn 1.png")}
+                    style={NotificStyle.icon}
+                    resizeMode="contain"
+                  />
 
-                  <Text style={NotificStyle.icon}>
-                    ◀
-                  </Text>
 
+                  {/* =========================================
+                      CONTEÚDO
+                  ========================================= */}
 
-                  {/* CONTEÚDO */}
+                  <View
+                    style={
+                      NotificStyle.notificationContent
+                    }
+                  >
 
-                  <View style={NotificStyle.notificationContent}>
+                    <Text
+                      style={
+                        NotificStyle.notificationTitle
+                      }
+                    >
 
-                    <Text style={NotificStyle.notificationTitle}>
                       {notificacao.titulo}
+
                     </Text>
 
 
-                    <Text style={NotificStyle.description}>
+                    <Text
+                      style={
+                        NotificStyle.description
+                      }
+                    >
+
                       {notificacao.mensagem}
+
                     </Text>
 
 
-                    <View style={NotificStyle.dateContainer}>
+                    <View
+                      style={
+                        NotificStyle.dateContainer
+                      }
+                    >
 
-                      <Text style={NotificStyle.date}>
+                      <Text
+                        style={
+                          NotificStyle.date
+                        }
+                      >
+
                         {notificacao.numeroOS
                           ? `OS-${notificacao.numeroOS}`
                           : ""
                         }
+
                       </Text>
+
 
                       <Text
                         style={[
                           NotificStyle.time,
+
                           !notificacao.lida &&
                             NotificStyle.unreadText
                         ]}
                       >
+
                         {notificacao.lida
                           ? "Lida"
                           : "Nova"
                         }
+
                       </Text>
 
                     </View>
@@ -279,13 +331,20 @@ export const Notificacao = ({ navigation }) => {
 
         </ScrollView>
 
-
-        {/* FOOTER */}
-
-
       </SafeAreaView>
 
-      <Footer navigation={navigation} />
+
+      {/* =================================================
+          FOOTER
+      ================================================= */}
+
+      <Footer
+        navigation={navigation}
+      />
+
     </SafeAreaProvider>
+
   );
+
 };
+

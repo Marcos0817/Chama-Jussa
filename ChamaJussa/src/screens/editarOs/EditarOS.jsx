@@ -7,7 +7,12 @@ import {
     TouchableOpacity,
     ScrollView,
     Alert,
-    Image
+    Image,
+    KeyboardAvoidingView,
+    Platform,
+    Modal,
+    Pressable,
+    StatusBar
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
@@ -21,9 +26,9 @@ export const EditarOS = ({ route, navigation }) => {
     const { os } = route.params;
 
 
-    const [numeroOS, setNumeroOS] = useState(
-        os.numeroOS || ""
-    );
+    // =====================================================
+    // CAMPOS
+    // =====================================================
 
     const [tituloProblema, setTituloProblema] = useState(
         os.tituloProblema || ""
@@ -45,25 +50,81 @@ export const EditarOS = ({ route, navigation }) => {
         os.status || "Aberta"
     );
 
+
+    // =====================================================
+    // FOTO
+    // =====================================================
+
     const [foto, setFoto] = useState(null);
 
     const [fotoAtual, setFotoAtual] = useState(
         os.fotoProblema || null
     );
 
+
+    // =====================================================
+    // MODAL
+    // =====================================================
+
+    const [imagemExpandida, setImagemExpandida] = useState(false);
+
     const [salvando, setSalvando] = useState(false);
 
 
-    /*
-     * URL da API
-     */
+    // =====================================================
+    // URL DO SERVIDOR
+    // =====================================================
 
-    const URL_API = "http://172.16.36.51:5175/";
+    const URL_API = "http://172.16.36.27:5175";
 
 
-    /*
-     * SELECIONAR FOTO
-     */
+    // =====================================================
+    // MONTAR URL DA FOTO
+    // =====================================================
+
+    const montarUrlFoto = (foto) => {
+
+        if (!foto) {
+            return null;
+        }
+
+
+        // Imagem local selecionada pelo celular
+
+        if (
+            foto.startsWith("file://") ||
+            foto.startsWith("content://")
+        ) {
+            return foto;
+        }
+
+
+        // URL completa
+
+        if (
+            foto.startsWith("http://") ||
+            foto.startsWith("https://") ||
+            foto.startsWith("data:")
+        ) {
+            return foto;
+        }
+
+
+        // Caminho salvo pelo backend
+
+        const caminho =
+            foto.startsWith("/")
+                ? foto
+                : `/${foto}`;
+
+
+        return `${URL_API}${caminho}`;
+    };
+
+
+    // =====================================================
+    // SELECIONAR FOTO
+    // =====================================================
 
     const selecionarFoto = async () => {
 
@@ -71,6 +132,7 @@ export const EditarOS = ({ route, navigation }) => {
 
             const permissao =
                 await ImagePicker.requestMediaLibraryPermissionsAsync();
+
 
             if (!permissao.granted) {
 
@@ -102,12 +164,41 @@ export const EditarOS = ({ route, navigation }) => {
                 const imagem =
                     resultado.assets[0];
 
+
                 console.log(
-                    "Nova imagem selecionada:",
-                    imagem
+                    "===================================="
                 );
 
+                console.log(
+                    "NOVA FOTO SELECIONADA"
+                );
+
+                console.log(
+                    "URI:",
+                    imagem.uri
+                );
+
+                console.log(
+                    "Nome:",
+                    imagem.fileName
+                );
+
+                console.log(
+                    "Tipo:",
+                    imagem.mimeType
+                );
+
+                console.log(
+                    "===================================="
+                );
+
+
+                // Arquivo que será enviado
+
                 setFoto(imagem);
+
+
+                // Foto mostrada na tela
 
                 setFotoAtual(imagem.uri);
             }
@@ -127,18 +218,15 @@ export const EditarOS = ({ route, navigation }) => {
     };
 
 
-    /*
-     * SALVAR ALTERAÇÕES
-     */
+    // =====================================================
+    // SALVAR
+    // =====================================================
 
     const editarOS = async () => {
 
-        /*
-         * Validação
-         */
+        // Validação
 
         if (
-            !numeroOS.trim() ||
             !tituloProblema.trim() ||
             !maquinaEquipamento.trim() ||
             !localSetor.trim() ||
@@ -159,37 +247,36 @@ export const EditarOS = ({ route, navigation }) => {
             setSalvando(true);
 
 
-            /*
-             * FormData
-             */
+            // =================================================
+            // FORMDATA
+            // =================================================
 
             const formData = new FormData();
 
-
-            formData.append(
-                "NumeroOS",
-                numeroOS
-            );
 
             formData.append(
                 "TituloProblema",
                 tituloProblema
             );
 
+
             formData.append(
                 "MaquinaEquipamento",
                 maquinaEquipamento
             );
+
 
             formData.append(
                 "LocalSetor",
                 localSetor
             );
 
+
             formData.append(
                 "DescricaoProblema",
                 descricaoProblema
             );
+
 
             formData.append(
                 "Status",
@@ -197,15 +284,16 @@ export const EditarOS = ({ route, navigation }) => {
             );
 
 
-            /*
-             * FOTO
-             */
+            // =================================================
+            // FOTO NOVA
+            // =================================================
 
             if (foto) {
 
                 const nomeArquivo =
                     foto.fileName ||
                     `foto-${Date.now()}.jpg`;
+
 
                 const tipoArquivo =
                     foto.mimeType ||
@@ -220,33 +308,81 @@ export const EditarOS = ({ route, navigation }) => {
                         type: tipoArquivo
                     }
                 );
+
+
+                console.log(
+                    "Nova foto será enviada:",
+                    foto.uri
+                );
+
+            } else {
+
+                console.log(
+                    "Nenhuma foto nova selecionada."
+                );
             }
 
 
+            // =================================================
+            // PUT
+            // =================================================
+
             console.log(
-                "Editando OS:",
+                "===================================="
+            );
+
+            console.log(
+                "EDITANDO OS:",
                 os.idOS
             );
 
+            console.log(
+                "FOTO ANTIGA:",
+                os.fotoProblema
+            );
 
-            /*
-             * PUT
-             */
+            console.log(
+                "FOTO ATUAL:",
+                fotoAtual
+            );
 
-            const resposta = await api.put(
-                `/OrdemServico/${os.idOS}`,
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                }
+            console.log(
+                "TEM FOTO NOVA:",
+                !!foto
+            );
+
+            console.log(
+                "===================================="
             );
 
 
+            const resposta =
+                await api.put(
+                    `/OrdemServico/${os.idOS}`,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type":
+                                "multipart/form-data"
+                        }
+                    }
+                );
+
+
             console.log(
-                "Resposta da edição:",
-                resposta.status
+                "===================================="
+            );
+
+            console.log(
+                "RESPOSTA DO BACKEND:"
+            );
+
+            console.log(
+                resposta.data
+            );
+
+            console.log(
+                "===================================="
             );
 
 
@@ -256,6 +392,7 @@ export const EditarOS = ({ route, navigation }) => {
                 [
                     {
                         text: "OK",
+
                         onPress: () => {
 
                             navigation.goBack();
@@ -293,11 +430,11 @@ export const EditarOS = ({ route, navigation }) => {
 
                 Alert.alert(
                     "Erro",
+
                     typeof erro.response.data === "string"
                         ? erro.response.data
                         : "Não foi possível atualizar a Ordem de Serviço."
                 );
-
 
             } else {
 
@@ -307,7 +444,6 @@ export const EditarOS = ({ route, navigation }) => {
                 );
             }
 
-
         } finally {
 
             setSalvando(false);
@@ -316,9 +452,9 @@ export const EditarOS = ({ route, navigation }) => {
     };
 
 
-    /*
-     * CANCELAR EDIÇÃO
-     */
+    // =====================================================
+    // CANCELAR
+    // =====================================================
 
     const cancelarEdicao = () => {
 
@@ -327,295 +463,450 @@ export const EditarOS = ({ route, navigation }) => {
     };
 
 
+    // =====================================================
+    // URL DA FOTO
+    // =====================================================
+
+    const urlFotoAtual =
+        montarUrlFoto(fotoAtual);
+
+
+    // =====================================================
+    // TELA
+    // =====================================================
+
     return (
 
-        <View style={Style.container}>
+        <KeyboardAvoidingView
+            style={Style.keyboardAvoiding}
+            behavior={
+                Platform.OS === "ios"
+                    ? "padding"
+                    : "height"
+            }
+        >
 
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={Style.scrollContent}
-            >
+            <View style={Style.container}>
+
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={Style.scrollContent}
+                    keyboardShouldPersistTaps="handled"
+                >
 
 
-                {/* CABEÇALHO */}
+                    {/* =====================================
+                        CABEÇALHO
+                    ===================================== */}
 
-                <View style={Style.header}>
+                    <View style={Style.header}>
 
-                    <TouchableOpacity
-                        onPress={() => navigation.goBack()}
-                    >
+                        <TouchableOpacity
+                            onPress={() =>
+                                navigation.goBack()
+                            }
+                        >
 
-                        <Text style={Style.voltar}>
-                            ← Voltar
+                            <Text style={Style.voltar}>
+                                ← Voltar
+                            </Text>
+
+                        </TouchableOpacity>
+
+
+                        <Text style={Style.title}>
+                            Editar Solicitação
                         </Text>
 
-                    </TouchableOpacity>
 
-
-                    <Text style={Style.title}>
-                        Editar Solicitação
-                    </Text>
-
-
-                    <Text style={Style.subtitle}>
-                        Altere os dados da Ordem de Serviço
-                    </Text>
-
-                </View>
-
-
-                {/* FORMULÁRIO */}
-
-                <View style={Style.form}>
-
-
-                    {/* NÚMERO */}
-
-                    <Text style={Style.label}>
-                        Número da OS
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        value={numeroOS}
-                        onChangeText={setNumeroOS}
-                        placeholder="Número da OS"
-                    />
-
-
-                    {/* TÍTULO */}
-
-                    <Text style={Style.label}>
-                        Título do problema
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        value={tituloProblema}
-                        onChangeText={setTituloProblema}
-                        placeholder="Título do problema"
-                    />
-
-
-                    {/* MÁQUINA */}
-
-                    <Text style={Style.label}>
-                        Máquina / Equipamento
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        value={maquinaEquipamento}
-                        onChangeText={setMaquinaEquipamento}
-                        placeholder="Máquina ou equipamento"
-                    />
-
-
-                    {/* LOCAL */}
-
-                    <Text style={Style.label}>
-                        Local / Setor
-                    </Text>
-
-                    <TextInput
-                        style={Style.input}
-                        value={localSetor}
-                        onChangeText={setLocalSetor}
-                        placeholder="Local / setor"
-                    />
-
-
-                    {/* DESCRIÇÃO */}
-
-                    <Text style={Style.label}>
-                        Descrição do problema
-                    </Text>
-
-                    <TextInput
-                        style={[
-                            Style.input,
-                            Style.textArea
-                        ]}
-                        value={descricaoProblema}
-                        onChangeText={setDescricaoProblema}
-                        placeholder="Descreva o problema..."
-                        multiline
-                        numberOfLines={5}
-                    />
-
-
-                    {/* STATUS */}
-
-                    <Text style={Style.label}>
-                        Status
-                    </Text>
-
-
-                    <View style={Style.statusContainer}>
-
-                        <TouchableOpacity
-                            style={
-                                status === "Aberta"
-                                    ? Style.statusButtonAtivo
-                                    : Style.statusButton
-                            }
-                            onPress={() => setStatus("Aberta")}
-                        >
-
-                            <Text
-                                style={
-                                    status === "Aberta"
-                                        ? Style.statusTextAtivo
-                                        : Style.statusText
-                                }
-                            >
-                                Aberta
-                            </Text>
-
-                        </TouchableOpacity>
-
-
-                        <TouchableOpacity
-                            style={
-                                status === "Em Andamento"
-                                    ? Style.statusButtonAtivo
-                                    : Style.statusButton
-                            }
-                            onPress={() => setStatus("Em Andamento")}
-                        >
-
-                            <Text
-                                style={
-                                    status === "Em Andamento"
-                                        ? Style.statusTextAtivo
-                                        : Style.statusText
-                                }
-                            >
-                                Em Andamento
-                            </Text>
-
-                        </TouchableOpacity>
-
-
-                        <TouchableOpacity
-                            style={
-                                status === "Concluída"
-                                    ? Style.statusButtonAtivo
-                                    : Style.statusButton
-                            }
-                            onPress={() => setStatus("Concluída")}
-                        >
-
-                            <Text
-                                style={
-                                    status === "Concluída"
-                                        ? Style.statusTextAtivo
-                                        : Style.statusText
-                                }
-                            >
-                                Concluída
-                            </Text>
-
-                        </TouchableOpacity>
+                        <Text style={Style.subtitle}>
+                            Altere os dados da Ordem de Serviço
+                        </Text>
 
                     </View>
 
 
-                    {/* FOTO */}
+                    {/* =====================================
+                        FORMULÁRIO
+                    ===================================== */}
 
-                    <Text style={Style.label}>
-                        Foto do Problema
-                    </Text>
+                    <View style={Style.form}>
 
 
-                    {fotoAtual ? (
+                        {/* NÚMERO */}
+
+                        <Text style={Style.label}>
+                            Número da OS
+                        </Text>
+
+                        <TextInput
+                            style={Style.inputDisabled}
+                            value={String(os.numeroOS || "")}
+                            editable={false}
+                        />
+
+
+                        {/* TÍTULO */}
+
+                        <Text style={Style.label}>
+                            Título do problema
+                        </Text>
+
+                        <TextInput
+                            style={Style.input}
+                            value={tituloProblema}
+                            onChangeText={setTituloProblema}
+                            placeholder="Título do problema"
+                        />
+
+
+                        {/* MÁQUINA */}
+
+                        <Text style={Style.label}>
+                            Máquina / Equipamento
+                        </Text>
+
+                        <TextInput
+                            style={Style.input}
+                            value={maquinaEquipamento}
+                            onChangeText={setMaquinaEquipamento}
+                            placeholder="Máquina ou equipamento"
+                        />
+
+
+                        {/* LOCAL */}
+
+                        <Text style={Style.label}>
+                            Local / Setor
+                        </Text>
+
+                        <TextInput
+                            style={Style.input}
+                            value={localSetor}
+                            onChangeText={setLocalSetor}
+                            placeholder="Local / setor"
+                        />
+
+
+                        {/* DESCRIÇÃO */}
+
+                        <Text style={Style.label}>
+                            Descrição do problema
+                        </Text>
+
+                        <TextInput
+                            style={[
+                                Style.input,
+                                Style.textArea
+                            ]}
+                            value={descricaoProblema}
+                            onChangeText={setDescricaoProblema}
+                            placeholder="Descreva o problema..."
+                            multiline
+                            numberOfLines={5}
+                        />
+
+
+                        {/* =====================================
+                            STATUS
+                        ===================================== */}
+
+                        <Text style={Style.label}>
+                            Status
+                        </Text>
+
+
+                        <View style={Style.statusContainer}>
+
+
+                            {/* ABERTA */}
+
+                            <TouchableOpacity
+                                style={
+                                    status === "Aberta"
+                                        ? Style.statusButtonAtivo
+                                        : Style.statusButton
+                                }
+
+                                onPress={() =>
+                                    setStatus("Aberta")
+                                }
+                            >
+
+                                <Text
+                                    style={
+                                        status === "Aberta"
+                                            ? Style.statusTextAtivo
+                                            : Style.statusText
+                                    }
+                                >
+                                    Aberta
+                                </Text>
+
+                            </TouchableOpacity>
+
+
+                            {/* EM ANDAMENTO */}
+
+                            <TouchableOpacity
+                                style={
+                                    status === "Em Andamento"
+                                        ? Style.statusButtonAtivo
+                                        : Style.statusButton
+                                }
+
+                                onPress={() =>
+                                    setStatus("Em Andamento")
+                                }
+                            >
+
+                                <Text
+                                    style={
+                                        status === "Em Andamento"
+                                            ? Style.statusTextAtivo
+                                            : Style.statusText
+                                    }
+                                >
+                                    Em Andamento
+                                </Text>
+
+                            </TouchableOpacity>
+
+
+                            {/* CONCLUÍDA */}
+
+                            <TouchableOpacity
+                                style={
+                                    status === "Concluída"
+                                        ? Style.statusButtonAtivo
+                                        : Style.statusButton
+                                }
+
+                                onPress={() =>
+                                    setStatus("Concluída")
+                                }
+                            >
+
+                                <Text
+                                    style={
+                                        status === "Concluída"
+                                            ? Style.statusTextAtivo
+                                            : Style.statusText
+                                    }
+                                >
+                                    Concluída
+                                </Text>
+
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                        {/* =====================================
+                            FOTO
+                        ===================================== */}
+
+                        <Text style={Style.label}>
+                            Foto do Problema
+                        </Text>
+
+
+                        {urlFotoAtual ? (
+
+                            <TouchableOpacity
+                                style={Style.imageContainer}
+                                activeOpacity={0.85}
+                                onPress={() =>
+                                    setImagemExpandida(true)
+                                }
+                            >
+
+                                <Image
+                                    source={{
+                                        uri: urlFotoAtual
+                                    }}
+
+                                    style={Style.preview}
+
+                                    resizeMode="cover"
+
+                                    onLoad={() => {
+
+                                        console.log(
+                                            "FOTO CARREGADA:",
+                                            urlFotoAtual
+                                        );
+
+                                    }}
+
+                                    onError={(e) => {
+
+                                        console.log(
+                                            "========== ERRO FOTO =========="
+                                        );
+
+                                        console.log(
+                                            "URL:",
+                                            urlFotoAtual
+                                        );
+
+                                        console.log(
+                                            "ERRO:",
+                                            e.nativeEvent
+                                        );
+
+                                    }}
+                                />
+
+
+                                <Text style={Style.imageHint}>
+                                    Toque na imagem para ampliar
+                                </Text>
+
+                            </TouchableOpacity>
+
+                        ) : (
+
+                            <Text style={Style.semFoto}>
+                                Nenhuma foto cadastrada.
+                            </Text>
+
+                        )}
+
+
+                        {/* =====================================
+                            BOTÃO FOTO
+                        ===================================== */}
+
+                        <TouchableOpacity
+                            style={Style.photoButton}
+                            activeOpacity={0.8}
+                            onPress={selecionarFoto}
+                        >
+
+                            <Text style={Style.photoButtonText}>
+
+                                {fotoAtual
+                                    ? "Trocar foto"
+                                    : "Adicionar foto"
+                                }
+
+                            </Text>
+
+                        </TouchableOpacity>
+
+
+                        {/* =====================================
+                            BOTÕES
+                        ===================================== */}
+
+                        <View style={Style.buttonsContainer}>
+
+
+                            {/* SALVAR */}
+
+                            <TouchableOpacity
+                                style={Style.button}
+                                activeOpacity={0.8}
+                                onPress={editarOS}
+                                disabled={salvando}
+                            >
+
+                                <Text style={Style.buttonText}>
+
+                                    {salvando
+                                        ? "Salvando..."
+                                        : "Salvar alterações"
+                                    }
+
+                                </Text>
+
+                            </TouchableOpacity>
+
+
+                            {/* CANCELAR */}
+
+                            <TouchableOpacity
+                                style={Style.cancelButton}
+                                activeOpacity={0.8}
+                                onPress={cancelarEdicao}
+                                disabled={salvando}
+                            >
+
+                                <Text style={Style.cancelButtonText}>
+                                    Cancelar
+                                </Text>
+
+                            </TouchableOpacity>
+
+                        </View>
+
+
+                    </View>
+
+                </ScrollView>
+
+            </View>
+
+
+            {/* =================================================
+                MODAL DA IMAGEM
+            ================================================= */}
+
+            <Modal
+                visible={imagemExpandida}
+                transparent
+                animationType="fade"
+                onRequestClose={() =>
+                    setImagemExpandida(false)
+                }
+            >
+
+                <View style={Style.modalContainer}>
+
+                    <StatusBar
+                        backgroundColor="#000"
+                        barStyle="light-content"
+                    />
+
+
+                    {/* BOTÃO FECHAR */}
+
+                    <Pressable
+                        onPress={() =>
+                            setImagemExpandida(false)
+                        }
+
+                        style={Style.closeButton}
+                    >
+
+                        <Text style={Style.closeButtonText}>
+                            ×
+                        </Text>
+
+                    </Pressable>
+
+
+                    {/* IMAGEM */}
+
+                    {urlFotoAtual && (
 
                         <Image
                             source={{
-                                uri: fotoAtual.startsWith("http")
-                                    ? fotoAtual
-                                    : `${URL_API}${fotoAtual}`
+                                uri: urlFotoAtual
                             }}
-                            style={Style.preview}
-                            resizeMode="cover"
+
+                            style={Style.expandedImage}
+
+                            resizeMode="contain"
                         />
-
-                    ) : (
-
-                        <Text style={Style.semFoto}>
-                            Nenhuma foto cadastrada.
-                        </Text>
 
                     )}
 
-
-                    {/* BOTÃO FOTO */}
-
-                    <TouchableOpacity
-                        style={Style.photoButton}
-                        activeOpacity={0.8}
-                        onPress={selecionarFoto}
-                    >
-
-                        <Text style={Style.photoButtonText}>
-                            {fotoAtual
-                                ? "Trocar foto"
-                                : "Adicionar foto"
-                            }
-                        </Text>
-
-                    </TouchableOpacity>
-
-
-                    {/* BOTÕES DE AÇÃO */}
-
-                    <View style={Style.buttonsContainer}>
-
-                       
-
-
-                        {/* SALVAR */}
-
-                        <TouchableOpacity
-                            style={Style.button}
-                            activeOpacity={0.8}
-                            onPress={editarOS}
-                            disabled={salvando}
-                        >
-
-                            <Text style={Style.buttonText}>
-
-                                {salvando
-                                    ? "Salvando..."
-                                    : "Salvar alterações"
-                                }
-
-                            </Text>
-
-                        </TouchableOpacity>
-
-                         {/* CANCELAR */}
-
-                        <TouchableOpacity
-                            style={Style.cancelButton}
-                            activeOpacity={0.8}
-                            onPress={cancelarEdicao}
-                            disabled={salvando}
-                        >
-
-                            <Text style={Style.cancelButtonText}>
-                                Cancelar
-                            </Text>
-
-                        </TouchableOpacity>
-
-                    </View>
-
-
                 </View>
 
-            </ScrollView>
+            </Modal>
 
-        </View>
+        </KeyboardAvoidingView>
     );
 };

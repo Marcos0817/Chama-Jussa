@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 import {
@@ -7,23 +6,17 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
+  Modal,
+  Pressable,
+  StatusBar
 } from "react-native";
 
 import { DetalheStyle } from "./DetalheOSStyle";
 import { Footer } from "../../components/footer/Footer";
 import { api } from "../../services/api";
 
-
 export const DetalheOS = ({ route, navigation }) => {
-
-  /*
-   * A tela pode receber:
-   *
-   * 1 - os completa, quando vem da ListaOS
-   *
-   * 2 - idOS, quando vem da Notificação
-   */
 
   const osRecebida = route.params?.os;
   const idOS = route.params?.idOS;
@@ -31,17 +24,14 @@ export const DetalheOS = ({ route, navigation }) => {
   const [os, setOs] = useState(osRecebida || null);
   const [carregando, setCarregando] = useState(!osRecebida);
 
+  const [imagemExpandida, setImagemExpandida] = useState(false);
 
-  /*
-   * URL DA API
-   */
-
-  const URL_API = "http://10.151.208.52:5175/";
+  const URL_API = "http://172.16.36.27:5175";
 
 
-  /*
-   * BUSCAR OS PELO ID
-   */
+  // =====================================================
+  // BUSCAR OS
+  // =====================================================
 
   const getOS = async () => {
 
@@ -49,14 +39,10 @@ export const DetalheOS = ({ route, navigation }) => {
 
       setCarregando(true);
 
-      console.log(
-        "Buscando OS:",
-        idOS
-      );
+      console.log("Buscando OS:", idOS);
 
-      const resposta = await api.get(
-        `/OrdemServico/${idOS}`
-      );
+      const resposta =
+        await api.get(`/OrdemServico/${idOS}`);
 
       console.log(
         "OS encontrada:",
@@ -75,16 +61,6 @@ export const DetalheOS = ({ route, navigation }) => {
 
       if (erro.response) {
 
-        console.log(
-          "Status:",
-          erro.response.status
-        );
-
-        console.log(
-          "Dados:",
-          erro.response.data
-        );
-
         Alert.alert(
           "Erro",
           "Não foi possível carregar os detalhes da OS."
@@ -96,7 +72,6 @@ export const DetalheOS = ({ route, navigation }) => {
           "Erro",
           "Não foi possível conectar com a API."
         );
-
       }
 
     } finally {
@@ -107,15 +82,17 @@ export const DetalheOS = ({ route, navigation }) => {
   };
 
 
-  /*
-   * EXCLUIR OS
-   */
+  // =====================================================
+  // EXCLUIR OS
+  // =====================================================
 
   const excluirOS = () => {
 
     Alert.alert(
       "Excluir Ordem de Serviço",
+
       "Tem certeza que deseja excluir esta Ordem de Serviço?",
+
       [
         {
           text: "Cancelar",
@@ -124,16 +101,12 @@ export const DetalheOS = ({ route, navigation }) => {
 
         {
           text: "Excluir",
+
           style: "destructive",
 
           onPress: async () => {
 
             try {
-
-              console.log(
-                "Excluindo OS:",
-                os.idOS
-              );
 
               await api.delete(
                 `/OrdemServico/${os.idOS}`
@@ -141,15 +114,15 @@ export const DetalheOS = ({ route, navigation }) => {
 
               Alert.alert(
                 "Sucesso",
+
                 "Ordem de Serviço excluída com sucesso!",
+
                 [
                   {
                     text: "OK",
 
-                    onPress: () => {
-                      navigation.replace("ListaOS");
-                    }
-
+                    onPress: () =>
+                      navigation.replace("ListaOS")
                   }
                 ]
               );
@@ -157,87 +130,68 @@ export const DetalheOS = ({ route, navigation }) => {
             } catch (erro) {
 
               console.log(
-                "========== ERRO AO EXCLUIR OS =========="
-              );
-
-              console.log(
-                "Erro:",
+                "Erro ao excluir OS:",
                 erro
               );
 
-              if (erro.response) {
-
-                console.log(
-                  "Status:",
-                  erro.response.status
-                );
-
-                console.log(
-                  "Dados:",
-                  erro.response.data
-                );
-
-                Alert.alert(
-                  "Erro",
-                  "Não foi possível excluir a Ordem de Serviço."
-                );
-
-              } else {
-
-                Alert.alert(
-                  "Erro",
-                  "Não foi possível conectar com a API."
-                );
-
-              }
-
+              Alert.alert(
+                "Erro",
+                "Não foi possível excluir a Ordem de Serviço."
+              );
             }
-
           }
-
         }
-
       ]
     );
   };
 
 
-  /*
-   * Se recebemos somente o ID,
-   * buscamos a OS na API.
-   */
+  // =====================================================
+  // BUSCAR OS AO ABRIR
+  // =====================================================
 
   useEffect(() => {
 
     if (!osRecebida && idOS) {
-
       getOS();
-
     }
 
   }, [idOS]);
 
 
-  /*
-   * MONTA A URL DA FOTO
-   */
+  // =====================================================
+  // URL DA FOTO
+  // =====================================================
 
   const getUrlFoto = () => {
 
     if (!os?.fotoProblema) {
-
       return null;
+    }
+
+    const foto = os.fotoProblema;
+
+    if (
+      foto.startsWith("http") ||
+      foto.startsWith("data:")
+    ) {
+
+      return foto;
 
     }
 
-    return `${URL_API}${os.fotoProblema}`;
+    const caminhoFormatado =
+      foto.startsWith("/")
+        ? foto
+        : `/${foto}`;
 
+    return `${URL_API}${caminhoFormatado}`;
   };
 
 
-  /*
-   * CARREGANDO
-   */
+  // =====================================================
+  // CARREGANDO
+  // =====================================================
 
   if (carregando) {
 
@@ -252,15 +206,13 @@ export const DetalheOS = ({ route, navigation }) => {
         <Footer navigation={navigation} />
 
       </View>
-
     );
-
   }
 
 
-  /*
-   * CASO NÃO ENCONTRE A OS
-   */
+  // =====================================================
+  // OS NÃO ENCONTRADA
+  // =====================================================
 
   if (!os) {
 
@@ -275,26 +227,33 @@ export const DetalheOS = ({ route, navigation }) => {
         <Footer navigation={navigation} />
 
       </View>
-
     );
-
   }
 
 
   const urlFoto = getUrlFoto();
 
 
+  // =====================================================
+  // TELA
+  // =====================================================
+
   return (
 
     <View style={DetalheStyle.container}>
 
-
-      {/* TÍTULO DA PÁGINA */}
+      {/* =================================================
+          TÍTULO
+      ================================================= */}
 
       <Text style={DetalheStyle.pageTitle}>
         Detalhes da OS-{os.numeroOS}
       </Text>
 
+
+      {/* =================================================
+          CONTEÚDO
+      ================================================= */}
 
       <ScrollView
         style={DetalheStyle.scroll}
@@ -304,22 +263,27 @@ export const DetalheOS = ({ route, navigation }) => {
 
         <View style={DetalheStyle.card}>
 
-
-          {/* TÍTULO DO PROBLEMA */}
+          {/* =================================================
+              TÍTULO DA OS
+          ================================================= */}
 
           <Text style={DetalheStyle.osTitle}>
             {os.tituloProblema}
           </Text>
 
 
-          {/* STATUS */}
+          {/* =================================================
+              STATUS
+          ================================================= */}
 
           <Text style={DetalheStyle.date}>
             Status: {os.status}
           </Text>
 
 
-          {/* MÁQUINA / EQUIPAMENTO */}
+          {/* =================================================
+              MÁQUINA
+          ================================================= */}
 
           <View style={DetalheStyle.infoRow}>
 
@@ -344,7 +308,9 @@ export const DetalheOS = ({ route, navigation }) => {
           </View>
 
 
-          {/* LOCAL / SETOR */}
+          {/* =================================================
+              LOCAL
+          ================================================= */}
 
           <View style={DetalheStyle.infoRow}>
 
@@ -369,7 +335,9 @@ export const DetalheOS = ({ route, navigation }) => {
           </View>
 
 
-          {/* SOLICITANTE */}
+          {/* =================================================
+              SOLICITANTE
+          ================================================= */}
 
           <View style={DetalheStyle.infoRow}>
 
@@ -394,12 +362,16 @@ export const DetalheOS = ({ route, navigation }) => {
           </View>
 
 
-          {/* DIVISÓRIA */}
+          {/* =================================================
+              DIVISÓRIA
+          ================================================= */}
 
           <View style={DetalheStyle.divider} />
 
 
-          {/* DESCRIÇÃO */}
+          {/* =================================================
+              DESCRIÇÃO
+          ================================================= */}
 
           <Text style={DetalheStyle.sectionTitle}>
             Descrição do Problema
@@ -410,7 +382,9 @@ export const DetalheOS = ({ route, navigation }) => {
           </Text>
 
 
-          {/* FOTO */}
+          {/* =================================================
+              FOTO
+          ================================================= */}
 
           <Text style={DetalheStyle.sectionTitle}>
             Foto do Problema
@@ -419,13 +393,37 @@ export const DetalheOS = ({ route, navigation }) => {
 
           {urlFoto ? (
 
-            <Image
-              source={{
-                uri: urlFoto
-              }}
-              style={DetalheStyle.problemImage}
-              resizeMode="cover"
-            />
+            <TouchableOpacity
+              style={DetalheStyle.imageTouchable}
+              activeOpacity={0.85}
+              onPress={() => setImagemExpandida(true)}
+            >
+
+              <Image
+                source={{
+                  uri: urlFoto
+                }}
+
+                style={DetalheStyle.problemImage}
+
+                resizeMode="cover"
+
+                onError={(e) => {
+
+                  console.log(
+                    "Erro ao carregar imagem:",
+                    urlFoto,
+                    e.nativeEvent.error
+                  );
+
+                }}
+              />
+
+              <Text style={DetalheStyle.imageHint}>
+                Toque na imagem para ampliar
+              </Text>
+
+            </TouchableOpacity>
 
           ) : (
 
@@ -436,11 +434,11 @@ export const DetalheOS = ({ route, navigation }) => {
           )}
 
 
-          {/* BOTÕES */}
+          {/* =================================================
+              BOTÕES
+          ================================================= */}
 
           <View style={DetalheStyle.buttonsContainer}>
-
-            {/* EDITAR */}
 
             <TouchableOpacity
               style={DetalheStyle.editButton}
@@ -448,9 +446,7 @@ export const DetalheOS = ({ route, navigation }) => {
               onPress={() =>
                 navigation.navigate(
                   "EditarOS",
-                  {
-                    os: os
-                  }
+                  { os }
                 )
               }
             >
@@ -461,8 +457,6 @@ export const DetalheOS = ({ route, navigation }) => {
 
             </TouchableOpacity>
 
-
-            {/* EXCLUIR */}
 
             <TouchableOpacity
               style={DetalheStyle.deleteButton}
@@ -478,19 +472,88 @@ export const DetalheOS = ({ route, navigation }) => {
 
           </View>
 
-
         </View>
 
       </ScrollView>
 
 
-      {/* FOOTER */}
+      {/* =====================================================
+          MODAL DA IMAGEM
+      ===================================================== */}
+
+      <Modal
+        visible={imagemExpandida}
+        transparent
+        animationType="fade"
+        onRequestClose={() =>
+          setImagemExpandida(false)
+        }
+      >
+
+        <View style={DetalheStyle.modalContainer}>
+
+          {/* STATUS BAR */}
+
+          <StatusBar
+            backgroundColor="#000"
+            barStyle="light-content"
+          />
+
+
+          {/* BOTÃO FECHAR */}
+
+          <Pressable
+            onPress={() =>
+              setImagemExpandida(false)
+            }
+
+            style={DetalheStyle.closeButton}
+          >
+
+            <Text style={DetalheStyle.closeButtonText}>
+              ×
+            </Text>
+
+          </Pressable>
+
+
+          {/* IMAGEM */}
+
+          {urlFoto && (
+
+            <Image
+              source={{
+                uri: urlFoto
+              }}
+
+              style={DetalheStyle.expandedImage}
+
+              resizeMode="contain"
+
+              onError={(e) => {
+
+                console.log(
+                  "Erro ao carregar imagem expandida:",
+                  urlFoto,
+                  e.nativeEvent.error
+                );
+
+              }}
+            />
+
+          )}
+
+        </View>
+
+      </Modal>
+
+
+      {/* =================================================
+          FOOTER
+      ================================================= */}
 
       <Footer navigation={navigation} />
 
     </View>
-
   );
-
 };
-

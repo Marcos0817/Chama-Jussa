@@ -1,11 +1,14 @@
+
 import React, { useEffect, useState } from "react";
+
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   Image,
-  Alert
+  Alert,
+  Modal
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -19,13 +22,31 @@ import { PerfilStyle } from "./PerfilStyle";
 import { Footer } from "../../components/footer/Footer";
 import { api } from "../../services/api";
 
+
 export const Perfil = ({ navigation }) => {
 
+  // =====================================================
+  // ESTADOS
+  // =====================================================
+
   const [usuario, setUsuario] = useState(null);
+
   const [carregando, setCarregando] = useState(true);
 
-  // IP da sua API
-  const URL_API = "http://10.151.208.52:5175/";
+  // Controla a abertura da foto expandida
+  const [fotoExpandida, setFotoExpandida] = useState(false);
+
+
+  // =====================================================
+  // URL DA API
+  // =====================================================
+
+  const URL_API = "http://172.16.36.27:5175";
+
+
+  // =====================================================
+  // BUSCAR PERFIL
+  // =====================================================
 
   const getPerfil = async () => {
 
@@ -33,9 +54,34 @@ export const Perfil = ({ navigation }) => {
 
       setCarregando(true);
 
-      const idUsuario = await AsyncStorage.getItem("idUsuario");
+      // -------------------------------------------------
+      // PEGAR ID DO USUÁRIO
+      // -------------------------------------------------
 
-      console.log("ID do usuário:", idUsuario);
+      const idUsuario =
+        await AsyncStorage.getItem("idUsuario");
+
+
+      console.log(
+        "===================================="
+      );
+
+      console.log(
+        "ID DO USUÁRIO:"
+      );
+
+      console.log(
+        idUsuario
+      );
+
+      console.log(
+        "===================================="
+      );
+
+
+      // -------------------------------------------------
+      // VERIFICAR ID
+      // -------------------------------------------------
 
       if (!idUsuario) {
 
@@ -47,42 +93,103 @@ export const Perfil = ({ navigation }) => {
         return;
       }
 
-      const resposta = await api.get(
-        `/Usuario/${idUsuario}`
-      );
 
-      console.log("Dados do usuário:", resposta.data);
+      // -------------------------------------------------
+      // BUSCAR USUÁRIO
+      // -------------------------------------------------
+
+      const resposta =
+        await api.get(
+          `/Usuario/${idUsuario}`
+        );
+
 
       console.log(
-        "Foto do usuário:",
-        resposta.data.fotoPerfil
+        "===================================="
       );
 
+      console.log(
+        "DADOS DO USUÁRIO:"
+      );
+
+      console.log(
+        resposta.data
+      );
+
+      console.log(
+        "===================================="
+      );
+
+
+      // -------------------------------------------------
+      // FOTO
+      // -------------------------------------------------
+
+      console.log(
+        "===================================="
+      );
+
+      console.log(
+        "FOTO DE PERFIL RECEBIDA:"
+      );
+
+      console.log(
+        resposta.data?.fotoPerfil
+      );
+
+      console.log(
+        "===================================="
+      );
+
+
+      // -------------------------------------------------
+      // SALVAR USUÁRIO
+      // -------------------------------------------------
+
       setUsuario(resposta.data);
+
 
     } catch (erro) {
 
       console.log(
-        "Erro ao buscar perfil:",
+        "===================================="
+      );
+
+      console.log(
+        "ERRO AO BUSCAR PERFIL"
+      );
+
+      console.log(
         erro
       );
+
+      console.log(
+        "===================================="
+      );
+
+
+      // -------------------------------------------------
+      // ERRO DA API
+      // -------------------------------------------------
 
       if (erro.response) {
 
         console.log(
-          "Status:",
+          "STATUS:",
           erro.response.status
         );
 
         console.log(
-          "Dados:",
+          "DADOS:",
           erro.response.data
         );
+
 
         Alert.alert(
           "Erro",
           "Não foi possível carregar seus dados."
         );
+
 
       } else {
 
@@ -98,8 +205,13 @@ export const Perfil = ({ navigation }) => {
       setCarregando(false);
 
     }
+
   };
 
+
+  // =====================================================
+  // CARREGAR PERFIL
+  // =====================================================
 
   useEffect(() => {
 
@@ -108,65 +220,201 @@ export const Perfil = ({ navigation }) => {
   }, []);
 
 
+  // =====================================================
+  // SAIR DA CONTA
+  // =====================================================
+
   const sair = async () => {
 
     Alert.alert(
+
       "Sair",
+
       "Deseja realmente sair da sua conta?",
+
       [
+
         {
           text: "Cancelar",
+
           style: "cancel"
         },
+
         {
+
           text: "Sair",
+
           onPress: async () => {
 
-            await AsyncStorage.removeItem("token");
-            await AsyncStorage.removeItem("idUsuario");
-            await AsyncStorage.removeItem("nomeUsuario");
-            await AsyncStorage.removeItem("emailUsuario");
+            try {
 
-            navigation.reset({
-              index: 0,
-              routes: [
-                {
-                  name: "Login"
-                }
-              ]
-            });
+              await AsyncStorage.removeItem(
+                "token"
+              );
+
+              await AsyncStorage.removeItem(
+                "idUsuario"
+              );
+
+              await AsyncStorage.removeItem(
+                "nomeUsuario"
+              );
+
+              await AsyncStorage.removeItem(
+                "emailUsuario"
+              );
+
+
+              navigation.reset({
+
+                index: 0,
+
+                routes: [
+                  {
+                    name: "Login"
+                  }
+                ]
+
+              });
+
+            } catch (erro) {
+
+              console.log(
+                "Erro ao sair:",
+                erro
+              );
+
+            }
 
           }
+
         }
+
       ]
+
     );
+
   };
 
 
-  /*
-   * Monta a URL completa da foto
-   */
+  // =====================================================
+  // MONTAR URL DA FOTO
+  // =====================================================
 
   const getUrlFoto = () => {
 
+    // ---------------------------------------------------
+    // NÃO EXISTE FOTO
+    // ---------------------------------------------------
+
     if (!usuario?.fotoPerfil) {
+
+      console.log(
+        "Usuário não possui foto de perfil."
+      );
+
       return null;
     }
 
-    // Se a API já devolver uma URL completa
+
+    const foto =
+      String(usuario.fotoPerfil).trim();
+
+
+    console.log(
+      "===================================="
+    );
+
+    console.log(
+      "MONTANDO URL DA FOTO"
+    );
+
+    console.log(
+      "Foto recebida:",
+      foto
+    );
+
+
+    // ---------------------------------------------------
+    // URL COMPLETA
+    // ---------------------------------------------------
+
     if (
-      usuario.fotoPerfil.startsWith("http://") ||
-      usuario.fotoPerfil.startsWith("https://")
+      foto.startsWith("http://") ||
+      foto.startsWith("https://")
     ) {
-      return usuario.fotoPerfil;
+
+      console.log(
+        "Foto já é uma URL completa:"
+      );
+
+      console.log(
+        foto
+      );
+
+      return foto;
     }
 
-    return `${URL_API}${usuario.fotoPerfil}`;
+
+    // ---------------------------------------------------
+    // BASE64
+    // ---------------------------------------------------
+
+    if (
+      foto.startsWith("data:")
+    ) {
+
+      console.log(
+        "Foto está em formato Base64."
+      );
+
+      return foto;
+    }
+
+
+    // ---------------------------------------------------
+    // CAMINHO RELATIVO
+    // ---------------------------------------------------
+
+    const caminhoFormatado =
+      foto.startsWith("/")
+        ? foto
+        : `/${foto}`;
+
+
+    const urlFinal =
+      `${URL_API}${caminhoFormatado}`;
+
+
+    console.log(
+      "URL FINAL DA FOTO:"
+    );
+
+    console.log(
+      urlFinal
+    );
+
+    console.log(
+      "===================================="
+    );
+
+
+    return urlFinal;
+
   };
 
 
-  const urlFoto = getUrlFoto();
+  // =====================================================
+  // URL FINAL DA FOTO
+  // =====================================================
 
+  const urlFoto =
+    getUrlFoto();
+
+
+  // =====================================================
+  // TELA
+  // =====================================================
 
   return (
 
@@ -177,16 +425,30 @@ export const Perfil = ({ navigation }) => {
         edges={["top", "bottom"]}
       >
 
+        {/* =================================================
+            TÍTULO
+        ================================================= */}
+
         <Text style={PerfilStyle.title}>
           Perfil
         </Text>
 
 
+        {/* =================================================
+            CONTEÚDO
+        ================================================= */}
+
         <ScrollView
           style={PerfilStyle.scroll}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={PerfilStyle.scrollContent}
+          contentContainerStyle={
+            PerfilStyle.scrollContent
+          }
         >
+
+          {/* =================================================
+              CARREGANDO
+          ================================================= */}
 
           {carregando ? (
 
@@ -198,11 +460,33 @@ export const Perfil = ({ navigation }) => {
 
             <>
 
-              {/* CARD DO USUÁRIO */}
+              {/* =============================================
+                  CARD DO USUÁRIO
+              ============================================= */}
 
               <View style={PerfilStyle.card}>
 
-                <View style={PerfilStyle.avatar}>
+                {/* =========================================
+                    AVATAR
+                ========================================= */}
+
+                <TouchableOpacity
+
+                  activeOpacity={0.8}
+
+                  onPress={() => {
+
+                    if (urlFoto) {
+
+                      setFotoExpandida(true);
+
+                    }
+
+                  }}
+
+                  style={PerfilStyle.avatar}
+
+                >
 
                   {urlFoto ? (
 
@@ -210,66 +494,186 @@ export const Perfil = ({ navigation }) => {
                       source={{
                         uri: urlFoto
                       }}
-                      style={PerfilStyle.avatarImage}
+                      style={
+                        PerfilStyle.avatarImage
+                      }
                       resizeMode="cover"
+
+                      onLoad={() => {
+
+                        console.log(
+                          "===================================="
+                        );
+
+                        console.log(
+                          "FOTO DE PERFIL CARREGADA COM SUCESSO"
+                        );
+
+                        console.log(
+                          "URL:",
+                          urlFoto
+                        );
+
+                        console.log(
+                          "===================================="
+                        );
+
+                      }}
+
+                      onError={(erro) => {
+
+                        console.log(
+                          "===================================="
+                        );
+
+                        console.log(
+                          "ERRO AO CARREGAR FOTO DE PERFIL"
+                        );
+
+                        console.log(
+                          "URL:",
+                          urlFoto
+                        );
+
+                        console.log(
+                          "ERRO:",
+                          erro.nativeEvent
+                        );
+
+                        console.log(
+                          "===================================="
+                        );
+
+                      }}
+
                     />
 
                   ) : (
 
-                    <Text style={PerfilStyle.avatarText}>
-                      {usuario?.nome
-                        ? usuario.nome.charAt(0).toUpperCase()
-                        : "U"
+                    <Text
+                      style={
+                        PerfilStyle.avatarText
                       }
+                    >
+
+                      {usuario?.nome
+
+                        ? usuario.nome
+                            .charAt(0)
+                            .toUpperCase()
+
+                        : "U"
+
+                      }
+
                     </Text>
 
                   )}
 
-                </View>
+                </TouchableOpacity>
 
+
+                {/* =========================================
+                    NOME
+                ========================================= */}
 
                 <Text style={PerfilStyle.nome}>
-                  {usuario?.nome || "Usuário"}
+
+                  {usuario?.nome ||
+                    "Usuário"}
+
                 </Text>
 
 
+                {/* =========================================
+                    EMAIL
+                ========================================= */}
+
                 <Text style={PerfilStyle.email}>
+
                   {usuario?.email || ""}
+
                 </Text>
 
               </View>
 
 
-              {/* INFORMAÇÕES */}
+              {/* =================================================
+                  INFORMAÇÕES PESSOAIS
+              ================================================= */}
 
               <View style={PerfilStyle.section}>
 
-                <Text style={PerfilStyle.sectionTitle}>
+                <Text
+                  style={
+                    PerfilStyle.sectionTitle
+                  }
+                >
                   Informações pessoais
                 </Text>
 
 
-                <View style={PerfilStyle.infoBox}>
+                {/* =============================================
+                    NOME
+                ============================================= */}
 
-                  <Text style={PerfilStyle.label}>
+                <View
+                  style={
+                    PerfilStyle.infoBox
+                  }
+                >
+
+                  <Text
+                    style={
+                      PerfilStyle.label
+                    }
+                  >
                     Nome
                   </Text>
 
-                  <Text style={PerfilStyle.value}>
-                    {usuario?.nome || "Não informado"}
+
+                  <Text
+                    style={
+                      PerfilStyle.value
+                    }
+                  >
+
+                    {usuario?.nome ||
+                      "Não informado"}
+
                   </Text>
 
                 </View>
 
 
-                <View style={PerfilStyle.infoBox}>
+                {/* =============================================
+                    EMAIL
+                ============================================= */}
 
-                  <Text style={PerfilStyle.label}>
+                <View
+                  style={
+                    PerfilStyle.infoBox
+                  }
+                >
+
+                  <Text
+                    style={
+                      PerfilStyle.label
+                    }
+                  >
                     E-mail
                   </Text>
 
-                  <Text style={PerfilStyle.value}>
-                    {usuario?.email || "Não informado"}
+
+                  <Text
+                    style={
+                      PerfilStyle.value
+                    }
+                  >
+
+                    {usuario?.email ||
+                      "Não informado"}
+
                   </Text>
 
                 </View>
@@ -277,15 +681,27 @@ export const Perfil = ({ navigation }) => {
               </View>
 
 
-              {/* BOTÃO SAIR */}
+              {/* =================================================
+                  BOTÃO SAIR
+              ================================================= */}
 
               <TouchableOpacity
-                style={PerfilStyle.logoutButton}
+
+                style={
+                  PerfilStyle.logoutButton
+                }
+
                 activeOpacity={0.8}
+
                 onPress={sair}
+
               >
 
-                <Text style={PerfilStyle.logoutText}>
+                <Text
+                  style={
+                    PerfilStyle.logoutText
+                  }
+                >
                   Sair da conta
                 </Text>
 
@@ -298,10 +714,105 @@ export const Perfil = ({ navigation }) => {
         </ScrollView>
 
 
+        {/* =====================================================
+            MODAL DA FOTO EXPANDIDA
+        ===================================================== */}
+
+        <Modal
+
+          visible={fotoExpandida}
+
+          transparent={true}
+
+          animationType="fade"
+
+          onRequestClose={() => {
+            setFotoExpandida(false);
+          }}
+
+        >
+
+          {/* ===============================================
+              FUNDO DO MODAL
+          =============================================== */}
+
+          <TouchableOpacity
+
+            activeOpacity={1}
+
+            onPress={() => {
+              setFotoExpandida(false);
+            }}
+
+            style={PerfilStyle.modalBackground}
+
+          >
+
+            {/* ===========================================
+                BOTÃO FECHAR
+            =========================================== */}
+
+            <TouchableOpacity
+
+              onPress={() => {
+                setFotoExpandida(false);
+              }}
+
+              activeOpacity={0.7}
+
+              style={PerfilStyle.closeButton}
+
+            >
+
+              <Text
+                style={PerfilStyle.closeButtonText}
+              >
+                ×
+              </Text>
+
+            </TouchableOpacity>
+
+
+            {/* ===========================================
+                FOTO GRANDE
+            =========================================== */}
+
+            {urlFoto && (
+
+              <Image
+
+                source={{
+                  uri: urlFoto
+                }}
+
+                style={
+                  PerfilStyle.expandedImage
+                }
+
+                resizeMode="contain"
+
+              />
+
+            )}
+
+          </TouchableOpacity>
+
+        </Modal>
 
       </SafeAreaView>
-        <Footer navigation={navigation} />
+
+
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
+
+      <Footer
+        navigation={navigation}
+      />
 
     </SafeAreaProvider>
+
   );
+
 };
+

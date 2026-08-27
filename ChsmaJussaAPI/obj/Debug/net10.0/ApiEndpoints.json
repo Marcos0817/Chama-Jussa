@@ -84,11 +84,6 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "NumeroOS",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
         "Name": "TituloProblema",
         "Type": "System.String",
         "IsRequired": false
@@ -169,11 +164,6 @@
         "Name": "id",
         "Type": "System.String",
         "IsRequired": true
-      },
-      {
-        "Name": "NumeroOS",
-        "Type": "System.String",
-        "IsRequired": false
       },
       {
         "Name": "TituloProblema",
