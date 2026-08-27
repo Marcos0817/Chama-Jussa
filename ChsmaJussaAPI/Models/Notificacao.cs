@@ -40,4 +40,5 @@ public partial class Notificacao
     [ForeignKey("IdUsuario")]
     [InverseProperty("Notificacaos")]
     public virtual Usuario? IdUsuarioNavigation { get; set; }
+    
 }

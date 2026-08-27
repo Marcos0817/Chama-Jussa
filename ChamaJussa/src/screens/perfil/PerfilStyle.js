@@ -10,7 +10,7 @@ export const PerfilStyle = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: "#f1f1f1",
   },
 
 
@@ -19,10 +19,10 @@ export const PerfilStyle = StyleSheet.create({
   // =====================================================
 
   title: {
-    fontSize: 18,
+    fontSize: 28,
     fontWeight: "700",
     color: "#111111",
-    textAlign: "center",
+    marginLeft: 26,
     marginTop: 20,
     marginBottom: 20,
   },
@@ -68,6 +68,7 @@ export const PerfilStyle = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 3,
     marginBottom: 20,
+    height: 300
   },
 
 
@@ -76,12 +77,13 @@ export const PerfilStyle = StyleSheet.create({
   // =====================================================
 
   avatar: {
-    width: 75,
-    height: 75,
-    borderRadius: 40,
+    width: 110,
+    height: 110,
+    borderRadius: 60,
     backgroundColor: "#087FF5",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 25,
     marginBottom: 12,
     overflow: "hidden",
   },
@@ -106,9 +108,10 @@ export const PerfilStyle = StyleSheet.create({
   // =====================================================
 
   nome: {
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: "700",
     color: "#111111",
+    marginTop: 25,
     marginBottom: 5,
   },
 
@@ -118,7 +121,7 @@ export const PerfilStyle = StyleSheet.create({
   // =====================================================
 
   email: {
-    fontSize: 12,
+    fontSize: 15,
     color: "#777777",
   },
 
@@ -140,51 +143,37 @@ export const PerfilStyle = StyleSheet.create({
   },
 
 
-  // =====================================================
-  // INFORMAÇÕES
-  // =====================================================
 
-  infoBox: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 7,
-    padding: 15,
-    marginBottom: 10,
+ // =====================================================
+// BOTÃO SAIR
+// =====================================================
+
+logoutButton: {
+  height: 54,
+  backgroundColor: "#EF4444",
+  borderRadius: 10,
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: 10,
+
+  
+  shadowColor: "#000000",
+  shadowOffset: {
+    width: 0,
+    height: 4,
   },
+  shadowOpacity: 0.25,
+  shadowRadius: 4,
 
+ 
+  elevation: 5,
+},
 
-  label: {
-    fontSize: 11,
-    color: "#888888",
-    marginBottom: 5,
-  },
-
-
-  value: {
-    fontSize: 13,
-    color: "#111111",
-  },
-
-
-  // =====================================================
-  // BOTÃO SAIR
-  // =====================================================
-
-  logoutButton: {
-    height: 42,
-    borderWidth: 1,
-    borderColor: "#E53935",
-    borderRadius: 6,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-  },
-
-
-  logoutText: {
-    color: "#E53935",
-    fontSize: 13,
-    fontWeight: "600",
-  },
+logoutText: {
+  color: "#FFFFFF",
+  fontSize: 18,
+  fontWeight: "700",
+},
 
 
   // =====================================================

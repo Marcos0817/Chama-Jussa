@@ -15,5 +15,6 @@
         public string IdOS { get; set; }
 
         public string? NumeroOS { get; set; }
+        public object DataHora { get; internal set; }
     }
 }

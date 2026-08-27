@@ -30,6 +30,32 @@ export const DetalheOS = ({ route, navigation }) => {
 
 
   // =====================================================
+  // FORMATAR DATA E HORA
+  // =====================================================
+
+  const formatarDataHora = (data) => {
+
+    if (!data) {
+      return "Data não informada";
+    }
+
+    const dataObj = new Date(data);
+
+    if (isNaN(dataObj.getTime())) {
+      return "Data inválida";
+    }
+
+    return dataObj.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+
+  // =====================================================
   // BUSCAR OS
   // =====================================================
 
@@ -273,11 +299,11 @@ export const DetalheOS = ({ route, navigation }) => {
 
 
           {/* =================================================
-              STATUS
+              DATA E HORA DE PUBLICAÇÃO
           ================================================= */}
 
           <Text style={DetalheStyle.date}>
-            Status: {os.status}
+            Publicado em: {formatarDataHora(os.dataHoraCadastro)}
           </Text>
 
 

@@ -121,14 +121,31 @@ export const NovaOS = ({ navigation }) => {
 
 
             // ==============================
+            // DATA E HORA DO CADASTRO
+            // ==============================
+
+            const dataHoraCadastro =
+                new Date().toISOString();
+
+
+            console.log(
+                "Data e hora do cadastro:",
+                dataHoraCadastro
+            );
+
+
+            // ==============================
             // FORMDATA
             // ==============================
 
             const formData = new FormData();
 
 
-            // IMPORTANTE:
-            // Não enviamos NumeroOS.
+            // ==============================
+            // DADOS DA OS
+            // ==============================
+
+            // O NumeroOS não é enviado.
             // O backend gera automaticamente.
 
             formData.append(
@@ -162,6 +179,16 @@ export const NovaOS = ({ navigation }) => {
 
 
             // ==============================
+            // DATA E HORA
+            // ==============================
+
+            formData.append(
+                "DataHoraCadastro",
+                dataHoraCadastro
+            );
+
+
+            // ==============================
             // ADICIONA A IMAGEM
             // ==============================
 
@@ -188,6 +215,10 @@ export const NovaOS = ({ navigation }) => {
             }
 
 
+            // ==============================
+            // LOG DOS DADOS
+            // ==============================
+
             console.log(
                 "===================================="
             );
@@ -204,6 +235,7 @@ export const NovaOS = ({ navigation }) => {
                     localSetor,
                     descricaoProblema,
                     status: "Aberta",
+                    dataHoraCadastro,
                     possuiImagem: !!imagem
                 }
             );
@@ -248,6 +280,11 @@ export const NovaOS = ({ navigation }) => {
             console.log(
                 "Número gerado pelo backend:",
                 resposta.data?.numeroOS
+            );
+
+            console.log(
+                "Data/hora enviada:",
+                dataHoraCadastro
             );
 
             console.log(
@@ -373,12 +410,7 @@ export const NovaOS = ({ navigation }) => {
 
 
                             <Text style={Style.title}>
-                                Nova OS
-                            </Text>
-
-
-                            <Text style={Style.subtitle}>
-                                Cadastre uma nova Ordem de Serviço
+                                Criar ordem de serviço
                             </Text>
 
                         </View>
@@ -396,7 +428,7 @@ export const NovaOS = ({ navigation }) => {
                             ============================== */}
 
                             <Text style={Style.label}>
-                                Título do problema
+                                Título do problema *
                             </Text>
 
                             <TextInput
@@ -412,7 +444,7 @@ export const NovaOS = ({ navigation }) => {
                             ============================== */}
 
                             <Text style={Style.label}>
-                                Máquina / Equipamento
+                                Máquina / Equipamento *
                             </Text>
 
                             <TextInput
@@ -428,7 +460,7 @@ export const NovaOS = ({ navigation }) => {
                             ============================== */}
 
                             <Text style={Style.label}>
-                                Local / Setor
+                                Local / Setor *
                             </Text>
 
                             <TextInput
@@ -444,7 +476,7 @@ export const NovaOS = ({ navigation }) => {
                             ============================== */}
 
                             <Text style={Style.label}>
-                                Descrição do problema
+                                Descrição do problema *
                             </Text>
 
                             <TextInput
@@ -452,7 +484,7 @@ export const NovaOS = ({ navigation }) => {
                                     Style.input,
                                     Style.textArea
                                 ]}
-                                placeholder="Descreva o problema..."
+                                placeholder="Ex: Vazamento da pia"
                                 multiline
                                 numberOfLines={5}
                                 value={descricaoProblema}
@@ -465,7 +497,7 @@ export const NovaOS = ({ navigation }) => {
                             ============================== */}
 
                             <Text style={Style.label}>
-                                Foto do problema
+                                Imagem / Foto do problema
                             </Text>
 
 
@@ -476,7 +508,7 @@ export const NovaOS = ({ navigation }) => {
                             >
 
                                 <Text style={Style.imageButtonText}>
-                                    📷 Selecionar imagem
+                                    Insira imagem
                                 </Text>
 
                             </TouchableOpacity>

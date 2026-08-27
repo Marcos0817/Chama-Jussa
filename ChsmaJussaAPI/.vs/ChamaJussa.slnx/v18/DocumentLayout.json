@@ -3,8 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\models\\notificacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:models\\notificacao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\dtos\\ordemservicoresponsedto.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:dtos\\ordemservicoresponsedto.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\dtos\\ordemservicodto.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:dtos\\ordemservicodto.cs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\controllers\\notificacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:controllers\\notificacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\controllers\\ordemservicocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,18 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\controllers\\notificacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:controllers\\notificacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:controllers\\usuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|c:\\users\\54198904880\\desktop\\chama-jussa\\chsmajussaapi\\models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8B01C17E-51DF-9ED5-C5F8-EA39B1BC8C4C}|ChamaJussa.csproj|solutionrelative:models\\ordemservico.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,68 +51,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "OrdemServicoDTO.cs.cs",
-              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoDTO.cs.cs",
-              "RelativeDocumentMoniker": "DTOs\\OrdemServicoDTO.cs.cs",
-              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoDTO.cs.cs",
-              "RelativeToolTip": "DTOs\\OrdemServicoDTO.cs.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Title": "Notificacao.cs",
+              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Models\\Notificacao.cs",
+              "RelativeDocumentMoniker": "Models\\Notificacao.cs",
+              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Models\\Notificacao.cs",
+              "RelativeToolTip": "Models\\Notificacao.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowCoAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T12:20:47.519Z",
+              "WhenOpened": "2026-08-27T16:08:02.182Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UsuarioController.cs",
-              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\UsuarioController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsuarioController.cs",
-              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\UsuarioController.cs",
-              "RelativeToolTip": "Controllers\\UsuarioController.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAcwEoAAAAJAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "OrdemServicoResponseDTO.cs.cs",
+              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs",
+              "RelativeDocumentMoniker": "DTOs\\OrdemServicoResponseDTO.cs.cs",
+              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoResponseDTO.cs.cs",
+              "RelativeToolTip": "DTOs\\OrdemServicoResponseDTO.cs.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA5wBcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T16:00:25.761Z"
+              "WhenOpened": "2026-08-27T16:05:44.195Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "NotificacaoController.cs",
-              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\NotificacaoController.cs",
-              "RelativeDocumentMoniker": "Controllers\\NotificacaoController.cs",
-              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\NotificacaoController.cs",
-              "RelativeToolTip": "Controllers\\NotificacaoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T14:13:41.531Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "OrdemServico.cs",
               "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Models\\OrdemServico.cs",
               "RelativeDocumentMoniker": "Models\\OrdemServico.cs",
               "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Models\\OrdemServico.cs",
               "RelativeToolTip": "Models\\OrdemServico.cs",
-              "ViewState": "AgIAACgAAAAAAAAAAAA1wDkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAUwDgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T14:12:14.071Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAAFEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T12:08:11.666Z",
+              "WhenOpened": "2026-08-20T14:12:14.071Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "Properties\\launchSettings.json",
@@ -117,15 +102,64 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "UsuarioController.cs",
+              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\UsuarioController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsuarioController.cs",
+              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\UsuarioController.cs",
+              "RelativeToolTip": "Controllers\\UsuarioController.cs",
+              "ViewState": "AgIAAKcAAAAAAAAAAAAqwLcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-20T16:00:25.761Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NotificacaoController.cs",
+              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\NotificacaoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\NotificacaoController.cs",
+              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\NotificacaoController.cs",
+              "RelativeToolTip": "Controllers\\NotificacaoController.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAiwIYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-20T14:13:41.531Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "OrdemServicoController.cs",
               "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\OrdemServicoController.cs",
               "RelativeDocumentMoniker": "Controllers\\OrdemServicoController.cs",
               "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\OrdemServicoController.cs",
               "RelativeToolTip": "Controllers\\OrdemServicoController.cs",
-              "ViewState": "AgIAANQBAAAAAAAAAAAmwJkCAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAIECAAAAAAAAAAAqwJkCAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-18T19:12:20.096Z",
+              "WhenOpened": "2026-08-18T19:12:20.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OrdemServicoDTO.cs.cs",
+              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoDTO.cs.cs",
+              "RelativeDocumentMoniker": "DTOs\\OrdemServicoDTO.cs.cs",
+              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\DTOs\\OrdemServicoDTO.cs.cs",
+              "RelativeToolTip": "DTOs\\OrdemServicoDTO.cs.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-27T12:20:47.519Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAAFEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-20T12:08:11.666Z"
             }
           ]
         }

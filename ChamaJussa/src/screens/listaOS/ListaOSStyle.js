@@ -9,7 +9,7 @@ export const Style = StyleSheet.create({
 
   content: {
     flex: 1,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: '#f1f1f1',
     paddingHorizontal: 22,
     paddingTop: 32,
   },
@@ -18,6 +18,7 @@ export const Style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 20
   },
 
   hello: {
@@ -27,7 +28,7 @@ export const Style = StyleSheet.create({
   },
 
   title: {
-    fontSize: 21,
+    fontSize: 28,
     fontWeight: '700',
     color: '#111',
   },

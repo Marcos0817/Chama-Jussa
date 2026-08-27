@@ -4,11 +4,11 @@ export const NotificStyle = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: "#f1f1f1",
   },
 
   title: {
-    fontSize: 18,
+    fontSize: 28,
     fontWeight: "700",
     color: "#111111",
     textAlign: "center",

@@ -2,82 +2,62 @@ import { StyleSheet } from "react-native";
 
 export const Style = StyleSheet.create({
 
-    imageButton: {
-    backgroundColor: "#E8F0FE",
-    borderWidth: 1,
-    borderColor: "#2563EB",
-    borderRadius: 8,
-    padding: 14,
-    alignItems: "center",
-    marginBottom: 15,
-},
-
-imageButtonText: {
-    color: "#2563EB",
-    fontSize: 16,
-    fontWeight: "600",
-},
-
-imagePreviewContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-},
-
-imagePreview: {
-    width: "100%",
-    height: 220,
-    borderRadius: 10,
-    resizeMode: "cover",
-},
-
-removeImage: {
-    marginTop: 8,
-    color: "#DC2626",
-    fontWeight: "600",
-},
+    // ==============================
+    // CONTAINER
+    // ==============================
 
     container: {
         flex: 1,
-        backgroundColor: "#F5F7FA"
+        backgroundColor: "#f1f1f1",
     },
 
     scrollContent: {
         padding: 25,
-        paddingBottom: 40
+        paddingBottom: 40,
     },
 
+
+    // ==============================
+    // CABEÇALHO
+    // ==============================
+
     header: {
-        marginBottom: 25
+        marginBottom: 25,
     },
 
     voltar: {
         fontSize: 16,
         fontWeight: "600",
-        marginBottom: 20
+        color: "#333333",
+        marginBottom: 20,
     },
 
     title: {
         fontSize: 28,
         fontWeight: "700",
-        marginBottom: 5
+        color: "#222222",
+        marginBottom: 5,
+        marginLeft: 50,
     },
 
-    subtitle: {
-        fontSize: 15,
-        color: "#666"
-    },
+
+
+    // ==============================
+    // FORMULÁRIO
+    // ==============================
 
     form: {
         backgroundColor: "#FFFFFF",
         borderRadius: 15,
-        padding: 20
+        padding: 20,
     },
 
     label: {
         fontSize: 15,
-        fontWeight: "600",
+        fontWeight: "800",
+        color: "#0d0d0d",
         marginBottom: 8,
-        marginTop: 15
+        marginTop: 15,
     },
 
     input: {
@@ -87,28 +67,93 @@ removeImage: {
         borderRadius: 8,
         paddingHorizontal: 15,
         fontSize: 15,
-        backgroundColor: "#FFFFFF"
+        color: "#222222",
+        backgroundColor: "#f4f4f4",
     },
 
     textArea: {
         height: 120,
         paddingTop: 15,
-        textAlignVertical: "top"
+        textAlignVertical: "top",
     },
+
+
+    // ==============================
+    // SELECIONAR IMAGEM
+    // ==============================
+
+    imageButton: {
+        height: 48,
+        backgroundColor: "#f4f4f4",
+        borderWidth: 1,
+        borderColor: "#D9DDE3",
+        borderRadius: 8,
+
+        alignItems: "center",
+        flexDirection: "row",
+
+        marginBottom: 15,
+    },
+
+    imageButtonIcon: {
+        fontSize: 22,
+        color: "#555555",
+        fontWeight: "400",
+        marginRight: 8,
+    },
+
+    imageButtonText: {
+        color: "#a4a4a4",
+        marginLeft: 15,
+        marginBottom: 10,
+        fontSize: 14,
+        fontWeight: "600",
+    },
+
+
+    // ==============================
+    // PRÉVIA DA IMAGEM
+    // ==============================
+
+    imagePreviewContainer: {
+        alignItems: "center",
+        marginBottom: 20,
+    },
+
+    imagePreview: {
+        width: "100%",
+        height: 220,
+        borderRadius: 10,
+        resizeMode: "cover",
+    },
+
+    removeImage: {
+        marginTop: 8,
+        color: "#DC2626",
+        fontSize: 14,
+        fontWeight: "600",
+    },
+
+
+    // ==============================
+    // BOTÃO CADASTRAR
+    // ==============================
 
     button: {
         height: 52,
         borderRadius: 8,
         backgroundColor: "#10B981",
+
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 30
+
+        marginTop: 30,
     },
 
     buttonText: {
         color: "#FFFFFF",
         fontSize: 16,
-        fontWeight: "700"
-    }
+        fontWeight: "700",
+    },
 
 });

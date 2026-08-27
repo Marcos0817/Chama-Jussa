@@ -750,6 +750,10 @@
           "numeroOS": {
             "type": "string",
             "nullable": true
+          },
+          "dataHora": {
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
