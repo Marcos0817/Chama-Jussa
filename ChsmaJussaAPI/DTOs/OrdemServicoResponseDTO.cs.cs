@@ -18,6 +18,9 @@
 
         public string Status { get; set; }
 
+        // DATA E HORA DO CADASTRO
+        public DateTime DataCadastro { get; set; }
+
         public string IdUsuario { get; set; }
 
         public string? NomeUsuario { get; set; }

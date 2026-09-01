@@ -1,4 +1,3 @@
-
 import React, {
   useCallback,
   useState
@@ -33,9 +32,56 @@ export const Notificacao = ({ navigation }) => {
   const [carregando, setCarregando] = useState(true);
 
 
-  /*
-   * BUSCAR NOTIFICAÇÕES
-   */
+  // =====================================================
+  // FORMATAR DATA
+  // =====================================================
+
+  const formatarData = (data) => {
+
+    if (!data) {
+      return "Data não informada";
+    }
+
+    const dataObj = new Date(data);
+
+    if (isNaN(dataObj.getTime())) {
+      return "Data inválida";
+    }
+
+    return dataObj.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
+  };
+
+
+  // =====================================================
+  // FORMATAR HORA
+  // =====================================================
+
+  const formatarHora = (data) => {
+
+    if (!data) {
+      return "--:--";
+    }
+
+    const dataObj = new Date(data);
+
+    if (isNaN(dataObj.getTime())) {
+      return "--:--";
+    }
+
+    return dataObj.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  };
+
+
+  // =====================================================
+  // BUSCAR NOTIFICAÇÕES
+  // =====================================================
 
   const getNotificacoes = async () => {
 
@@ -48,8 +94,16 @@ export const Notificacao = ({ navigation }) => {
       );
 
       console.log(
+        "===================================="
+      );
+
+      console.log(
         "Notificações:",
         resposta.data
+      );
+
+      console.log(
+        "===================================="
       );
 
       setNotificacoes(resposta.data);
@@ -100,9 +154,9 @@ export const Notificacao = ({ navigation }) => {
   };
 
 
-  /*
-   * ATUALIZA TODA VEZ QUE ENTRA NA TELA
-   */
+  // =====================================================
+  // ATUALIZA TODA VEZ QUE ENTRA NA TELA
+  // =====================================================
 
   useFocusEffect(
     useCallback(() => {
@@ -113,9 +167,9 @@ export const Notificacao = ({ navigation }) => {
   );
 
 
-  /*
-   * MARCAR NOTIFICAÇÃO COMO LIDA
-   */
+  // =====================================================
+  // MARCAR NOTIFICAÇÃO COMO LIDA
+  // =====================================================
 
   const marcarComoLida = async (notificacao) => {
 
@@ -136,10 +190,9 @@ export const Notificacao = ({ navigation }) => {
       );
 
 
-      /*
-       * Atualiza a tela imediatamente
-       * sem precisar buscar tudo novamente
-       */
+      // =================================================
+      // ATUALIZA A TELA IMEDIATAMENTE
+      // =================================================
 
       setNotificacoes((listaAtual) =>
         listaAtual.map((item) =>
@@ -168,6 +221,10 @@ export const Notificacao = ({ navigation }) => {
 
   };
 
+
+  // =====================================================
+  // TELA
+  // =====================================================
 
   return (
 
@@ -242,6 +299,10 @@ export const Notificacao = ({ navigation }) => {
                   ]}
                 >
 
+                  {/* =================================================
+                      ÍCONE
+                  ================================================= */}
+
                   <Image
                     source={require("../../../assets/bullhorn 1.png")}
                     style={NotificStyle.icon}
@@ -249,15 +310,19 @@ export const Notificacao = ({ navigation }) => {
                   />
 
 
-                  {/* =========================================
+                  {/* =================================================
                       CONTEÚDO
-                  ========================================= */}
+                  ================================================= */}
 
                   <View
                     style={
                       NotificStyle.notificationContent
                     }
                   >
+
+                    {/* =================================================
+                        TÍTULO
+                    ================================================= */}
 
                     <Text
                       style={
@@ -270,6 +335,10 @@ export const Notificacao = ({ navigation }) => {
                     </Text>
 
 
+                    {/* =================================================
+                        MENSAGEM
+                    ================================================= */}
+
                     <Text
                       style={
                         NotificStyle.description
@@ -281,11 +350,19 @@ export const Notificacao = ({ navigation }) => {
                     </Text>
 
 
+                    {/* =================================================
+                        DATA E HORA
+                    ================================================= */}
+
                     <View
                       style={
                         NotificStyle.dateContainer
                       }
                     >
+
+                      {/* ==============================
+                          DATA
+                      ============================== */}
 
                       <Text
                         style={
@@ -293,13 +370,16 @@ export const Notificacao = ({ navigation }) => {
                         }
                       >
 
-                        {notificacao.numeroOS
-                          ? `OS-${notificacao.numeroOS}`
-                          : ""
-                        }
+                        {formatarData(
+                          notificacao.dataCadastro
+                        )}
 
                       </Text>
 
+
+                      {/* ==============================
+                          HORA
+                      ============================== */}
 
                       <Text
                         style={[
@@ -310,10 +390,9 @@ export const Notificacao = ({ navigation }) => {
                         ]}
                       >
 
-                        {notificacao.lida
-                          ? "Lida"
-                          : "Nova"
-                        }
+                        {formatarHora(
+                          notificacao.dataCadastro
+                        )}
 
                       </Text>
 
@@ -347,4 +426,3 @@ export const Notificacao = ({ navigation }) => {
   );
 
 };
-

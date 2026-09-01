@@ -13,15 +13,16 @@ CREATE TABLE Usuario(
 GO
 
 CREATE TABLE OrdemServico(
-	IdOS VARCHAR(40) PRIMARY KEY,
-	NumeroOS VARCHAR(20) UNIQUE NOT NULL,
-	TituloProblema VARCHAR(200) NOT NULL,
-	MaquinaEquipamento VARCHAR(150) NOT NULL,
-	LocalSetor VARCHAR(150) NOT NULL,
-	DescricaoProblema VARCHAR(MAX) NOT NULL,
-	FotoProblema VARCHAR(100),
-	Status VARCHAR(20) NOT NULL,
-	IdUsuario VARCHAR(40) FOREIGN KEY REFERENCES Usuario(IdUsuario)
+    IdOS VARCHAR(40) PRIMARY KEY,
+    NumeroOS VARCHAR(20) UNIQUE NOT NULL,
+    TituloProblema VARCHAR(200) NOT NULL,
+    MaquinaEquipamento VARCHAR(150) NOT NULL,
+    LocalSetor VARCHAR(150) NOT NULL,
+    DescricaoProblema VARCHAR(MAX) NOT NULL,
+    FotoProblema VARCHAR(100),
+    Status VARCHAR(20) NOT NULL,
+    DataCadastro DATETIME NOT NULL DEFAULT GETDATE(),
+    IdUsuario VARCHAR(40) FOREIGN KEY REFERENCES Usuario(IdUsuario)
 );
 GO
 
@@ -34,3 +35,6 @@ CREATE TABLE Notificacao(
 	IdOS VARCHAR(40) FOREIGN KEY REFERENCES OrdemServico(IdOS)
 );
 GO
+
+
+SELECT * FROM OrdemServico

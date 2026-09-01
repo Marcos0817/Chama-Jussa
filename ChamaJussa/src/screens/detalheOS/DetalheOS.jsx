@@ -26,34 +26,39 @@ export const DetalheOS = ({ route, navigation }) => {
 
   const [imagemExpandida, setImagemExpandida] = useState(false);
 
-  const URL_API = "http://172.16.36.27:5175";
+  const URL_API = "http://172.16.36.24:5175";
 
 
   // =====================================================
   // FORMATAR DATA E HORA
   // =====================================================
 
-  const formatarDataHora = (data) => {
+ const formatarDataHora = (data) => {
 
-    if (!data) {
-      return "Data não informada";
-    }
+  if (!data) {
+    return "Data não informada";
+  }
 
-    const dataObj = new Date(data);
+  const dataObj = new Date(data);
 
-    if (isNaN(dataObj.getTime())) {
-      return "Data inválida";
-    }
+  if (isNaN(dataObj.getTime())) {
+    return "Data inválida";
+  }
 
-    return dataObj.toLocaleString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
+  const dataFormatada = dataObj.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 
+  const horaFormatada = dataObj.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+
+  return `${dataFormatada}, ${horaFormatada}`;
+};
 
   // =====================================================
   // BUSCAR OS
@@ -303,7 +308,7 @@ export const DetalheOS = ({ route, navigation }) => {
           ================================================= */}
 
           <Text style={DetalheStyle.date}>
-            Publicado em: {formatarDataHora(os.dataHoraCadastro)}
+            Criada em {formatarDataHora (os.dataCadastro)}
           </Text>
 
 

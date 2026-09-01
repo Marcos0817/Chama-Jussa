@@ -56,7 +56,7 @@ export const NovaOS = ({ navigation }) => {
 
                     allowsEditing: true,
 
-                    quality: 0.8,
+                    quality: 0.8
 
                 });
 
@@ -121,20 +121,6 @@ export const NovaOS = ({ navigation }) => {
 
 
             // ==============================
-            // DATA E HORA DO CADASTRO
-            // ==============================
-
-            const dataHoraCadastro =
-                new Date().toISOString();
-
-
-            console.log(
-                "Data e hora do cadastro:",
-                dataHoraCadastro
-            );
-
-
-            // ==============================
             // FORMDATA
             // ==============================
 
@@ -150,41 +136,31 @@ export const NovaOS = ({ navigation }) => {
 
             formData.append(
                 "TituloProblema",
-                tituloProblema
+                tituloProblema.trim()
             );
 
 
             formData.append(
                 "MaquinaEquipamento",
-                maquinaEquipamento
+                maquinaEquipamento.trim()
             );
 
 
             formData.append(
                 "LocalSetor",
-                localSetor
+                localSetor.trim()
             );
 
 
             formData.append(
                 "DescricaoProblema",
-                descricaoProblema
+                descricaoProblema.trim()
             );
 
 
             formData.append(
                 "Status",
                 "Aberta"
-            );
-
-
-            // ==============================
-            // DATA E HORA
-            // ==============================
-
-            formData.append(
-                "DataHoraCadastro",
-                dataHoraCadastro
             );
 
 
@@ -235,9 +211,12 @@ export const NovaOS = ({ navigation }) => {
                     localSetor,
                     descricaoProblema,
                     status: "Aberta",
-                    dataHoraCadastro,
                     possuiImagem: !!imagem
                 }
+            );
+
+            console.log(
+                "A data/hora será gerada pela API."
             );
 
             console.log(
@@ -277,15 +256,22 @@ export const NovaOS = ({ navigation }) => {
                 resposta.data
             );
 
+
             console.log(
                 "Número gerado pelo backend:",
                 resposta.data?.numeroOS
             );
 
+
+            // =================================================
+            // DATA/HORA GERADA PELA API
+            // =================================================
+
             console.log(
-                "Data/hora enviada:",
-                dataHoraCadastro
+                "Data/hora gerada pela API:",
+                resposta.data?.dataCadastro
             );
+
 
             console.log(
                 "===================================="

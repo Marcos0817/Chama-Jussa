@@ -22,7 +22,6 @@ namespace ChamaJussa.Controllers
             _environment = environment;
         }
 
-
         // =========================================================
         // GET: api/OrdemServico/minhas
         // =========================================================
@@ -50,6 +49,10 @@ namespace ChamaJussa.Controllers
                     DescricaoProblema = os.DescricaoProblema,
                     FotoProblema = os.FotoProblema,
                     Status = os.Status,
+
+                    // DATA E HORA DO CADASTRO
+                    DataCadastro = os.DataCadastro,
+
                     IdUsuario = os.IdUsuario,
                     NomeUsuario = os.IdUsuarioNavigation.Nome
                 })
@@ -57,7 +60,6 @@ namespace ChamaJussa.Controllers
 
             return Ok(ordens);
         }
-
 
         // =========================================================
         // GET: api/OrdemServico
@@ -78,6 +80,10 @@ namespace ChamaJussa.Controllers
                     DescricaoProblema = os.DescricaoProblema,
                     FotoProblema = os.FotoProblema,
                     Status = os.Status,
+
+                    // DATA E HORA DO CADASTRO
+                    DataCadastro = os.DataCadastro,
+
                     IdUsuario = os.IdUsuario,
                     NomeUsuario = os.IdUsuarioNavigation.Nome
                 })
@@ -85,7 +91,6 @@ namespace ChamaJussa.Controllers
 
             return Ok(ordens);
         }
-
 
         // =========================================================
         // GET: api/OrdemServico/{id}
@@ -107,6 +112,10 @@ namespace ChamaJussa.Controllers
                     DescricaoProblema = os.DescricaoProblema,
                     FotoProblema = os.FotoProblema,
                     Status = os.Status,
+
+                    // DATA E HORA DO CADASTRO
+                    DataCadastro = os.DataCadastro,
+
                     IdUsuario = os.IdUsuario,
                     NomeUsuario = os.IdUsuarioNavigation.Nome
                 })
@@ -119,7 +128,6 @@ namespace ChamaJussa.Controllers
 
             return Ok(ordemServico);
         }
-
 
         // =========================================================
         // POST: api/OrdemServico
@@ -142,7 +150,6 @@ namespace ChamaJussa.Controllers
                 return Unauthorized();
             }
 
-
             // -----------------------------------------------------
             // Verifica se o usuário existe
             // -----------------------------------------------------
@@ -154,7 +161,6 @@ namespace ChamaJussa.Controllers
             {
                 return Unauthorized("Usuário não encontrado.");
             }
-
 
             // -----------------------------------------------------
             // Validação dos campos
@@ -180,7 +186,6 @@ namespace ChamaJussa.Controllers
                 return BadRequest("Descrição do problema é obrigatória.");
             }
 
-
             // -----------------------------------------------------
             // GERA AUTOMATICAMENTE O NÚMERO DA OS
             // -----------------------------------------------------
@@ -203,7 +208,6 @@ namespace ChamaJussa.Controllers
             }
 
             var numeroOS = proximoNumero.ToString("D3");
-
 
             // -----------------------------------------------------
             // Foto
@@ -268,9 +272,8 @@ namespace ChamaJussa.Controllers
                     $"imagens/ordens/{nomeArquivo}";
             }
 
-
             // -----------------------------------------------------
-            // Cria a Ordem de Serviço
+            // CRIA A ORDEM DE SERVIÇO
             // -----------------------------------------------------
 
             var ordemServico = new OrdemServico
@@ -298,15 +301,18 @@ namespace ChamaJussa.Controllers
                 Status =
                     ordemServicoDTO.Status,
 
+                // =================================================
+                // DATA E HORA AUTOMÁTICAS
+                // =================================================
+                DataCadastro = DateTime.Now,
+
                 IdUsuario =
                     idUsuario
             };
 
-
             _context.OrdemServicos.Add(ordemServico);
 
             await _context.SaveChangesAsync();
-
 
             // -----------------------------------------------------
             // Cria notificação
@@ -332,11 +338,9 @@ namespace ChamaJussa.Controllers
                     ordemServico.IdOs
             };
 
-
             _context.Notificacaos.Add(notificacao);
 
             await _context.SaveChangesAsync();
-
 
             // -----------------------------------------------------
             // Retorno
@@ -368,13 +372,16 @@ namespace ChamaJussa.Controllers
                 Status =
                     ordemServico.Status,
 
+                // DATA E HORA RETORNADAS PELA API
+                DataCadastro =
+                    ordemServico.DataCadastro,
+
                 IdUsuario =
                     ordemServico.IdUsuario,
 
                 NomeUsuario =
                     usuario.Nome
             };
-
 
             return CreatedAtAction(
                 nameof(GetOrdemServico),
@@ -385,7 +392,6 @@ namespace ChamaJussa.Controllers
                 resposta
             );
         }
-
 
         // =========================================================
         // PUT: api/OrdemServico/{id}
@@ -406,11 +412,9 @@ namespace ChamaJussa.Controllers
                 return Unauthorized();
             }
 
-
             var ordemServico =
                 await _context.OrdemServicos
                     .FirstOrDefaultAsync(os => os.IdOs == id);
-
 
             if (ordemServico == null)
             {
@@ -418,7 +422,6 @@ namespace ChamaJussa.Controllers
                     "Ordem de serviço não encontrada."
                 );
             }
-
 
             // -----------------------------------------------------
             // Verifica proprietário
@@ -429,14 +432,12 @@ namespace ChamaJussa.Controllers
                 return Forbid();
             }
 
-
             // -----------------------------------------------------
             // Atualiza os dados
             // -----------------------------------------------------
 
             // O número NÃO é alterado na edição.
-            // Ele continua sendo o número original gerado
-            // quando a OS foi criada.
+            // A data de cadastro também NÃO é alterada.
 
             ordemServico.TituloProblema =
                 ordemServicoDTO.TituloProblema;
@@ -453,7 +454,6 @@ namespace ChamaJussa.Controllers
             ordemServico.Status =
                 ordemServicoDTO.Status;
 
-
             // -----------------------------------------------------
             // Nova foto
             // -----------------------------------------------------
@@ -468,13 +468,11 @@ namespace ChamaJussa.Controllers
                     ".webp"
                 };
 
-
                 var extensao = Path
                     .GetExtension(
                         ordemServicoDTO.FotoProblema.FileName
                     )
                     .ToLowerInvariant();
-
 
                 if (!extensoesPermitidas.Contains(extensao))
                 {
@@ -482,7 +480,6 @@ namespace ChamaJussa.Controllers
                         "Formato de imagem não permitido."
                     );
                 }
-
 
                 if (
                     ordemServicoDTO.FotoProblema.Length >
@@ -494,10 +491,8 @@ namespace ChamaJussa.Controllers
                     );
                 }
 
-
                 var nomeArquivo =
                     $"{Guid.NewGuid()}{extensao}";
-
 
                 var pasta = Path.Combine(
                     _environment.WebRootPath ??
@@ -509,12 +504,10 @@ namespace ChamaJussa.Controllers
                     "ordens"
                 );
 
-
                 if (!Directory.Exists(pasta))
                 {
                     Directory.CreateDirectory(pasta);
                 }
-
 
                 var caminhoCompleto =
                     Path.Combine(
@@ -522,30 +515,24 @@ namespace ChamaJussa.Controllers
                         nomeArquivo
                     );
 
-
                 using var stream =
                     new FileStream(
                         caminhoCompleto,
                         FileMode.Create
                     );
 
-
                 await ordemServicoDTO
                     .FotoProblema
                     .CopyToAsync(stream);
-
 
                 ordemServico.FotoProblema =
                     $"imagens/ordens/{nomeArquivo}";
             }
 
-
             await _context.SaveChangesAsync();
-
 
             return NoContent();
         }
-
 
         // =========================================================
         // DELETE: api/OrdemServico/{id}
@@ -559,12 +546,10 @@ namespace ChamaJussa.Controllers
             var idUsuario =
                 User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-
             if (idUsuario == null)
             {
                 return Unauthorized();
             }
-
 
             var ordemServico =
                 await _context.OrdemServicos
@@ -572,14 +557,12 @@ namespace ChamaJussa.Controllers
                         os => os.IdOs == id
                     );
 
-
             if (ordemServico == null)
             {
                 return NotFound(
                     "Ordem de serviço não encontrada."
                 );
             }
-
 
             // -----------------------------------------------------
             // Verifica proprietário
@@ -590,14 +573,12 @@ namespace ChamaJussa.Controllers
                 return Forbid();
             }
 
-
             // -----------------------------------------------------
             // Guarda caminho da foto
             // -----------------------------------------------------
 
             var caminhoFoto =
                 ordemServico.FotoProblema;
-
 
             // -----------------------------------------------------
             // Remove notificações
@@ -611,13 +592,11 @@ namespace ChamaJussa.Controllers
                     )
                     .ToListAsync();
 
-
             if (notificacoes.Any())
             {
                 _context.Notificacaos
                     .RemoveRange(notificacoes);
             }
-
 
             // -----------------------------------------------------
             // Remove OS
@@ -626,9 +605,7 @@ namespace ChamaJussa.Controllers
             _context.OrdemServicos
                 .Remove(ordemServico);
 
-
             await _context.SaveChangesAsync();
-
 
             // -----------------------------------------------------
             // Remove foto física
@@ -650,7 +627,6 @@ namespace ChamaJussa.Controllers
                         )
                     );
 
-
                 if (System.IO.File.Exists(caminhoCompleto))
                 {
                     System.IO.File.Delete(
@@ -658,7 +634,6 @@ namespace ChamaJussa.Controllers
                     );
                 }
             }
-
 
             return NoContent();
         }

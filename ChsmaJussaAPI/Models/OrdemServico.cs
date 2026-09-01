@@ -44,13 +44,18 @@ public partial class OrdemServico
     [Unicode(false)]
     public string Status { get; set; } = null!;
 
+    // ==========================================
+    // DATA E HORA DO CADASTRO
+    // ==========================================
+    public DateTime DataCadastro { get; set; }
+
     [StringLength(40)]
     [Unicode(false)]
     public string? IdUsuario { get; set; }
 
     [ForeignKey("IdUsuario")]
     [InverseProperty("OrdemServicos")]
-    public virtual Usuario? IdUsuarioNavigation { get; set; }
+    public virtual Usuario? IdUsuarioNavigation { get; set; }   
 
     [InverseProperty("IdOsNavigation")]
     public virtual ICollection<Notificacao> Notificacaos { get; set; } = new List<Notificacao>();

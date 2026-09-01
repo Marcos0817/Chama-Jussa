@@ -10,11 +10,16 @@
 
         public bool Lida { get; set; }
 
-        public string IdUsuario { get; set; }
+        public string? IdUsuario { get; set; }
 
-        public string IdOS { get; set; }
+        public string? IdOS { get; set; }
 
         public string? NumeroOS { get; set; }
-        public object DataHora { get; internal set; }
+
+        // ==========================================
+        // DATA E HORA DA ORDEM DE SERVIÇO
+        // ==========================================
+
+        public DateTime? DataCadastro { get; set; }
     }
 }
