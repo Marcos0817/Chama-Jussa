@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import {
   View,
@@ -12,6 +12,8 @@ import {
   StatusBar
 } from "react-native";
 
+import { useFocusEffect } from "@react-navigation/native";
+
 import { DetalheStyle } from "./DetalheOSStyle";
 import { Footer } from "../../components/footer/Footer";
 import { api } from "../../services/api";
@@ -19,7 +21,7 @@ import { api } from "../../services/api";
 export const DetalheOS = ({ route, navigation }) => {
 
   const osRecebida = route.params?.os;
-  const idOS = route.params?.idOS;
+  const idOS = route.params?.idOS || osRecebida?.idOS;
 
   const [os, setOs] = useState(osRecebida || null);
   const [carregando, setCarregando] = useState(!osRecebida);
@@ -33,32 +35,33 @@ export const DetalheOS = ({ route, navigation }) => {
   // FORMATAR DATA E HORA
   // =====================================================
 
- const formatarDataHora = (data) => {
+  const formatarDataHora = (data) => {
 
-  if (!data) {
-    return "Data não informada";
-  }
+    if (!data) {
+      return "Data não informada";
+    }
 
-  const dataObj = new Date(data);
+    const dataObj = new Date(data);
 
-  if (isNaN(dataObj.getTime())) {
-    return "Data inválida";
-  }
+    if (isNaN(dataObj.getTime())) {
+      return "Data inválida";
+    }
 
-  const dataFormatada = dataObj.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+    const dataFormatada = dataObj.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    });
 
-  const horaFormatada = dataObj.toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
+    const horaFormatada = dataObj.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
 
-  return `${dataFormatada}, ${horaFormatada}`;
-};
+    return `${dataFormatada}, ${horaFormatada}`;
+  };
+
 
   // =====================================================
   // BUSCAR OS
@@ -66,19 +69,28 @@ export const DetalheOS = ({ route, navigation }) => {
 
   const getOS = async () => {
 
+    if (!idOS) {
+      console.log("ID da OS não encontrado.");
+      return;
+    }
+
     try {
 
       setCarregando(true);
 
-      console.log("Buscando OS:", idOS);
+      console.log("====================================");
+      console.log("BUSCANDO OS ATUALIZADA");
+      console.log("ID da OS:", idOS);
+      console.log("====================================");
 
       const resposta =
         await api.get(`/OrdemServico/${idOS}`);
 
-      console.log(
-        "OS encontrada:",
-        resposta.data
-      );
+      console.log("OS encontrada:");
+      console.log(resposta.data);
+
+      console.log("FOTO RECEBIDA DO BACKEND:");
+      console.log(resposta.data?.fotoProblema);
 
       setOs(resposta.data);
 
@@ -91,6 +103,9 @@ export const DetalheOS = ({ route, navigation }) => {
       console.log("Erro:", erro);
 
       if (erro.response) {
+
+        console.log("Status:", erro.response.status);
+        console.log("Dados:", erro.response.data);
 
         Alert.alert(
           "Erro",
@@ -108,9 +123,28 @@ export const DetalheOS = ({ route, navigation }) => {
     } finally {
 
       setCarregando(false);
-
     }
   };
+
+
+  // =====================================================
+  // ATUALIZAR OS SEMPRE QUE A TELA RECEBER FOCO
+  // =====================================================
+
+  useFocusEffect(
+    useCallback(() => {
+
+      console.log("====================================");
+      console.log("DETALHE OS RECEBEU FOCO");
+      console.log("ATUALIZANDO DADOS...");
+      console.log("====================================");
+
+      if (idOS) {
+        getOS();
+      }
+
+    }, [idOS])
+  );
 
 
   // =====================================================
@@ -178,19 +212,6 @@ export const DetalheOS = ({ route, navigation }) => {
 
 
   // =====================================================
-  // BUSCAR OS AO ABRIR
-  // =====================================================
-
-  useEffect(() => {
-
-    if (!osRecebida && idOS) {
-      getOS();
-    }
-
-  }, [idOS]);
-
-
-  // =====================================================
   // URL DA FOTO
   // =====================================================
 
@@ -202,13 +223,13 @@ export const DetalheOS = ({ route, navigation }) => {
 
     const foto = os.fotoProblema;
 
+    // URL completa ou base64
     if (
       foto.startsWith("http") ||
       foto.startsWith("data:")
     ) {
 
       return foto;
-
     }
 
     const caminhoFormatado =
@@ -308,7 +329,7 @@ export const DetalheOS = ({ route, navigation }) => {
           ================================================= */}
 
           <Text style={DetalheStyle.date}>
-            Criada em {formatarDataHora (os.dataCadastro)}
+            Criada em {formatarDataHora(os.dataCadastro)}
           </Text>
 
 
@@ -431,6 +452,7 @@ export const DetalheOS = ({ route, navigation }) => {
             >
 
               <Image
+                key={urlFoto}
                 source={{
                   uri: urlFoto
                 }}
@@ -438,6 +460,15 @@ export const DetalheOS = ({ route, navigation }) => {
                 style={DetalheStyle.problemImage}
 
                 resizeMode="cover"
+
+                onLoad={() => {
+
+                  console.log(
+                    "FOTO CARREGADA:",
+                    urlFoto
+                  );
+
+                }}
 
                 onError={(e) => {
 
@@ -553,6 +584,7 @@ export const DetalheOS = ({ route, navigation }) => {
           {urlFoto && (
 
             <Image
+              key={urlFoto}
               source={{
                 uri: urlFoto
               }}

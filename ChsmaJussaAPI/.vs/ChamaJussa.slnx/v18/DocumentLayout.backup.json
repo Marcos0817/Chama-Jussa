@@ -66,12 +66,11 @@
               "Title": "OrdemServicoController.cs",
               "DocumentMoniker": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\OrdemServicoController.cs",
               "RelativeDocumentMoniker": "Controllers\\OrdemServicoController.cs",
-              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\OrdemServicoController.cs*",
-              "RelativeToolTip": "Controllers\\OrdemServicoController.cs*",
+              "ToolTip": "C:\\Users\\54198904880\\Desktop\\Chama-Jussa\\ChsmaJussaAPI\\Controllers\\OrdemServicoController.cs",
+              "RelativeToolTip": "Controllers\\OrdemServicoController.cs",
               "ViewState": "AgIAAP8AAAAAAAAAAAAowHQAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-18T19:12:20.096Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-18T19:12:20.096Z"
             },
             {
               "$type": "Document",
@@ -83,8 +82,7 @@
               "RelativeToolTip": "DTOs\\OrdemServicoResponseDTO.cs.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAAA5wBUAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T16:05:44.195Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-27T16:05:44.195Z"
             },
             {
               "$type": "Document",
@@ -96,8 +94,7 @@
               "RelativeToolTip": "Models\\OrdemServico.cs",
               "ViewState": "AgIAACUAAAAAAAAAAAAswDQAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-20T14:12:14.071Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-20T14:12:14.071Z"
             },
             {
               "$type": "Document",
@@ -122,8 +119,7 @@
               "RelativeToolTip": "DTOs\\NotificacaoResponseDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-01T12:06:05.819Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-01T12:06:05.819Z"
             },
             {
               "$type": "Document",

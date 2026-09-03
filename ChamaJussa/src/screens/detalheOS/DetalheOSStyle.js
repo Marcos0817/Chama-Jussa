@@ -32,11 +32,15 @@ export const DetalheStyle = StyleSheet.create({
   // =====================================================
 
   pageTitle: {
-    fontSize: 19,
+    fontSize: 21,
     fontWeight: "700",
     color: "#111111",
     textAlign: "center",
-    marginTop: 36,
+
+    // Título mais afastado da parte superior
+    marginTop: 75,
+
+    // Mantido igual para não alterar o formulário
     marginBottom: 50,
   },
 
@@ -187,7 +191,7 @@ export const DetalheStyle = StyleSheet.create({
   },
 
   editButton: {
-    height: 33,
+    height: 40,
     borderWidth: 1,
     borderColor: "#087FF5",
     borderRadius: 5,
@@ -200,12 +204,12 @@ export const DetalheStyle = StyleSheet.create({
 
   editButtonText: {
     color: "#087FF5",
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: "600",
   },
 
   deleteButton: {
-    height: 33,
+    height: 40,
     borderWidth: 1,
     borderColor: "#E53935",
     borderRadius: 5,
@@ -218,7 +222,7 @@ export const DetalheStyle = StyleSheet.create({
 
   deleteButtonText: {
     color: "#E53935",
-    fontSize: 12,
+    fontSize: 15,
     fontWeight: "600",
   },
 

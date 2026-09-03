@@ -37,7 +37,7 @@ export const Style = StyleSheet.create({
         fontWeight: "700",
         color: "#222222",
         marginBottom: 5,
-        marginLeft: 50,
+        marginLeft: 27,
     },
 
 

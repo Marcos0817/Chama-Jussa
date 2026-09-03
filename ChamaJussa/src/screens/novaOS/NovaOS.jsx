@@ -1,4 +1,6 @@
+
 import React, { useState } from "react";
+
 import {
     View,
     Text,
@@ -12,10 +14,12 @@ import {
 } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
+
 import { Footer } from "../../components/footer/Footer";
 
 import { Style } from "./NovaOSStyle";
 import { api } from "../../services/api";
+
 
 export const NovaOS = ({ navigation }) => {
 
@@ -29,7 +33,7 @@ export const NovaOS = ({ navigation }) => {
 
 
     // ==============================
-    // SELECIONAR IMAGEM
+    // SELECIONAR IMAGEM DA GALERIA
     // ==============================
 
     const selecionarImagem = async () => {
@@ -49,6 +53,7 @@ export const NovaOS = ({ navigation }) => {
                 return;
             }
 
+
             const resultado =
                 await ImagePicker.launchImageLibraryAsync({
 
@@ -57,7 +62,6 @@ export const NovaOS = ({ navigation }) => {
                     allowsEditing: true,
 
                     quality: 0.8
-
                 });
 
 
@@ -67,7 +71,7 @@ export const NovaOS = ({ navigation }) => {
                     resultado.assets[0];
 
                 console.log(
-                    "Imagem selecionada:",
+                    "Imagem selecionada da galeria:",
                     imagemSelecionada
                 );
 
@@ -90,10 +94,105 @@ export const NovaOS = ({ navigation }) => {
 
 
     // ==============================
+    // TIRAR FOTO COM A CÂMERA
+    // ==============================
+
+    const tirarFoto = async () => {
+
+        try {
+
+            const permissao =
+                await ImagePicker.requestCameraPermissionsAsync();
+
+
+            if (!permissao.granted) {
+
+                Alert.alert(
+                    "Permissão necessária",
+                    "Precisamos de acesso à câmera para tirar uma foto do problema."
+                );
+
+                return;
+            }
+
+
+            const resultado =
+                await ImagePicker.launchCameraAsync({
+
+                    mediaTypes: ["images"],
+
+                    allowsEditing: true,
+
+                    quality: 0.8
+                });
+
+
+            if (!resultado.canceled) {
+
+                const fotoTirada =
+                    resultado.assets[0];
+
+                console.log(
+                    "Foto tirada pela câmera:",
+                    fotoTirada
+                );
+
+                setImagem(fotoTirada);
+            }
+
+        } catch (erro) {
+
+            console.log(
+                "Erro ao abrir câmera:",
+                erro
+            );
+
+            Alert.alert(
+                "Erro",
+                "Não foi possível abrir a câmera."
+            );
+        }
+    };
+
+
+    // ==============================
+    // ESCOLHER ORIGEM DA IMAGEM
+    // ==============================
+
+    const escolherImagem = () => {
+
+        Alert.alert(
+            "Adicionar imagem",
+            "Escolha de onde deseja adicionar a imagem.",
+
+            [
+
+                {
+                    text: "  📸 Tirar foto",
+                    onPress: tirarFoto
+                },
+
+                {
+                    text: " 🖼️ Escolher da galeria",
+                    onPress: selecionarImagem
+                },
+
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                }
+
+            ]
+        );
+    };
+
+
+    // ==============================
     // CADASTRAR OS
     // ==============================
 
     const cadastrarOS = async () => {
+
 
         // ==============================
         // VALIDAÇÃO
@@ -188,6 +287,7 @@ export const NovaOS = ({ navigation }) => {
                         type: tipo
                     }
                 );
+
             }
 
 
@@ -216,6 +316,11 @@ export const NovaOS = ({ navigation }) => {
             );
 
             console.log(
+                "Imagem:",
+                imagem?.uri
+            );
+
+            console.log(
                 "A data/hora será gerada pela API."
             );
 
@@ -228,16 +333,17 @@ export const NovaOS = ({ navigation }) => {
             // POST
             // ==============================
 
-            const resposta = await api.post(
-                "/OrdemServico",
-                formData,
-                {
-                    headers: {
-                        "Content-Type":
-                            "multipart/form-data"
+            const resposta =
+                await api.post(
+                    "/OrdemServico",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type":
+                                "multipart/form-data"
+                        }
                     }
-                }
-            );
+                );
 
 
             // ==============================
@@ -256,16 +362,15 @@ export const NovaOS = ({ navigation }) => {
                 resposta.data
             );
 
-
             console.log(
                 "Número gerado pelo backend:",
                 resposta.data?.numeroOS
             );
 
 
-            // =================================================
+            // ==============================
             // DATA/HORA GERADA PELA API
-            // =================================================
+            // ==============================
 
             console.log(
                 "Data/hora gerada pela API:",
@@ -284,7 +389,9 @@ export const NovaOS = ({ navigation }) => {
 
             Alert.alert(
                 "Sucesso",
+
                 `Ordem de Serviço ${resposta.data?.numeroOS || ""} cadastrada com sucesso!`,
+
                 [
                     {
                         text: "OK",
@@ -490,11 +597,16 @@ export const NovaOS = ({ navigation }) => {
                             <TouchableOpacity
                                 style={Style.imageButton}
                                 activeOpacity={0.8}
-                                onPress={selecionarImagem}
+                                onPress={escolherImagem}
                             >
 
                                 <Text style={Style.imageButtonText}>
-                                    Insira imagem
+
+                                    {imagem
+                                        ? "Trocar imagem"
+                                        : "Insira imagem"
+                                    }
+
                                 </Text>
 
                             </TouchableOpacity>
@@ -516,9 +628,12 @@ export const NovaOS = ({ navigation }) => {
                                         source={{
                                             uri: imagem.uri
                                         }}
+
                                         style={
                                             Style.imagePreview
                                         }
+
+                                        resizeMode="cover"
                                     />
 
 
@@ -575,8 +690,11 @@ export const NovaOS = ({ navigation }) => {
             </KeyboardAvoidingView>
 
 
+            {/* FOOTER */}
+
             <Footer navigation={navigation} />
 
         </>
     );
 };
+
